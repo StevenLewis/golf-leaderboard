@@ -9,26 +9,29 @@ describe('getters.js', () => {
         state.players['#4'] = { id: '#4', name: 'Matt' }
 
         state.results['#1'] = { id: '#1', playerId: '#1', score: 25, date: '2000-01-01' }
-        state.results['#2'] = { id: '#2', playerId: '#1', score: 25, date: '2000-02-02' }
+        state.results['#2'] = { id: '#2', playerId: '#1', score: 25, date: '2002-02-02' }
         state.results['#3'] = { id: '#3', playerId: '#1', score: 25, date: '2000-02-02' }
         state.results['#4'] = { id: '#4', playerId: '#1', score: 30, date: '2000-02-02' }
-        state.results['#5'] = { id: '#5', playerId: '#1', score: 30, date: '2000-02-02' }
-        state.results['#6'] = { id: '#6', playerId: '#1', score: 30, date: '2000-02-02' }
+        state.results['#5'] = { id: '#5', playerId: '#1', score: 30, date: '2003-02-02' }
+        state.results['#6'] = { id: '#6', playerId: '#1', score: 30, date: '2001-02-02' }
         state.results['#7'] = { id: '#7', playerId: '#1', score: 30, date: '2000-02-02' }
-        state.results['#8'] = { id: '#8', playerId: '#1', score: 30, date: '2000-02-02' }
-        state.results['#9'] = { id: '#9', playerId: '#1', score: 30, date: '2000-02-02' }
-        state.results['#10'] = { id: '#10', playerId: '#1', score: 30, date: '2000-02-02' }
+        state.results['#8'] = { id: '#8', playerId: '#1', score: 30, date: '2010-02-02' }
+        state.results['#9'] = { id: '#9', playerId: '#1', score: 38, date: '2012-02-02' }
+        state.results['#10'] = { id: '#10', playerId: '#1', score: 22, date: '2000-02-02' }
+        state.results['#11'] = { id: '#11', playerId: '#1', score: 24, date: '2000-02-02' }
+        state.results['#12'] = { id: '#12', playerId: '#1', score: 36, date: '2018-02-02' }
+        state.results['#13'] = { id: '#13', playerId: '#1', score: 36, date: '2000-02-02' }
 
-        state.results['#11'] = { id: '#11', playerId: '#2', score: 20, date: '2000-01-01' }
-        state.results['#12'] = { id: '#12', playerId: '#2', score: 20, date: '2000-02-02' }
-        state.results['#13'] = { id: '#13', playerId: '#2', score: 20, date: '2000-02-02' }
         state.results['#14'] = { id: '#14', playerId: '#2', score: 20, date: '2000-02-02' }
-        state.results['#15'] = { id: '#15', playerId: '#2', score: 20, date: '2000-02-02' }
+        state.results['#15'] = { id: '#15', playerId: '#2', score: 20, date: '2001-02-02' }
         state.results['#16'] = { id: '#16', playerId: '#2', score: 20, date: '2000-02-02' }
-        state.results['#17'] = { id: '#17', playerId: '#2', score: 20, date: '2000-02-02' }
-        state.results['#18'] = { id: '#18', playerId: '#2', score: 25, date: '2000-02-02' }
-        state.results['#19'] = { id: '#19', playerId: '#2', score: 25, date: '2000-02-02' }
-        state.results['#20'] = { id: '#20', playerId: '#2', score: 25, date: '2000-02-02' }
+        state.results['#17'] = { id: '#17', playerId: '#2', score: 20, date: '2018-02-02' }
+        state.results['#18'] = { id: '#18', playerId: '#2', score: 25, date: '2010-02-02' }
+        state.results['#19'] = { id: '#19', playerId: '#2', score: 30, date: '2000-02-02' }
+        state.results['#20'] = { id: '#20', playerId: '#2', score: 32, date: '2000-02-02' }
+        state.results['#21'] = { id: '#21', playerId: '#2', score: 25, date: '2000-02-02' }
+        state.results['#22'] = { id: '#22', playerId: '#2', score: 25, date: '2002-02-02' }
+        state.results['#23'] = { id: '#23', playerId: '#2', score: 25, date: '2000-02-02' }
     })
 
     test('All players sorted alphabetically', () => {

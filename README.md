@@ -34,21 +34,31 @@ yarn run test:unit
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
+# Models
+```
+## Player
+```
+Name
 
-## A player can track their results over multiple seasons
-## A leaderboard for a given season, sorted by a players top 10 results
+## Result
+```
+PlayerId
+Score
+Date
 
- - Player
- -- Name
- -- Top 10 results
- -- Total score from top 10
- -- Avg of top 10
+# Features
+```
 
- - Result
- -- Score
- -- Timestamp
- -- Season
+## Leaderboard
+```
+Filtered by given season
+Sorted by top ten score
 
- - Season
- -- Start
- -- End
+### Data
+Top 10 Total
+Total Results Count
+Total Qualifying Results Count
+Total Qualifying Score
+Qualifying score average
+Scores to beat
+
