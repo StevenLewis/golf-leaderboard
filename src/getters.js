@@ -12,7 +12,7 @@ export default {
         return Object.values(state.results).filter(result => result.playerId === id).sort((a, b) => a.date - b.date)
     },
     playerScores: (state, getters) => (id) => {
-        return getters.playerResults(id).sort((a, b) => a.score - b.score).map(player => player['score'])
+        return getters.playerResults(id).sort((a, b) => a.score - b.score).map(player => player['score']).slice(-10)
     },
     playerTotalScore: (state, getters) => (id) => {
         return getters.playerScores(id).reduce((accumulator, currentValue) => accumulator + currentValue, 0)

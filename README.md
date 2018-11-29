@@ -34,31 +34,26 @@ yarn run test:unit
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
-# Models
-```
-## Player
-```
-Name
-
-## Result
-```
-PlayerId
-Score
-Date
-
-# Features
+# TODO
 ```
 
-## Leaderboard
-```
-Filtered by given season
-Sorted by top ten score
+### Leaderboard
+- Qualifying vs non-qualifying results
+- Order leaderboard by totalScore
+- totalScore should be topTenTotal
+- Drop 'average'
+- Create 'qualifyingAverage' based of all qualifying results
 
-### Data
-Top 10 Total
-Total Results Count
-Total Qualifying Results Count
-Total Qualifying Score
-Qualifying score average
-Scores to beat
+### Single player
+- Edit player name
+- Remove players
+- Remove result
+- Edit result ?
+- Date formatting
+- Display meta info, ie. Best score, Worst Score
 
+### Season
+- Literally no idea
+
+### General
+- Styles
