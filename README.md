@@ -1,4 +1,4 @@
-# golf
+# Golf Leaderboard #
 
 ## Project setup
 ```
@@ -34,26 +34,26 @@ yarn run test:unit
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
-# TODO
-```
+
+# TODO #
 
 ### Leaderboard
-- Qualifying vs non-qualifying results
-- Order leaderboard by totalScore
-- totalScore should be topTenTotal
-- Drop 'average'
-- Create 'qualifyingAverage' based of all qualifying results
+- [] Qualifying vs non-qualifying results
+- [] Order leaderboard by totalScore
+- [] totalScore should be topTenTotal
+- [] Drop 'average'
+- [] Create 'qualifyingAverage' based of all qualifying results
 
 ### Single player
-- Edit player name
-- Remove players
-- Remove result
-- Edit result ?
-- Date formatting
-- Display meta info, ie. Best score, Worst Score
+- [] Edit player name
+- [] Remove players
+- [] Remove result
+- [] Edit result ?
+- [] Date formatting
+- [] Display meta info, ie. Best score, Worst Score
 
 ### Season
-- Literally no idea
+- [] Literally no idea
 
 ### General
-- Styles
+- [] Styles
