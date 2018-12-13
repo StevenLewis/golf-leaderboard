@@ -41,7 +41,8 @@ export default {
     data () {
         return {
             score: 0,
-            date: ''
+            date: '',
+            qualifying: true
         }
     },
 
@@ -51,7 +52,7 @@ export default {
                 return
             }
 
-            this.$store.dispatch(RECORD_RESULT, { player: this.player, score: this.score, date: new Date(this.date) })
+            this.$store.dispatch(RECORD_RESULT, { player: this.player, qualifying: this.qualifying, score: this.score, date: new Date(this.date) })
             this.score = 0
             this.date = ''
         }

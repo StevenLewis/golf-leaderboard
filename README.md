@@ -38,11 +38,12 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 # TODO #
 
 ### Leaderboard
-- [ ] Qualifying vs non-qualifying results
-- [ ] Order leaderboard by totalScore
-- [ ] totalScore should be topTenTotal
-- [ ] Drop 'average'
-- [ ] Create 'qualifyingAverage' based of all qualifying results
+- [x] Qualifying vs non-qualifying results
+- [x] Add Total Qualifying Points
+- [x] Create 'qualifyingAverage' based of all qualifying results
+- [x] Drop 'average'
+- [x] Order leaderboard by totalScore
+- [x] totalScore should be topTenTotal
 
 ### Single player
 - [ ] Edit player name
@@ -53,7 +54,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [ ] Display meta info, ie. Best score, Worst Score
 
 ### Season
-- [ ] Literally no idea
+- [ ] Url structure - /2018-2019 or ?season=2018-2019
+- [ ] On created, query store results based on season
 
 ### General
 - [ ] Styles

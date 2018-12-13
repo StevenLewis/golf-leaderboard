@@ -20,9 +20,10 @@ export default {
             name
         })
     },
-    [actions.RECORD_RESULT] ({ getters }, { player, score, date }) {
+    [actions.RECORD_RESULT] ({ getters }, { player, qualifying, score, date }) {
         api.results.add({
             playerId: player.id,
+            qualifying,
             score,
             date
         })
