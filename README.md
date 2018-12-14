@@ -46,16 +46,18 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [x] totalScore should be topTenTotal
 
 ### Single player
-- [ ] Edit player name
-- [ ] Remove players
+- [x] Date formatting
 - [ ] Remove result
-- [ ] Edit result ?
-- [ ] Date formatting
+- [ ] Edit player name
+- [ ] Improve UI for creating result
 - [ ] Display meta info, ie. Best score, Worst Score
+
+### All Players
+- [ ] Remove player
 
 ### Season
 - [ ] Url structure - /2018-2019 or ?season=2018-2019
 - [ ] On created, query store results based on season
 
 ### General
-- [ ] Styles
+- [ ] Styles & UI

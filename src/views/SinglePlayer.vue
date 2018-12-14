@@ -9,7 +9,7 @@
             </thead>
             <tbody>
                 <tr v-for="result in results" :key="result.id">
-                    <td>{{ result.date }}</td>
+                    <td>{{ result.date | formatDate }}</td>
                     <td>{{ result.score }}</td>
                 </tr>
             </tbody>
@@ -36,6 +36,7 @@
 <script>
 import { RECORD_RESULT } from '../action-types'
 import { mapState } from 'vuex'
+import moment from 'moment'
 
 export default {
     data () {
@@ -43,6 +44,12 @@ export default {
             score: 0,
             date: '',
             qualifying: true
+        }
+    },
+
+    filters: {
+        formatDate (timestamp) {
+            return moment(timestamp.toDate()).format('Do MMM YYYY')
         }
     },
 

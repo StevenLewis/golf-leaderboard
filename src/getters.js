@@ -9,7 +9,13 @@ export default {
         })
     },
     playerResults: (state) => (id) => {
-        return Object.values(state.results).filter(result => result.playerId === id).sort((a, b) => a.date - b.date)
+        return Object.values(state.results).filter(result => result.playerId === id).sort((a, b) => {
+            if (a.date === b.date) {
+                return 0
+            }
+
+            return (a.date > b.date) ? 1 : -1
+        })
     },
     qualifyingResults: (state, getters) => (id) => {
         return getters.playerResults(id).filter(result => result.qualifying)
