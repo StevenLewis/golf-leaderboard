@@ -13,6 +13,11 @@ export default {
                 commit('SET_RESULT', Object.assign({}, change.doc.data(), { id: change.doc.id }))
             })
         })
+        api.competitions.onSnapshot((snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+                commit('SET_COMPETITION', Object.assign({}, change.doc.data(), { id: change.doc.id }))
+            })
+        })
     },
 
     [actions.CREATE_PLAYER] ({ getters }, name) {

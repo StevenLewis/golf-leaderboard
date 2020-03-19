@@ -54,5 +54,14 @@ export default {
         leaderboard.sort((a, b) => b.topTenTotal - a.topTenTotal)
 
         return leaderboard
+    },
+    competitions (state) {
+        return Object.values(state.competitions).sort((a, b) => {
+            if (a.date === b.date) {
+                return 0
+            }
+
+            return (a.date > b.date) ? 1 : -1
+        })
     }
 }

@@ -36,7 +36,6 @@
 <script>
 import { RECORD_RESULT } from '../action-types'
 import { mapState } from 'vuex'
-import moment from 'moment'
 
 export default {
     data () {
@@ -44,12 +43,6 @@ export default {
             score: 0,
             date: '',
             qualifying: true
-        }
-    },
-
-    filters: {
-        formatDate (timestamp) {
-            return moment(timestamp.toDate()).format('Do MMM YYYY')
         }
     },
 

@@ -6,5 +6,8 @@ export default {
     },
     'SET_RESULT' (state, result) {
         Vue.set(state.results, result.id, result)
+    },
+    'SET_COMPETITION' (state, competition) {
+        Vue.set(state.competitions, competition.id, competition)
     }
 }
