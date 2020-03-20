@@ -63,5 +63,14 @@ export default {
 
             return (a.date > b.date) ? 1 : -1
         })
+    },
+    competitionResults: (state) => (date) => {
+        return Object.values(state.results).filter(result => result.date === date).sort((a, b) => {
+            if (a.score === b.score) {
+                return 0
+            }
+
+            return (a.score > b.score) ? 1 : -1
+        })
     }
 }

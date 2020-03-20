@@ -52,7 +52,12 @@ export default {
                 return
             }
 
-            this.$store.dispatch(RECORD_RESULT, { player: this.player, qualifying: this.qualifying, score: this.score, date: new Date(this.date) })
+            this.$store.dispatch(RECORD_RESULT, {
+                playerId: this.player.id,
+                qualifying: this.qualifying,
+                score: this.score,
+                date: new Date(this.date)
+            })
             this.score = 0
             this.date = ''
         }
@@ -64,6 +69,7 @@ export default {
         player () {
             return this.players[this.$route.params.id] || {}
         },
+
         results () {
             return this.$store.getters.playerResults(this.$route.params.id) || []
         }

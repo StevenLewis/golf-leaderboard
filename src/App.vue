@@ -4,6 +4,8 @@
             <router-link to="/">Leaderboard</router-link>
             \
             <router-link to="/players">Players</router-link>
+            \
+            <router-link to="/competitions">Competitions</router-link>
         </div>
         <router-view/>
     </div>
