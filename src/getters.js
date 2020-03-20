@@ -65,12 +65,12 @@ export default {
         })
     },
     competitionResults: (state) => (date) => {
-        return Object.values(state.results).filter(result => result.date === date).sort((a, b) => {
+        return Object.values(state.results).filter(result => result.date.isEqual(date)).sort((a, b) => {
             if (a.score === b.score) {
                 return 0
             }
 
-            return (a.score > b.score) ? 1 : -1
+            return (a.score < b.score) ? 1 : -1
         })
     }
 }

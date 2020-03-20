@@ -13,7 +13,9 @@
       <tbody>
         <tr v-for="(result, index) in results" :key="result.id">
           <td>{{ index + 1 }}</td>
-          <td>Player</td>
+          <td>
+            <router-link :to="{ name: 'players.show', params: { id: result.playerId } }">{{ players[result.playerId].name }}</router-link>
+          </td>
           <td>{{ result.score }}</td>
         </tr>
       </tbody>
@@ -32,6 +34,7 @@
 <script>
 import { RECORD_RESULT } from '../action-types'
 import { mapState } from 'vuex'
+import { firestore } from 'firebase'
 
 export default {
     name: 'SingleCompetition',
@@ -52,7 +55,7 @@ export default {
         },
 
         results () {
-            return this.$store.getters.competitionResults(this.competition.date) || []
+            return this.$store.getters.competitionResults(firestore.Timestamp.fromDate(new Date('2020-03-01'))) || []
         }
     },
 

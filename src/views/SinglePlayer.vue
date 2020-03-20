@@ -14,11 +14,6 @@
                 </tr>
             </tbody>
         </table>
-
-        <form @submit.prevent="submit">
-            <input type="text" v-model.number="score" placeholder="Score...">
-            <input type="date" v-model="date">
-        </form>
     </div>
 </template>
 
@@ -34,35 +29,9 @@
 </style>
 
 <script>
-import { RECORD_RESULT } from '../action-types'
 import { mapState } from 'vuex'
 
 export default {
-    data () {
-        return {
-            score: 0,
-            date: '',
-            qualifying: true
-        }
-    },
-
-    methods: {
-        submit () {
-            if (this.score.length === 0 || this.date.length === 0) {
-                return
-            }
-
-            this.$store.dispatch(RECORD_RESULT, {
-                playerId: this.player.id,
-                qualifying: this.qualifying,
-                score: this.score,
-                date: new Date(this.date)
-            })
-            this.score = 0
-            this.date = ''
-        }
-    },
-
     computed: {
         ...mapState(['players']),
 
