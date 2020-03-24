@@ -54,5 +54,23 @@ export default {
         leaderboard.sort((a, b) => b.topTenTotal - a.topTenTotal)
 
         return leaderboard
+    },
+    competitions (state) {
+        return Object.values(state.competitions).sort((a, b) => {
+            if (a.date === b.date) {
+                return 0
+            }
+
+            return (a.date > b.date) ? 1 : -1
+        })
+    },
+    competitionResults: (state) => (date) => {
+        return Object.values(state.results).filter(result => result.date.isEqual(date)).sort((a, b) => {
+            if (a.score === b.score) {
+                return 0
+            }
+
+            return (a.score < b.score) ? 1 : -1
+        })
     }
 }

@@ -19,9 +19,11 @@ db.settings({
 
 let players = db.collection('players')
 let results = db.collection('results')
+let competitions = db.collection('competitions')
 
 export default {
     db,
     players,
-    results
+    results,
+    competitions
 }
