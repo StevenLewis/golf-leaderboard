@@ -3,7 +3,7 @@
         <header>
             <h1 class="mb-5 text-3xl font-bold leading-tight text-gray-900">Players</h1>
         </header>
-        <div class="flex flex-col">
+        <div class="flex flex-col mb-10">
             <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                 <div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
                     <table class="min-w-full">
@@ -22,9 +22,23 @@
             </div>
         </div>
 
-        <form @submit.prevent="submit">
-            <input type="text" v-model.trim="name" placeholder="Player name...">
-        </form>
+        <div class="max-w-xs">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Add new player
+            </h3>
+            <p class=" mb-5 mt-1 text-sm leading-5 text-gray-500">
+                Input their name and hit enter.
+            </p>
+            <form @submit.prevent="submit">
+                <div>
+                    <label for="name" class="sr-only">Name</label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <input id="name" v-model.trim="name" class="form-input block w-full sm:text-sm sm:leading-5" placeholder="Player name..." />
+                    </div>
+                </div>
+            </form>
+        </div>
+
     </div>
 </template>
 

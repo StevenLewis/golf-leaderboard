@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-10 bg-white shadow overflow-hidden sm:rounded-lg">
+    <div v-if="player" class="mb-10 bg-white shadow overflow-hidden sm:rounded-lg">
         <div class="px-4 py-5 sm:px-6">
             <dl class="grid grid-cols-1 col-gap-4 row-gap-8 sm:grid-cols-3">
                 <div class="sm:col-span-1">
@@ -8,14 +8,6 @@
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
                         {{ player.topTenTotal }}
-                    </dd>
-                </div>
-                <div class="sm:col-span-1">
-                    <dt class="text-sm leading-5 font-medium text-gray-500">
-                        Total Games
-                    </dt>
-                    <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        {{ player.totalGames }}
                     </dd>
                 </div>
                 <div class="sm:col-span-1">
@@ -40,6 +32,14 @@
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
                         {{ player.qualifyingAverage }}
+                    </dd>
+                </div>
+                <div class="sm:col-span-1">
+                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                        Best Score
+                    </dt>
+                    <dd class="mt-1 text-sm leading-5 text-gray-900">
+                        {{ bestScore }}
                     </dd>
                 </div>
                 <div class="sm:col-span-1">
@@ -73,6 +73,16 @@ export default {
 
         player () {
             return this.players.find(player => player.id === this.$route.params.id)
+        },
+
+        results () {
+            return this.$store.getters.playerResults(this.$route.params.id) || []
+        },
+
+        bestScore () {
+            if (this.results) {
+                return Math.max(...this.results.map(result => result.score))
+            }
         }
     }
 }

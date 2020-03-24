@@ -50,14 +50,27 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [ ] Remove result
 - [ ] Edit player name
 - [ ] Improve UI for creating result
-- [ ] Display meta info, ie. Best score, Worst Score
+- [x] Display meta info, ie. Best score, Worst Score
 
 ### All Players
 - [ ] Remove player
+
+### Competitions
+- [ ] Create competition
+- [ ] Add result
+- [ ] Validate only one result per player, per competition
 
 ### Season
 - [ ] Url structure - /2018-2019 or ?season=2018-2019
 - [ ] On created, query store results based on season
 
 ### General
+- [ ] Datepicker
 - [ ] Styles & UI
+
+### Future
+ - [ ] Admin interface
+ - [ ] Money
+ - [ ] Cuts
+ - [ ] Biggest differential
+ - [ ] Best/Worst score for a season
