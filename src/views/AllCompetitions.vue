@@ -3,7 +3,7 @@
         <header>
             <h1 class="mb-5 text-3xl font-bold leading-tight text-gray-900">Competitions</h1>
         </header>
-        <div class="flex flex-col">
+        <div class="mb-10 flex flex-col">
             <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                 <div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
                     <table class="min-w-full">
@@ -23,21 +23,61 @@
                 </div>
             </div>
         </div>
+
+        <div class="max-w-xs">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Add new competition
+            </h3>
+            <p class="mb-5 mt-1 text-sm leading-5 text-gray-500">
+                Select the date of the competition.
+            </p>
+            <form @submit.prevent="submit">
+                <div>
+                    <label for="name" class="sr-only">Date</label>
+                    <div class="mt-1 mb-2 relative rounded-md shadow-sm">
+                        <datepicker v-model="date" input-class="form-input block w-full sm:text-sm sm:leading-5" />
+                    </div>
+                    <button @click.prevent="submit" type="button" class="flex items-center px-3 py-2 ml-auto border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+                        Add Competition
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import Datepicker from 'vuejs-datepicker'
+import { CREATE_COMPETITION } from '../action-types'
 
 export default {
+    components: {
+        Datepicker
+    },
+
     data () {
         return {
-            name: ''
+            date: new Date()
         }
     },
 
     computed: {
         ...mapGetters(['competitions'])
+    },
+
+    methods: {
+        submit () {
+            if (this.date.length === 0) {
+                return
+            }
+
+            this.$store.dispatch(CREATE_COMPETITION, {
+                date: this.date
+            })
+
+            this.date = new Date()
+        }
     }
 }
 </script>

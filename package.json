@@ -17,6 +17,7 @@
     "tailwindcss": "^1.2.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
+    "vuejs-datepicker": "^1.6.2",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
@@ -47,7 +48,10 @@
         "error",
         4
       ],
-      "vue/html-indent": ["error", 4]
+      "vue/html-indent": [
+        "error",
+        4
+      ]
     },
     "parserOptions": {
       "parser": "babel-eslint"

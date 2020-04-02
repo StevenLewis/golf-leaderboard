@@ -8,7 +8,7 @@
             <h1 class="mb-5 text-3xl font-bold leading-tight text-gray-900">{{ competition.date | formatDate }}</h1>
         </header>
 
-        <div class="flex flex-col">
+        <div class="flex flex-col mb-10">
             <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                 <div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
                     <table class="min-w-full">
@@ -31,21 +31,28 @@
             </div>
         </div>
 
-        <h5>New Result</h5>
-        <form @submit.prevent="submit">
-            <select v-model="player">
-                <option v-for="player in players" :key="player.id" :value="player.id">{{ player.name }}</option>
-            </select>
-            <input type="text" v-model.number="score" placeholder="Score...">
-        </form>
+        <div class="max-w-xs">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Add new result
+            </h3>
+            <p class="mb-5 mt-1 text-sm leading-5 text-gray-500">
+                Choose the player from the dropdown, and input their score.
+            </p>
+            <form @submit.prevent="submit">
+                <div class="max-w-xs rounded-md shadow-sm">
+                    <select v-model="player" class="block form-input w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5">
+                        <option v-for="player in players" :key="player.id" :value="player.id">{{ player.name }}</option>
+                    </select>
+                </div>
+                <input type="text" v-model.number="score" placeholder="Score..." class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5">
+            </form>
+        </div>
     </div>
 </template>
 
 <script>
 import { RECORD_RESULT } from '../action-types'
 import { mapState } from 'vuex'
-import firebase from 'firebase/app'
-import 'firebase/firestore'
 
 export default {
     name: 'SingleCompetition',
@@ -66,7 +73,7 @@ export default {
         },
 
         results () {
-            return this.$store.getters.competitionResults(firebase.firestore.Timestamp.fromDate(new Date('2020-03-01'))) || []
+            return this.$store.getters.competitionResults(this.competition.date) || []
         }
     },
 
@@ -82,6 +89,7 @@ export default {
                 score: this.score,
                 date: this.competition.date
             })
+
             this.score = 0
             this.date = ''
         }

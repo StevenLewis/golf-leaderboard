@@ -32,5 +32,10 @@ export default {
             score,
             date
         })
+    },
+    [actions.CREATE_COMPETITION] ({ getters }, { date }) {
+        api.competitions.add({
+            date
+        })
     }
 }
