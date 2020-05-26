@@ -42,7 +42,7 @@
                             autocomplete="off"
                         />
                     </div>
-                    <p v-if="errors.has('name')" class="mt-2 text-sm text-red-600">{{ errors.first('name') }}</p>
+                    <p v-if="errors.has('name')" class="my-2 text-sm text-red-600">{{ errors.first('name') }}</p>
                     <button @click.prevent="submit" type="button" class="flex items-center px-3 py-2 ml-auto border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
                         Add Player
                     </button>

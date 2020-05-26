@@ -35,8 +35,9 @@
                 <div>
                     <label for="name" class="sr-only">Date</label>
                     <div class="mt-1 mb-2 relative rounded-md shadow-sm">
-                        <datepicker v-model="date" input-class="form-input block w-full sm:text-sm sm:leading-5" />
+                        <datepicker v-model="date" :input-class="datepickerClass" />
                     </div>
+                    <p v-if="errors.has('date')" class="my-2 text-sm text-red-600">{{ errors.first('date') }}</p>
                     <button @click.prevent="submit" type="button" class="flex items-center px-3 py-2 ml-auto border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
                         Add Competition
                     </button>
@@ -47,9 +48,12 @@
 </template>
 
 <script>
+import Errors from '../classes/Errors'
 import { mapGetters } from 'vuex'
 import Datepicker from 'vuejs-datepicker'
 import { CREATE_COMPETITION } from '../action-types'
+import firebase from 'firebase/app'
+import 'firebase/firestore'
 
 export default {
     components: {
@@ -58,25 +62,57 @@ export default {
 
     data () {
         return {
-            date: new Date()
+            date: new Date(),
+            errors: new Errors()
         }
     },
 
     computed: {
-        ...mapGetters(['competitions'])
+        ...mapGetters(['competitions']),
+
+        datepickerClass () {
+            let string = this.errors.has('date') ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 ' : ''
+
+            return string + 'form-input block w-full sm:text-sm sm:leading-5'
+        },
+
+        dateIsNotUnique () {
+            return this.competitions.some(competition => competition.date.isEqual(firebase.firestore.Timestamp.fromDate(this.date)))
+        }
+    },
+
+    created () {
+        this.date.setHours(0, 0, 0, 0)
     },
 
     methods: {
         submit () {
-            if (this.date.length === 0) {
-                return
-            }
+            this.errors.clear()
 
-            this.$store.dispatch(CREATE_COMPETITION, {
-                date: this.date
-            })
-
+            this.$store.dispatch(CREATE_COMPETITION, this.date)
             this.date = new Date()
+            this.date.setHours(0, 0, 0, 0)
+            // try {
+            // } catch (e) {
+            //     console.log(e, 'Catch')
+            // }
+
+            // this.validate()
+            //     .then(() => {
+            //         this.$store.dispatch(CREATE_COMPETITION, this.date)
+            //         this.date = new Date()
+            //         this.date.setHours(0, 0, 0, 0)
+            //     })
+            //     .catch(() => {
+            //         console.log('Catch')
+            //         // Good catch!
+            //     })
+        },
+
+        async foo () {
+            return new Promise(resolve => {
+                resolve('Woo')
+            })
         }
     }
 }
