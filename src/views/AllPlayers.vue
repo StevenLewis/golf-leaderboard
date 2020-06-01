@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div class="max-w-xs">
+        <div v-if="user.loggedIn" class="max-w-xs">
             <h3 class="text-lg leading-6 font-medium text-gray-900">
                 Add new player
             </h3>
@@ -67,7 +67,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['players']),
+        ...mapGetters(['players', 'user']),
 
         nameIsNotUnique () {
             return this.players.some(player => player.name.toLowerCase() === this.name.toLowerCase())

@@ -5,6 +5,9 @@ import AllPlayers from './views/AllPlayers'
 import SinglePlayer from './views/SinglePlayer'
 import AllCompetitions from './views/AllCompetitions'
 import SingleCompetition from './views/SingleCompetition'
+import Login from './views/Login'
+import Register from './views/Register'
+import Home from './views/Home'
 
 Vue.use(Router)
 
@@ -13,7 +16,22 @@ export default new Router({
     base: process.env.BASE_URL,
     routes: [
         {
+            path: '/login',
+            name: 'login',
+            component: Login
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: Register
+        },
+        {
             path: '/',
+            name: 'home',
+            component: Home
+        },
+        {
+            path: '/leaderboard',
             name: 'leaderboard.show',
             component: Leaderboard
         },
