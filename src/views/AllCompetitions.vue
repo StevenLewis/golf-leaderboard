@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div class="max-w-xs">
+        <div v-if="user.loggedIn" class="max-w-xs">
             <h3 class="text-lg leading-6 font-medium text-gray-900">
                 Add new competition
             </h3>
@@ -68,7 +68,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['competitions']),
+        ...mapGetters(['competitions', 'user']),
 
         datepickerClass () {
             let string = this.errors.has('date') ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 ' : ''

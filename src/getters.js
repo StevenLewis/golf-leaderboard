@@ -1,4 +1,7 @@
 export default {
+    user (state) {
+        return state.user
+    },
     players (state) {
         return Object.values(state.players).sort((a, b) => {
             if (a.name.toLowerCase() === b.name.toLowerCase()) {
