@@ -1,5 +1,24 @@
 <template>
     <div id="competitions">
+        <div v-if="user.loggedIn" class="max-w-sm mb-10">
+            <h3 class="mb-2 text-lg leading-6 font-medium text-gray-900">
+                Add new competition
+            </h3>
+            <form @submit.prevent="submit">
+                <div>
+                    <label for="name" class="sr-only">Date</label>
+                    <div class="flex mt-1 mb-2">
+                        <div class="w-full relative rounded-md shadow-sm">
+                            <datepicker v-model="date" :input-class="datepickerClass" />
+                        </div>
+                        <button @click.prevent="submit" type="button" class="flex-none flex items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+                            Add Competition
+                        </button>
+                    </div>
+                    <p v-if="errors.has('date')" class="my-2 text-sm text-red-600">{{ errors.first('date') }}</p>
+                </div>
+            </form>
+        </div>
         <header>
             <h1 class="mb-5 text-3xl font-bold leading-tight text-gray-900">Competitions</h1>
         </header>
@@ -16,33 +35,12 @@
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
                                     <router-link :to="{ name: 'competitions.show', params: { id: competition.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ competition.date | formatDate }}</router-link>
                                 </td>
-                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">24</td>
+                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ playerCount(competition.date) }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
-
-        <div v-if="user.loggedIn" class="max-w-xs">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">
-                Add new competition
-            </h3>
-            <p class="mb-5 mt-1 text-sm leading-5 text-gray-500">
-                Select the date of the competition.
-            </p>
-            <form @submit.prevent="submit">
-                <div>
-                    <label for="name" class="sr-only">Date</label>
-                    <div class="mt-1 mb-2 relative rounded-md shadow-sm">
-                        <datepicker v-model="date" :input-class="datepickerClass" />
-                    </div>
-                    <p v-if="errors.has('date')" class="my-2 text-sm text-red-600">{{ errors.first('date') }}</p>
-                    <button @click.prevent="submit" type="button" class="flex items-center px-3 py-2 ml-auto border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
-                        Add Competition
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
 </template>
@@ -56,6 +54,8 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 
 export default {
+    name: 'AllCompetitions',
+
     components: {
         Datepicker
     },
@@ -68,7 +68,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['competitions', 'user']),
+        ...mapGetters(['competitions', 'competitionResults', 'user']),
 
         datepickerClass () {
             let string = this.errors.has('date') ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 ' : ''
@@ -81,37 +81,54 @@ export default {
         }
     },
 
+    watch: {
+        date: function () {
+            this.errors.clear()
+        }
+    },
+
     created () {
         this.date.setHours(0, 0, 0, 0)
     },
 
     methods: {
+        playerCount (date) {
+            return this.$store.getters.competitionResults(date).length || 0
+        },
+
         submit () {
             this.errors.clear()
 
-            this.$store.dispatch(CREATE_COMPETITION, this.date)
-            this.date = new Date()
-            this.date.setHours(0, 0, 0, 0)
-            // try {
-            // } catch (e) {
-            //     console.log(e, 'Catch')
-            // }
-
-            // this.validate()
-            //     .then(() => {
-            //         this.$store.dispatch(CREATE_COMPETITION, this.date)
-            //         this.date = new Date()
-            //         this.date.setHours(0, 0, 0, 0)
-            //     })
-            //     .catch(() => {
-            //         console.log('Catch')
-            //         // Good catch!
-            //     })
+            this.validate()
+                .then(() => {
+                    this.$store.dispatch(CREATE_COMPETITION, this.date)
+                    this.date = new Date()
+                    this.date.setHours(0, 0, 0, 0)
+                })
+                .catch(() => {
+                    console.log('Catch')
+                    // Good catch!
+                })
         },
 
-        async foo () {
-            return new Promise(resolve => {
-                resolve('Woo')
+        validate () {
+            return new Promise((resolve, reject) => {
+                let errors = []
+
+                if (this.date.length === 0) {
+                    errors.push('We need the date')
+                }
+
+                if (this.dateIsNotUnique) {
+                    errors.push('This competition date already exists')
+                }
+
+                if (errors.length > 0) {
+                    this.errors.record({ date: errors })
+                    reject(this.errors)
+                }
+
+                resolve('Valid!')
             })
         }
     }

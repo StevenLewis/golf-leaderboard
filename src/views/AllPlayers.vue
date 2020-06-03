@@ -1,5 +1,31 @@
 <template>
     <div id="players">
+        <div v-if="user.loggedIn" class="max-w-sm mb-10">
+            <h3 class="mb-2 text-lg leading-6 font-medium text-gray-900">
+                Add new player
+            </h3>
+            <form @submit.prevent="submit">
+                <div>
+                    <label for="name" class="sr-only">Name</label>
+                    <div class="flex mt-1 mb-2">
+                        <div class="flex-1 w-full relative rounded-md shadow-sm">
+                            <input
+                                id="name"
+                                v-model.trim="name"
+                                class="form-input block w-full sm:text-sm sm:leading-5"
+                                :class="{ 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-300' : errors.has('name') }"
+                                placeholder="Player name..."
+                                autocomplete="off"
+                            />
+                        </div>
+                        <button @click.prevent="submit" type="button" class="flex-none flex items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+                            Add Player
+                        </button>
+                    </div>
+                    <p v-if="errors.has('name')" class="my-2 text-sm text-red-600">{{ errors.first('name') }}</p>
+                </div>
+            </form>
+        </div>
         <header>
             <h1 class="mb-5 text-3xl font-bold leading-tight text-gray-900">Players</h1>
         </header>
@@ -21,35 +47,6 @@
                 </div>
             </div>
         </div>
-
-        <div v-if="user.loggedIn" class="max-w-xs">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">
-                Add new player
-            </h3>
-            <p class="mb-5 mt-1 text-sm leading-5 text-gray-500">
-                Input their name and hit enter.
-            </p>
-            <form @submit.prevent="submit">
-                <div>
-                    <label for="name" class="sr-only">Name</label>
-                    <div class="mt-1 mb-2 relative rounded-md shadow-sm">
-                        <input
-                            id="name"
-                            v-model.trim="name"
-                            class="form-input block w-full sm:text-sm sm:leading-5"
-                            :class="{ 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-300' : errors.has('name') }"
-                            placeholder="Player name..."
-                            autocomplete="off"
-                        />
-                    </div>
-                    <p v-if="errors.has('name')" class="my-2 text-sm text-red-600">{{ errors.first('name') }}</p>
-                    <button @click.prevent="submit" type="button" class="flex items-center px-3 py-2 ml-auto border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
-                        Add Player
-                    </button>
-                </div>
-            </form>
-        </div>
-
     </div>
 </template>
 
@@ -74,6 +71,12 @@ export default {
         }
     },
 
+    watch: {
+        name: function () {
+            this.errors.clear()
+        }
+    },
+
     methods: {
         submit () {
             this.errors.clear()
@@ -93,15 +96,15 @@ export default {
                 let errors = []
 
                 if (this.name.length === 0) {
-                    errors.push('We need their name!')
+                    errors.push('We need their name')
                 }
 
                 if (!/^[a-zA-Z\s]*$/.test(this.name)) {
-                    errors.push('Only letters and spaces please!')
+                    errors.push('Only letters and spaces please')
                 }
 
                 if (this.nameIsNotUnique) {
-                    errors.push('This player already exists!')
+                    errors.push('This player already exists')
                 }
 
                 if (errors.length > 0) {
