@@ -64,8 +64,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [ ] On created, query store results based on season
 
 ### General
-- [ ] Datepicker
-- [ ] Styles & UI
+- [x] Datepicker
+- [x] Styles & UI
 
 ### Future
  - [ ] Admin interface
