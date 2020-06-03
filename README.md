@@ -49,16 +49,15 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [x] Date formatting
 - [ ] Remove result
 - [ ] Edit player name
-- [ ] Improve UI for creating result
 - [x] Display meta info, ie. Best score, Worst Score
 
 ### All Players
 - [ ] Remove player
 
 ### Competitions
-- [ ] Create competition
-- [ ] Add result
-- [ ] Validate only one result per player, per competition
+- [x] Create competition
+- [x] Add result
+- [x] Validate only one result per player, per competition
 
 ### Season
 - [ ] Url structure - /2018-2019 or ?season=2018-2019
