@@ -83,6 +83,8 @@ export default {
             if (this.results) {
                 return Math.max(...this.results.map(result => result.score))
             }
+
+            return 0
         }
     }
 }

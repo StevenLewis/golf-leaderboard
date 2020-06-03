@@ -96,6 +96,8 @@ export default {
             if (this.competition.date) {
                 return this.$store.getters.competitionResults(this.competition.date) || []
             }
+
+            return []
         }
     },
 

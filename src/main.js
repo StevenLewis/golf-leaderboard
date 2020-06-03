@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './filters'
-import * as firebase from 'firebase'
+import * as firebase from 'firebase/app'
 
 import './assets/app.css'
 import { FETCH_USER } from './action-types'

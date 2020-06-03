@@ -12,11 +12,6 @@ firebase.initializeApp({
 
 let db = firebase.firestore()
 
-// Disable deprecated features
-db.settings({
-    timestampsInSnapshots: true
-})
-
 let players = db.collection('players')
 let results = db.collection('results')
 let competitions = db.collection('competitions')
