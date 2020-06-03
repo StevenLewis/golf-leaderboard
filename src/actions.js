@@ -45,7 +45,7 @@ export default {
             date
         })
     },
-    [actions.CREATE_COMPETITION] ({ getters }, { date }) {
+    [actions.CREATE_COMPETITION] ({ getters }, date) {
         api.competitions.add({
             date
         })

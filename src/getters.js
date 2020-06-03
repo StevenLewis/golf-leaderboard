@@ -64,7 +64,7 @@ export default {
                 return 0
             }
 
-            return (a.date > b.date) ? 1 : -1
+            return (a.date < b.date) ? 1 : -1
         })
     },
     competitionResults: (state) => (date) => {
