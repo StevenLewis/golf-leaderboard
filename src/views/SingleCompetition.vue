@@ -97,7 +97,7 @@
                             <tr v-for="(result, index) in results" :key="result.id" :class="background(index)">
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ index + 1 }}</td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
-                                    <router-link :to="{ name: 'players.show', params: { id: result.playerId } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ players[result.playerId].name }}</router-link>
+                                    <router-link :to="{ name: 'players.show', params: { id: result.player.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ result.player.name }}</router-link>
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.score }}</td>
                                 <td v-if="prizes" class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ prizes[index] | sterling }}</td>
