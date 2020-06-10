@@ -6,3 +6,9 @@ Vue.filter('formatDate', (timestamp) => {
 
     return moment(timestamp.toDate()).format('Do MMM YYYY')
 })
+
+Vue.filter('sterling', (value) => {
+    if (!value) return '£0.00'
+
+    return `£${value.toFixed(2)}`
+})

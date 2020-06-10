@@ -4,7 +4,7 @@
             <router-view />
         </template>
         <template v-else>
-            <div class="min-h-screen bg-white">
+            <div class="background min-h-screen bg-white">
                 <nav class="bg-white border-b border-gray-200">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <navigation />

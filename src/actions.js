@@ -32,22 +32,38 @@ export default {
         }
     },
 
-    [actions.CREATE_PLAYER] ({ getters }, name) {
+    [actions.CREATE_PLAYER] ({ getters }, { name, cuts = 0 }) {
         api.players.add({
-            name
+            name,
+            cuts
         })
     },
-    [actions.RECORD_RESULT] ({ getters }, { playerId, qualifying, score, date }) {
+    [actions.RECORD_RESULT] ({ getters }, { playerId, qualifying, score, date, value = 0 }) {
         api.results.add({
             playerId,
             qualifying,
             score,
-            date
+            date,
+            value
         })
     },
     [actions.CREATE_COMPETITION] ({ getters }, date) {
         api.competitions.add({
-            date
+            date,
+            recorded_at: null
         })
+    },
+    [actions.RECORD_COMPETITION] ({ getters }, id) {
+        let date = new Date()
+        date.setHours(0, 0, 0, 0)
+
+        api.competitions.doc(id).set({
+            recorded_at: date
+        }, { merge: true })
+    },
+    [actions.PAY_PLAYER] ({ getters }, { id, amount }) {
+        api.results.doc(id).set({
+            value: amount
+        }, { merge: true })
     }
 }
