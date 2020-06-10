@@ -59,8 +59,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [x] Validate only one result per player, per competition
 - [ ] Remove/Edit result
 - [ ] Show nett score column
-- [ ] Show prixe money column
-- [ ] Show player count & prize money structure at top of page
+- [x] Show prize money column
+- [x] Show player count & prize money structure at top of page
 
 ### Season
 - [ ] Url structure - /2018-2019 or ?season=2018-2019
