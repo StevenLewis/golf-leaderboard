@@ -76,8 +76,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [x] Login
 
 ### Money
-- [ ] Show winnings for given competition
-- [ ] Running profit/loss total for each player
+- [x] Show winnings for given competition
+- [x] Running profit/loss total for each player
 
 ### Cuts
 - [ ] Nett score including cuts when result is entered
