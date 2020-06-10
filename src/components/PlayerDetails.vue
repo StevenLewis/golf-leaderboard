@@ -55,6 +55,14 @@
                         </template>
                     </dd>
                 </div>
+                <div class="sm:col-span-1">
+                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                        Nett Profit
+                    </dt>
+                    <dd class="mt-1 text-sm leading-5 text-gray-900">
+                        {{ profit | sterling }}
+                    </dd>
+                </div>
             </dl>
         </div>
     </div>
@@ -85,6 +93,10 @@ export default {
             }
 
             return 0
+        },
+
+        profit () {
+            return this.results.reduce((accumulator, result) => accumulator + result.value, 0)
         }
     }
 }
