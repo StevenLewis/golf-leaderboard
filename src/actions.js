@@ -61,9 +61,10 @@ export default {
             recorded_at: date
         }, { merge: true })
     },
-    [actions.PAY_PLAYER] ({ getters }, { id, amount }) {
+    [actions.ENTER_PLAYER] ({ getters }, { id, entryFee, winnings }) {
         api.results.doc(id).set({
-            value: amount
+            entryFee,
+            winnings
         }, { merge: true })
     }
 }

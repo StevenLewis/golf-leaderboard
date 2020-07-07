@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import { PAY_PLAYER, RECORD_COMPETITION, RECORD_RESULT } from '../action-types'
+import { ENTER_PLAYER, RECORD_COMPETITION, RECORD_RESULT } from '../action-types'
 import { mapState } from 'vuex'
 import Errors from '../classes/Errors'
 import { prizeMoney, entryFee } from '../config/money'
@@ -161,9 +161,10 @@ export default {
     methods: {
         async recordCompetition () {
             await this.results.forEach((result, index) => {
-                this.$store.dispatch(PAY_PLAYER, {
+                this.$store.dispatch(ENTER_PLAYER, {
                     id: result.id,
-                    amount: (entryFee * -1) + (this.prizes[index] || 0)
+                    entryFee,
+                    winnings: this.prizes[index] || 0
                 })
             })
 

@@ -57,10 +57,34 @@
                 </div>
                 <div class="sm:col-span-1">
                     <dt class="text-sm leading-5 font-medium text-gray-500">
+                        Entry Fees
+                    </dt>
+                    <dd class="mt-1 text-sm leading-5 text-gray-900">
+                        {{ fees | sterling }}
+                    </dd>
+                </div>
+                <div class="sm:col-span-1">
+                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                        Winnings
+                    </dt>
+                    <dd class="mt-1 text-sm leading-5 text-gray-900">
+                        {{ winnings | sterling }}
+                    </dd>
+                </div>
+                <div class="sm:col-span-1">
+                    <dt class="text-sm leading-5 font-medium text-gray-500">
                         Nett Profit
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
                         {{ profit | sterling }}
+                    </dd>
+                </div>
+                <div class="sm:col-span-1">
+                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                        Cuts
+                    </dt>
+                    <dd class="mt-1 text-sm leading-5 text-gray-900">
+                        {{ cuts }}
                     </dd>
                 </div>
             </dl>
@@ -78,6 +102,7 @@ export default {
         ...mapGetters({
             players: 'leaderboard'
         }),
+        ...mapGetters(['playerFees', 'playerWinnings', 'playerProfit', 'playerCuts']),
 
         player () {
             return this.players.find(player => player.id === this.$route.params.id)
@@ -95,8 +120,20 @@ export default {
             return 0
         },
 
+        fees () {
+            return this.playerFees(this.$route.params.id)
+        },
+
+        winnings () {
+            return this.playerWinnings(this.$route.params.id)
+        },
+
         profit () {
-            return this.results.reduce((accumulator, result) => accumulator + result.value, 0)
+            return this.playerProfit(this.$route.params.id)
+        },
+
+        cuts () {
+            return this.playerCuts(this.$route.params.id)
         }
     }
 }
