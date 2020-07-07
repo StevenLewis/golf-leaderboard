@@ -69,6 +69,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ### General
 - [x] Datepicker
 - [x] Styles & UI
+- [x] Firebase Hosting
 
 ### Authentication
 - [x] Set up Users in Firestore
