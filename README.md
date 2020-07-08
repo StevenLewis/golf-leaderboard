@@ -81,10 +81,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [x] Running profit/loss total for each player
 
 ### Cuts
-- [ ] Nett score including cuts when result is entered
-- [ ] Running total of cuts for each player
-- [ ] Apply cuts to player based on profit
-- [ ] Global reset cuts button
+- [x] Nett score including cuts when result is entered
+- [ ] Running total of cuts for each player, based on calendar period
+- [x] Apply cuts to player based on profit
 
 ### Future
  - [ ] Biggest differential
