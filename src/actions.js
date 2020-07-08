@@ -32,19 +32,20 @@ export default {
         }
     },
 
-    [actions.CREATE_PLAYER] ({ getters }, { name, cuts = 0 }) {
+    [actions.CREATE_PLAYER] ({ getters }, name) {
         api.players.add({
-            name,
-            cuts
+            name
         })
     },
-    [actions.RECORD_RESULT] ({ getters }, { playerId, qualifying, score, date, value = 0 }) {
+    [actions.RECORD_RESULT] ({ getters }, { playerId, qualifying, score, date, cuts, entryFee, winnings = 0 }) {
         api.results.add({
             playerId,
             qualifying,
             score,
             date,
-            value
+            cuts,
+            entryFee,
+            winnings
         })
     },
     [actions.CREATE_COMPETITION] ({ getters }, date) {
@@ -61,9 +62,10 @@ export default {
             recorded_at: date
         }, { merge: true })
     },
-    [actions.PAY_PLAYER] ({ getters }, { id, amount }) {
+    [actions.ENTER_PLAYER] ({ getters }, { id, entryFee, winnings }) {
         api.results.doc(id).set({
-            value: amount
+            entryFee,
+            winnings
         }, { merge: true })
     }
 }

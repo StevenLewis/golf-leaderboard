@@ -91,6 +91,8 @@
                             <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Pos</th>
                             <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Player</th>
                             <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Score</th>
+                            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Cuts</th>
+                            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Nett</th>
                             <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Winnings</th>
                         </thead>
                         <tbody>
@@ -100,6 +102,8 @@
                                     <router-link :to="{ name: 'players.show', params: { id: result.player.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ result.player.name }}</router-link>
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.score }}</td>
+                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.cuts }}</td>
+                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.score - result.cuts }}</td>
                                 <td v-if="prizes" class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ prizes[index] | sterling }}</td>
                             </tr>
                         </tbody>
@@ -111,8 +115,8 @@
 </template>
 
 <script>
-import { PAY_PLAYER, RECORD_COMPETITION, RECORD_RESULT } from '../action-types'
-import { mapState } from 'vuex'
+import { ENTER_PLAYER, RECORD_COMPETITION, RECORD_RESULT } from '../action-types'
+import { mapState, mapGetters } from 'vuex'
 import Errors from '../classes/Errors'
 import { prizeMoney, entryFee } from '../config/money'
 
@@ -130,6 +134,7 @@ export default {
 
     computed: {
         ...mapState(['competitions', 'players', 'user']),
+        ...mapGetters(['playerCuts']),
 
         competition () {
             return this.competitions[this.$route.params.id] || {}
@@ -161,15 +166,14 @@ export default {
     methods: {
         async recordCompetition () {
             await this.results.forEach((result, index) => {
-                this.$store.dispatch(PAY_PLAYER, {
+                this.$store.dispatch(ENTER_PLAYER, {
                     id: result.id,
-                    amount: (entryFee * -1) + (this.prizes[index] || 0)
+                    entryFee,
+                    winnings: this.prizes[index] || 0
                 })
             })
 
             await this.$store.dispatch(RECORD_COMPETITION, this.competition.id)
-
-            // TODO: Add cuts to each result
         },
 
         recordResult () {
@@ -177,11 +181,16 @@ export default {
 
             this.validate()
                 .then(() => {
+                    const cuts = this.playerCuts(this.player)
+
                     this.$store.dispatch(RECORD_RESULT, {
                         playerId: this.player,
                         qualifying: this.qualifying,
                         score: this.score,
-                        date: this.competition.date
+                        date: this.competition.date,
+                        cuts,
+                        entryFee,
+                        winnings: 0
                     })
 
                     this.score = 0

@@ -1,6 +1,5 @@
 import getters from '@/getters'
 import state from '@/state'
-//import { firestore } from 'firebase'
 
 describe('getters.js', () => {
     beforeEach(() => {
@@ -86,19 +85,19 @@ describe('getters.js', () => {
 
     // Cannot test with current firebase version, need to upgrade
     // test('All results for a given competition in assending order', () => {
-        //const timestamp = firestore.Timestamp.fromDate(new Date('2020-01-01'))
+    // const timestamp = firestore.Timestamp.fromDate(new Date('2020-01-01'))
 
-        // let expected = [
-        //     state.results['#13'] = { id: '#13', playerId: '#3', qualifying: true, score: 36, date: timestamp },
-        //     state.results['#7'] = { id: '#7', playerId: '#4', qualifying: true, score: 30, date: timestamp },
-        //     state.results['#1'] = { id: '#1', playerId: '#1', qualifying: true, score: 25, date: timestamp },
-        //     state.results['#3'] = { id: '#3', playerId: '#2', qualifying: true, score: 25, date: timestamp },
-        //     state.results['#11'] = { id: '#11', playerId: '#4', qualifying: true, score: 24, date: timestamp }
-        // ]
-        //
-        // let actual = getters.competitionResults(state)(timestamp)
-        //
-        // expect(actual).toEqual(expected)
+    // let expected = [
+    //     state.results['#13'] = { id: '#13', playerId: '#3', qualifying: true, score: 36, date: timestamp },
+    //     state.results['#7'] = { id: '#7', playerId: '#4', qualifying: true, score: 30, date: timestamp },
+    //     state.results['#1'] = { id: '#1', playerId: '#1', qualifying: true, score: 25, date: timestamp },
+    //     state.results['#3'] = { id: '#3', playerId: '#2', qualifying: true, score: 25, date: timestamp },
+    //     state.results['#11'] = { id: '#11', playerId: '#4', qualifying: true, score: 24, date: timestamp }
+    // ]
+    //
+    // let actual = getters.competitionResults(state)(timestamp)
+    //
+    // expect(actual).toEqual(expected)
     // })
 
     test('Qualifying results', () => {
@@ -224,5 +223,68 @@ describe('getters.js', () => {
         let actual = getters.leaderboard(state, { playerResults, qualifyingResults, qualifyingScores, qualifyingTotalScore, topTenTotal, qualifyingAverage, qualifyingScoresToBeat })
 
         expect(actual).toEqual(expected)
+    })
+
+    test('Player entry fees', () => {
+        state.results = [
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 5 },
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 10 },
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 0 }
+        ]
+
+        let playerResults = getters.playerResults(state)
+        let qualifyingResults = getters.qualifyingResults(state, { playerResults })
+
+        let playerFees = getters.playerFees(state, { qualifyingResults })('#1')
+
+        expect(playerFees).toEqual(7.5)
+    })
+
+    test('Player winnings', () => {
+        state.results = [
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 5 },
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 20 },
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 0 }
+        ]
+
+        let playerResults = getters.playerResults(state)
+        let qualifyingResults = getters.qualifyingResults(state, { playerResults })
+
+        let playerWinnings = getters.playerWinnings(state, { qualifyingResults })('#1')
+
+        expect(playerWinnings).toEqual(25)
+    })
+
+    test('Player profit', () => {
+        state.results = [
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 5 },
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 20 },
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 0 }
+        ]
+
+        let playerResults = getters.playerResults(state)
+        let qualifyingResults = getters.qualifyingResults(state, { playerResults })
+        let playerFees = getters.playerFees(state, { qualifyingResults })
+        let playerWinnings = getters.playerWinnings(state, { qualifyingResults })
+
+        let playerProfit = getters.playerProfit(state, { playerFees, playerWinnings })('#1')
+
+        expect(playerProfit).toEqual(17.5)
+    })
+
+    test('Player cuts', () => {
+        state.results = [
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 5 },
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 20 },
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 0 }
+        ]
+
+        let playerResults = getters.playerResults(state)
+        let qualifyingResults = getters.qualifyingResults(state, { playerResults })
+        let playerWinnings = getters.playerWinnings(state, { qualifyingResults })
+
+        let playerCuts = getters.playerCuts(state, { playerWinnings })('#1')
+
+        expect(playerCuts).toEqual(1)
     })
 })

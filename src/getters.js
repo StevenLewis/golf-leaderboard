@@ -1,3 +1,5 @@
+const cutPrice = 12.5
+
 export default {
     user (state) {
         return state.user
@@ -69,11 +71,14 @@ export default {
     },
     competitionResults: (state) => (date) => {
         let results = Object.values(state.results).filter(result => result.date.isEqual(date)).sort((a, b) => {
-            if (a.score === b.score) {
+            let netA = a.score - a.cuts
+            let netB = b.score - b.cuts
+
+            if (netA === netB) {
                 return 0
             }
 
-            return (a.score < b.score) ? 1 : -1
+            return (netA < netB) ? 1 : -1
         })
 
         return results.map(result => {
@@ -82,5 +87,17 @@ export default {
                 player: state.players[result.playerId]
             }
         })
+    },
+    playerFees: (state, getters) => (playerId) => {
+        return getters.qualifyingResults(playerId).reduce((accumulator, result) => accumulator + result.entryFee, 0)
+    },
+    playerWinnings: (state, getters) => (playerId) => {
+        return getters.qualifyingResults(playerId).reduce((accumulator, result) => accumulator + result.winnings, 0)
+    },
+    playerProfit: (state, getters) => (playerId) => {
+        return getters.playerWinnings(playerId) - getters.playerFees(playerId)
+    },
+    playerCuts: (state, getters) => (playerId) => {
+        return Math.floor(getters.playerWinnings(playerId) / cutPrice) * 0.5
     }
 }
