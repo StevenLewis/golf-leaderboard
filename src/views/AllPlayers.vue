@@ -83,11 +83,8 @@ export default {
 
             this.validate()
                 .then(() => {
-                    this.$store.dispatch(CREATE_PLAYER, { name: this.name })
+                    this.$store.dispatch(CREATE_PLAYER, this.name)
                     this.name = ''
-                })
-                .catch(() => {
-                    // Good catch!
                 })
         },
 

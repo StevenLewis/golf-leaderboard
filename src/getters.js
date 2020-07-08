@@ -71,11 +71,14 @@ export default {
     },
     competitionResults: (state) => (date) => {
         let results = Object.values(state.results).filter(result => result.date.isEqual(date)).sort((a, b) => {
-            if (a.score === b.score) {
+            let netA = a.score - a.cuts
+            let netB = b.score - b.cuts
+
+            if (netA === netB) {
                 return 0
             }
 
-            return (a.score < b.score) ? 1 : -1
+            return (netA < netB) ? 1 : -1
         })
 
         return results.map(result => {
