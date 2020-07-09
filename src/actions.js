@@ -10,7 +10,11 @@ export default {
         })
         api.results.onSnapshot((snapshot) => {
             snapshot.docChanges().forEach((change) => {
-                commit('SET_RESULT', Object.assign({}, change.doc.data(), { id: change.doc.id }))
+                if (change.type === 'removed') {
+                    commit('REMOVE_RESULT', change.doc.id)
+                } else {
+                    commit('SET_RESULT', Object.assign({}, change.doc.data(), { id: change.doc.id }))
+                }
             })
         })
         api.competitions.onSnapshot((snapshot) => {
@@ -47,6 +51,9 @@ export default {
             entryFee,
             winnings
         })
+    },
+    [actions.REMOVE_RESULT] ({ getters }, id) {
+        api.results.doc(id).delete()
     },
     [actions.CREATE_COMPETITION] ({ getters }, date) {
         api.competitions.add({
