@@ -13,6 +13,9 @@ export default {
     'SET_RESULT' (state, result) {
         Vue.set(state.results, result.id, result)
     },
+    'REMOVE_RESULT' (state, id) {
+        Vue.delete(state.results, id)
+    },
     'SET_COMPETITION' (state, competition) {
         Vue.set(state.competitions, competition.id, competition)
     }

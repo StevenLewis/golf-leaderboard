@@ -94,6 +94,7 @@
                             <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Cuts</th>
                             <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Nett</th>
                             <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Winnings</th>
+                            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
                         </thead>
                         <tbody>
                             <tr v-for="(result, index) in results" :key="result.id" :class="background(index)">
@@ -105,6 +106,11 @@
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.cuts }}</td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.score - result.cuts }}</td>
                                 <td v-if="prizes" class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ prizes[index] | sterling }}</td>
+                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
+                                    <svg v-if="user.loggedIn && !competition.recorded_at" @click.prevent="removeResult(result.id)" viewBox="0 0 24 24" width="24" height="24" class="cursor-pointer">
+                                        <path class="heroicon-ui" d="M8 6V4c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2h5a1 1 0 0 1 0 2h-1v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8H3a1 1 0 1 1 0-2h5zM6 8v12h12V8H6zm8-2V4h-4v2h4zm-4 4a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1zm4 0a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1z"/>
+                                    </svg>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -115,7 +121,7 @@
 </template>
 
 <script>
-import { ENTER_PLAYER, RECORD_COMPETITION, RECORD_RESULT } from '../action-types'
+import { ENTER_PLAYER, RECORD_COMPETITION, RECORD_RESULT, REMOVE_RESULT } from '../action-types'
 import { mapState, mapGetters } from 'vuex'
 import Errors from '../classes/Errors'
 import { prizeMoney, entryFee } from '../config/money'
@@ -197,9 +203,12 @@ export default {
                     this.player = ''
                 })
                 .catch(() => {
-                    console.log('Catch')
                     // Good catch!
                 })
+        },
+
+        removeResult (id) {
+            this.$store.dispatch(REMOVE_RESULT, id)
         },
 
         validate () {
