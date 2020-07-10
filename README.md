@@ -44,11 +44,13 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [x] Drop 'average'
 - [x] Order leaderboard by totalScore
 - [x] totalScore should be topTenTotal
+- [ ] Select season dropdown or 'All Time'
 
 ### Single player
 - [x] Date formatting
 - [ ] Edit player name
 - [x] Display meta info, ie. Best score, Worst Score
+- [ ] Select season dropdown or 'All Time'
 
 ### All Players
 - [ ] Remove player
@@ -57,14 +59,14 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [x] Create competition
 - [x] Add result
 - [x] Validate only one result per player, per competition
-- [ ] Remove/Edit result
-- [ ] Show nett score column
+- [x] Remove result
+- [x] Show nett score column
 - [x] Show prize money column
 - [x] Show player count & prize money structure at top of page
 
 ### Season
-- [ ] Url structure - /2018-2019 or ?season=2018-2019
-- [ ] On created, query store results based on season
+- [ ] Create a season, uuid & custom name (2019-20) 
+- [ ] Season has a one to many relationship with competitions
 
 ### General
 - [x] Datepicker
@@ -82,8 +84,10 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### Cuts
 - [x] Nett score including cuts when result is entered
-- [ ] Running total of cuts for each player, based on calendar period
 - [x] Apply cuts to player based on profit
+- [ ] Running total of winnings for each player, can be reset, separate to profit/loss
+- [ ] Calculate cuts based on players runningTotal
+- [ ] Admin can 'Resest' runningTotal
 
 ### Future
  - [ ] Biggest differential
