@@ -327,11 +327,10 @@ describe('getters.js', () => {
                 '#4': { id: '#4', playerId: '#1', qualifying: true, score: 30, competitionId: '#4' }
             }
 
-            let playerResults = getters.playerResults(state)
             let competitions = getters.competitions(state)
             let seasonCompetitions = getters.seasonCompetitions(state, { competitions })
 
-            let actual = getters.playerSeasonResults(state, { seasonCompetitions, playerResults })('#1', '#1')
+            let actual = getters.playerResults(state, { seasonCompetitions })('#1', '#1')
 
             expect(actual.length).toEqual(3)
         })

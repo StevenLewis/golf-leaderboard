@@ -13,14 +13,24 @@ export default {
             return (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1
         })
     },
-    playerResults: (state) => (playerId) => {
-        return Object.values(state.results).filter(result => result.playerId === playerId).sort((a, b) => {
+    playerResults: (state, getters) => (playerId, seasonId = null) => {
+        let results = Object.values(state.results).filter(result => result.playerId === playerId).sort((a, b) => {
             if (a.date === b.date) {
                 return 0
             }
 
             return (a.date > b.date) ? 1 : -1
         })
+
+        if (seasonId) {
+            let competitions = getters.seasonCompetitions(seasonId)
+
+            results = results.filter(result => {
+                return competitions.some(competition => competition.id === result.competitionId)
+            })
+        }
+
+        return results
     },
     qualifyingResults: (state, getters) => (id) => {
         return getters.playerResults(id).filter(result => result.qualifying)
@@ -110,12 +120,5 @@ export default {
     },
     seasonCompetitions: (state, getters) => (seasonId) => {
         return getters.competitions.filter(competition => competition.seasonId === seasonId)
-    },
-    playerSeasonResults: (state, getters) => (seasonId, playerId) => {
-        let competitions = getters.seasonCompetitions(seasonId)
-
-        return getters.playerResults(playerId).filter(result => {
-            return competitions.some(competition => competition.id === result.competitionId)
-        })
     }
 }
