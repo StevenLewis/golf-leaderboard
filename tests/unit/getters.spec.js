@@ -83,23 +83,6 @@ describe('getters.js', () => {
         expect(actual).toEqual([])
     })
 
-    // Cannot test with current firebase version, need to upgrade
-    // test('All results for a given competition in assending order', () => {
-    // const timestamp = firestore.Timestamp.fromDate(new Date('2020-01-01'))
-
-    // let expected = [
-    //     state.results['#13'] = { id: '#13', playerId: '#3', qualifying: true, score: 36, date: timestamp },
-    //     state.results['#7'] = { id: '#7', playerId: '#4', qualifying: true, score: 30, date: timestamp },
-    //     state.results['#1'] = { id: '#1', playerId: '#1', qualifying: true, score: 25, date: timestamp },
-    //     state.results['#3'] = { id: '#3', playerId: '#2', qualifying: true, score: 25, date: timestamp },
-    //     state.results['#11'] = { id: '#11', playerId: '#4', qualifying: true, score: 24, date: timestamp }
-    // ]
-    //
-    // let actual = getters.competitionResults(state)(timestamp)
-    //
-    // expect(actual).toEqual(expected)
-    // })
-
     test('Qualifying results', () => {
         let playerResults = getters.playerResults(state)
         let actual = getters.qualifyingResults(state, { playerResults })('#1')
@@ -286,5 +269,20 @@ describe('getters.js', () => {
         let playerCuts = getters.playerCuts(state, { playerWinnings })('#1')
 
         expect(playerCuts).toEqual(1)
+    })
+
+    test.only('Season competitions', () => {
+        state.seasons = {
+            '#1': { id: '#1', name: 'Foobar' }
+        }
+        state.competitions = {
+            '#1': { id: '#1', date: new Date('2000-01-01'), seasonId: '#1' },
+            '#2': { id: '#2', date: new Date('2000-01-01'), seasonId: '#2' }
+        }
+
+        let competitions = getters.competitions(state)
+        let seasonCompetitions = getters.seasonCompetitions(state, { competitions })('#1')
+
+        expect(seasonCompetitions.length).toEqual(1)
     })
 })

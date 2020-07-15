@@ -99,5 +99,16 @@ export default {
     },
     playerCuts: (state, getters) => (playerId) => {
         return Math.floor(getters.playerWinnings(playerId) / cutPrice) * 0.5
+    },
+    seasons (state, getters) {
+        return Object.values(state.seasons).map(season => {
+            return {
+                ...season,
+                competitions: getters.seasonCompetitions(season.id)
+            }
+        })
+    },
+    seasonCompetitions: (state, getters) => (seasonId) => {
+        return getters.competitions.filter(competition => competition.seasonId === seasonId)
     }
 }
