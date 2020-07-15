@@ -148,7 +148,7 @@ export default {
 
         results () {
             if (this.competition.date) {
-                return this.$store.getters.competitionResults(this.competition.date) || []
+                return this.$store.getters.competitionResults(this.competition.id) || []
             }
 
             return []
@@ -194,6 +194,7 @@ export default {
                         qualifying: this.qualifying,
                         score: this.score,
                         date: this.competition.date,
+                        competitionId: this.competition.id,
                         cuts,
                         entryFee,
                         winnings: 0

@@ -23,7 +23,7 @@
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
                                     <router-link :to="{ name: 'competitions.show', params: { id: competition.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ competition.date | formatDate }}</router-link>
                                 </td>
-                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ playerCount(competition.date) }}</td>
+                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ playerCount(competition.id) }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -51,8 +51,8 @@ export default {
     },
 
     methods: {
-        playerCount (date) {
-            return this.$store.getters.competitionResults(date).length || 0
+        playerCount (id) {
+            return this.$store.getters.competitionResults(id).length || 0
         }
     }
 }
