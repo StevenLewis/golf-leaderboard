@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Leaderboard from './views/Leaderboard'
 import AllPlayers from './views/AllPlayers'
 import SinglePlayer from './views/SinglePlayer'
 import AllCompetitions from './views/AllCompetitions'
@@ -31,11 +30,6 @@ export default new Router({
             path: '/',
             name: 'home',
             component: Home
-        },
-        {
-            path: '/leaderboard',
-            name: 'leaderboard.show',
-            component: Leaderboard
         },
         {
             path: '/players',

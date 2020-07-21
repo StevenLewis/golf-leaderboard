@@ -2,6 +2,27 @@ import getters from '@/getters'
 import state from '@/state'
 
 describe('Seasons', () => {
+    test('Fetch all seasons in reverse chronological order', () => {
+        state.seasons = {
+            '#1': { id: '#1', name: '2020', createdAt: new Date('2017-01-01') },
+            '#4': { id: '#4', name: '2020', createdAt: new Date('2020-01-01') },
+            '#3': { id: '#3', name: '2020', createdAt: new Date('2019-01-01') },
+            '#2': { id: '#2', name: '2020', createdAt: new Date('2018-01-01') }
+        }
+
+        let competitions = getters.competitions(state)
+        let seasonCompetitions = getters.seasonCompetitions(state, { competitions })
+
+        const actual = getters.seasons(state, { seasonCompetitions })
+
+        expect(actual).toEqual([
+            { id: '#4', name: '2020', createdAt: new Date('2020-01-01'), competitions: [] },
+            { id: '#3', name: '2020', createdAt: new Date('2019-01-01'), competitions: [] },
+            { id: '#2', name: '2020', createdAt: new Date('2018-01-01'), competitions: [] },
+            { id: '#1', name: '2020', createdAt: new Date('2017-01-01'), competitions: [] }
+        ])
+    })
+
     test('Season competitions', () => {
         state.seasons = {
             '#1': { id: '#1', name: 'Foobar' }

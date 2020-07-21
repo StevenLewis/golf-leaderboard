@@ -116,6 +116,12 @@ export default {
                 ...season,
                 competitions: getters.seasonCompetitions(season.id)
             }
+        }).sort((a, b) => {
+            if (a.createdAt === b.createdAt) {
+                return 0
+            }
+
+            return (a.createdAt < b.createdAt) ? 1 : -1
         })
     },
     seasonCompetitions: (state, getters) => (seasonId) => {
