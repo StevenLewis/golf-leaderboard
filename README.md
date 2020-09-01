@@ -65,8 +65,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [x] Show player count & prize money structure at top of page
 
 ### Season
-- [ ] Create a season, uuid & custom name (2019-20) 
-- [ ] Season has a one to many relationship with competitions
+- [x] Create a season, uuid & custom name (2019-20) 
+- [x] Season has a one to many relationship with competitions
 
 ### General
 - [x] Datepicker
@@ -87,7 +87,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [x] Apply cuts to player based on profit
 - [ ] Running total of winnings for each player, can be reset, separate to profit/loss
 - [ ] Calculate cuts based on players runningTotal
-- [ ] Admin can 'Resest' runningTotal
+- [ ] Admin can 'Reset' runningTotal
 
 ### Future
  - [ ] Biggest differential
