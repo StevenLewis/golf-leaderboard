@@ -1,8 +1,8 @@
 <template>
-    <div id="competition">
+    <div v-if="season" id="competition">
         <header>
             <div class="mb-10 text-xs text-gray-500">
-                <router-link :to="{ name: 'competitions.index' }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none underline">Competitions</router-link>
+                <router-link :to="{ name: 'seasons.show', params: { id: season.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none underline">Back to season</router-link>
                 / <span>{{ competition.date | formatDate }}</span>
             </div>
         </header>
@@ -18,7 +18,7 @@
                     </h3>
                     <div>
                         <div class="flex mt-1 mb-2">
-                            <div class="flex-auto rounded-md shadow-sm">
+                            <div class="w-64 flex-auto rounded-md shadow-sm">
                                 <select v-model="player"
                                         class="block form-input w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                                         :class="{ 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-300' : errors.has('player') }"
@@ -139,16 +139,20 @@ export default {
     },
 
     computed: {
-        ...mapState(['competitions', 'players', 'user']),
-        ...mapGetters(['playerCuts']),
+        ...mapState(['competitions', 'players', 'user', 'seasons']),
+        ...mapGetters(['competitionResults', 'playerCuts']),
 
         competition () {
             return this.competitions[this.$route.params.id] || {}
         },
 
+        season () {
+            return this.seasons[this.competition.seasonId]
+        },
+
         results () {
             if (this.competition.date) {
-                return this.$store.getters.competitionResults(this.competition.id) || []
+                return this.competitionResults(this.competition.id) || []
             }
 
             return []
@@ -173,8 +177,8 @@ export default {
         async recordCompetition () {
             await this.results.forEach((result, index) => {
                 this.$store.dispatch(ENTER_PLAYER, {
-                    id: result.id,
-                    entryFee,
+                    player: result.player.id,
+                    result: result.id,
                     winnings: this.prizes[index] || 0
                 })
             })
@@ -191,10 +195,10 @@ export default {
 
                     this.$store.dispatch(RECORD_RESULT, {
                         playerId: this.player,
+                        competitionId: this.competition.id,
                         qualifying: this.qualifying,
                         score: this.score,
                         date: this.competition.date,
-                        competitionId: this.competition.id,
                         cuts,
                         entryFee,
                         winnings: 0

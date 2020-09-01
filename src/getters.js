@@ -107,8 +107,10 @@ export default {
     playerProfit: (state, getters) => (playerId) => {
         return getters.playerWinnings(playerId) - getters.playerFees(playerId)
     },
-    playerCuts: (state, getters) => (playerId) => {
-        return Math.floor(getters.playerWinnings(playerId) / cutPrice) * 0.5
+    playerCuts: (state) => (playerId) => {
+        const player = state.players[playerId]
+
+        return Math.floor(player.winnings / cutPrice) * 0.5
     },
     seasons (state, getters) {
         return Object.values(state.seasons).map(season => {
