@@ -5,5 +5,6 @@ export default {
     },
     players: {},
     results: {},
-    competitions: {}
+    competitions: {},
+    seasons: {}
 }

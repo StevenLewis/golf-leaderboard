@@ -15,10 +15,12 @@ let db = firebase.firestore()
 let players = db.collection('players')
 let results = db.collection('results')
 let competitions = db.collection('competitions')
+let seasons = db.collection('seasons')
 
 export default {
     db,
     players,
     results,
-    competitions
+    competitions,
+    seasons
 }

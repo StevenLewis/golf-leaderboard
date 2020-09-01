@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Leaderboard from './views/Leaderboard'
 import AllPlayers from './views/AllPlayers'
 import SinglePlayer from './views/SinglePlayer'
 import AllCompetitions from './views/AllCompetitions'
 import SingleCompetition from './views/SingleCompetition'
+import AllSeasons from './views/AllSeasons'
+import SingleSeason from './views/SingleSeason'
 import Login from './views/Login'
 import Register from './views/Register'
 import Home from './views/Home'
@@ -31,11 +32,6 @@ export default new Router({
             component: Home
         },
         {
-            path: '/leaderboard',
-            name: 'leaderboard.show',
-            component: Leaderboard
-        },
-        {
             path: '/players',
             name: 'players.index',
             component: AllPlayers
@@ -54,6 +50,16 @@ export default new Router({
             path: '/competitions/:id',
             name: 'competitions.show',
             component: SingleCompetition
+        },
+        {
+            path: '/seasons',
+            name: 'seasons.index',
+            component: AllSeasons
+        },
+        {
+            path: '/seasons/:id',
+            name: 'seasons.show',
+            component: SingleSeason
         }
     ]
 })

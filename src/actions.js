@@ -22,6 +22,11 @@ export default {
                 commit('SET_COMPETITION', Object.assign({}, change.doc.data(), { id: change.doc.id }))
             })
         })
+        api.seasons.onSnapshot((snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+                commit('SET_SEASON', Object.assign({}, change.doc.data(), { id: change.doc.id }))
+            })
+        })
     },
 
     [actions.FETCH_USER] ({ commit }, user) {

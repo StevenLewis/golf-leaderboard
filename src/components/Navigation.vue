@@ -3,16 +3,10 @@
         <div class="flex">
             <div class="hidden sm:-my-px sm:flex">
                 <router-link
-                    :to="{ name: 'leaderboard.show' }"
+                    :to="{ name: 'seasons.index' }"
                     class="mr-8 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 focus:outline-none transition duration-150 ease-in-out"
-                    :class="linkClasses('leaderboard.show')">
-                    Leaderboard
-                </router-link>
-                <router-link
-                    :to="{ name: 'competitions.index' }"
-                    class="mr-8 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 focus:outline-none transition duration-150 ease-in-out"
-                    :class="linkClasses('competitions.index')">
-                    Competitions
+                    :class="linkClasses('seasons.index')">
+                    Seasons
                 </router-link>
                 <router-link
                     :to="{ name: 'players.index' }"
