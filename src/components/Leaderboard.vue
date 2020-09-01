@@ -17,7 +17,7 @@
                             <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">8th Best</th>
                         </thead>
                         <tbody>
-                            <tr v-for="(player, index) in leaderboard" :key="player.id" :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
+                            <tr v-for="(player, index) in seasonLeaderboard" :key="player.id" :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ index + 1 }}</td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
                                     <router-link :to="{ name: 'players.show', params: { id: player.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ player.name }}</router-link>
@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
     name: 'Leaderboard',
 
@@ -51,8 +53,10 @@ export default {
         }
     },
     computed: {
-        leaderboard () {
-            return this.$store.getters.leaderboard(this.season)
+        ...mapGetters(['leaderboard']),
+
+        seasonLeaderboard () {
+            return this.leaderboard(this.season)
         }
     }
 }

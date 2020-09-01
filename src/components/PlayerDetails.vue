@@ -98,18 +98,21 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'PlayerDetails',
 
+    props: {
+        player: {
+            type: Object,
+            required: true
+        }
+    },
+
     computed: {
         ...mapGetters({
             players: 'leaderboard'
         }),
-        ...mapGetters(['playerFees', 'playerWinnings', 'playerProfit', 'playerCuts']),
-
-        player () {
-            return this.players.find(player => player.id === this.$route.params.id)
-        },
+        ...mapGetters(['playerFees', 'playerWinnings', 'playerResults', 'playerProfit', 'playerCuts']),
 
         results () {
-            return this.$store.getters.playerResults(this.$route.params.id) || []
+            return this.playerResults(this.$route.params.id) || []
         },
 
         bestScore () {
