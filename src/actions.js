@@ -1,5 +1,7 @@
 import api from './firebase'
 import * as actions from './action-types'
+import firebase from 'firebase/app'
+import 'firebase/firestore'
 
 export default {
     [actions.INITIALISE] ({ commit }) {
@@ -46,9 +48,10 @@ export default {
             name
         })
     },
-    [actions.RECORD_RESULT] ({ getters }, { playerId, qualifying, score, date, cuts, entryFee, winnings = 0 }) {
+    [actions.RECORD_RESULT] ({ getters }, { playerId, competitionId, qualifying, score, date, cuts, entryFee, winnings = 0 }) {
         api.results.add({
             playerId,
+            competitionId,
             qualifying,
             score,
             date,
@@ -74,10 +77,8 @@ export default {
             recorded_at: date
         }, { merge: true })
     },
-    [actions.ENTER_PLAYER] ({ getters }, { id, entryFee, winnings }) {
-        api.results.doc(id).set({
-            entryFee,
-            winnings
-        }, { merge: true })
+    [actions.ENTER_PLAYER] ({ getters }, { player, result, winnings }) {
+        api.players.doc(player).update('winnings', firebase.firestore.FieldValue.increment(winnings))
+        api.results.doc(result).set({ winnings }, { merge: true })
     }
 }

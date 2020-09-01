@@ -2,7 +2,7 @@
     <div id="season">
         <header>
             <div class="mb-10 text-xs text-gray-500">
-                <router-link :to="{ name: 'seasons.index' }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none underline">Seasons</router-link>
+                <router-link :to="{ name: 'seasons.index' }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none underline">All Seasons</router-link>
                 / <span>{{ season.name }}</span>
             </div>
         </header>

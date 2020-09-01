@@ -67,17 +67,14 @@ describe('Money & Cuts', () => {
     })
 
     test('Player cuts', () => {
-        state.results = [
-            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 5 },
-            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 20 },
-            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 0 }
-        ]
+        state.players = {
+            '#1': {
+                id: '#1',
+                winnings: 25
+            }
+        }
 
-        let playerResults = getters.playerResults(state)
-        let qualifyingResults = getters.qualifyingResults(state, { playerResults })
-        let playerWinnings = getters.playerWinnings(state, { qualifyingResults })
-
-        let playerCuts = getters.playerCuts(state, { playerWinnings })('#1')
+        let playerCuts = getters.playerCuts(state)('#1')
 
         expect(playerCuts).toEqual(1)
     })
