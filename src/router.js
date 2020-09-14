@@ -4,6 +4,7 @@ import AllPlayers from './views/AllPlayers'
 import SinglePlayer from './views/SinglePlayer'
 import AllCompetitions from './views/AllCompetitions'
 import SingleCompetition from './views/SingleCompetition'
+import CreateCompetition from './views/CreateCompetition'
 import AllSeasons from './views/AllSeasons'
 import SingleSeason from './views/SingleSeason'
 import Login from './views/Login'
@@ -42,6 +43,16 @@ export default new Router({
             component: SinglePlayer
         },
         {
+            path: '/seasons',
+            name: 'seasons.index',
+            component: AllSeasons
+        },
+        {
+            path: '/seasons/:id',
+            name: 'seasons.show',
+            component: SingleSeason
+        },
+        {
             path: '/competitions',
             name: 'competitions.index',
             component: AllCompetitions
@@ -52,14 +63,9 @@ export default new Router({
             component: SingleCompetition
         },
         {
-            path: '/seasons',
-            name: 'seasons.index',
-            component: AllSeasons
-        },
-        {
-            path: '/seasons/:id',
-            name: 'seasons.show',
-            component: SingleSeason
+            path: '/seasons/:id/competitions/create',
+            name: 'competitions.create',
+            component: CreateCompetition
         }
     ]
 })

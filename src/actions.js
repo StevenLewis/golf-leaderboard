@@ -1,7 +1,7 @@
 import api from './firebase'
 import * as actions from './action-types'
-import firebase from 'firebase/app'
 import 'firebase/firestore'
+import { ENTER_PLAYERS, ENTER_PLAYER } from './action-types'
 
 export default {
     [actions.INITIALISE] ({ commit }) {
@@ -48,6 +48,44 @@ export default {
             name
         })
     },
+    [actions.ENTER_PLAYER] ({ getters }, { playerId, competitionId }) {
+        api.results.add({
+            playerId,
+            competitionId
+        })
+    },
+    [actions.ENTER_PLAYERS] ({ dispatch }, { players, competitionId }) {
+        if (players.length === 0) return
+
+        players.forEach(player => dispatch(ENTER_PLAYER, {
+            playerId: player.id,
+            competitionId
+        }))
+    },
+    [actions.CREATE_COMPETITION] ({ dispatch }, { date, seasonId, players = [] }) {
+        return new Promise(resolve => {
+            api.competitions.add({
+                date,
+                seasonId,
+                recorded_at: null
+            }).then(response => {
+                dispatch(ENTER_PLAYERS, {
+                    players,
+                    competitionId: response.id
+                })
+
+                resolve(response)
+            })
+        })
+    },
+    [actions.RECORD_COMPETITION] ({ getters }, id) {
+        let date = new Date()
+        date.setHours(0, 0, 0, 0)
+
+        api.competitions.doc(id).set({
+            recorded_at: date
+        }, { merge: true })
+    },
     [actions.RECORD_RESULT] ({ getters }, { playerId, competitionId, qualifying, score, date, cuts, entryFee, winnings = 0 }) {
         api.results.add({
             playerId,
@@ -62,23 +100,9 @@ export default {
     },
     [actions.REMOVE_RESULT] ({ getters }, id) {
         api.results.doc(id).delete()
-    },
-    [actions.CREATE_COMPETITION] ({ getters }, date) {
-        api.competitions.add({
-            date,
-            recorded_at: null
-        })
-    },
-    [actions.RECORD_COMPETITION] ({ getters }, id) {
-        let date = new Date()
-        date.setHours(0, 0, 0, 0)
-
-        api.competitions.doc(id).set({
-            recorded_at: date
-        }, { merge: true })
-    },
-    [actions.ENTER_PLAYER] ({ getters }, { player, result, winnings }) {
-        api.players.doc(player).update('winnings', firebase.firestore.FieldValue.increment(winnings))
-        api.results.doc(result).set({ winnings }, { merge: true })
     }
+    // [actions.ENTER_PLAYER] ({ getters }, { player, result, winnings }) {
+    //     api.players.doc(player).update('winnings', firebase.firestore.FieldValue.increment(winnings))
+    //     api.results.doc(result).set({ winnings }, { merge: true })
+    // }
 }
