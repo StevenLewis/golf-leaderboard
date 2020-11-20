@@ -18,7 +18,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="result in results" :key="result.id">
-                                <td class="px-6 py-4 bg-white whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.date | formatDate }}</td>
+                                <td v-if="result.competition" class="px-6 py-4 bg-white whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.competition.date | formatDate }}</td>
                                 <td class="px-6 py-4 bg-white whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.score }}</td>
                             </tr>
                         </tbody>

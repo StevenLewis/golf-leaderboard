@@ -65,17 +65,4 @@ describe('Money & Cuts', () => {
 
         expect(playerProfit).toEqual(17.5)
     })
-
-    test('Player cuts', () => {
-        state.players = {
-            '#1': {
-                id: '#1',
-                winnings: 25
-            }
-        }
-
-        let playerCuts = getters.playerCuts(state)('#1')
-
-        expect(playerCuts).toEqual(1)
-    })
 })

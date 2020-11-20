@@ -49,7 +49,7 @@
             <div class="flex-1 ml-10">
                 <p class="mb-4 text-sm font-medium">Field</p>
                 <ul class="bg-white shadow overflow-hidden sm:rounded-md">
-                    <player v-for="player in entered" :key="player.id" :player="player" />
+                    <player v-for="player in entered" :key="player.id" :player="player" @removed="removePlayer" />
                 </ul>
             </div>
         </div>
@@ -148,6 +148,10 @@ export default {
 
             this.results = []
             this.query = ''
+        },
+
+        removePlayer (id) {
+            this.entered = this.entered.filter(player => player.id !== id)
         },
 
         search () {

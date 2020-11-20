@@ -1,5 +1,3 @@
-const cutPrice = 12.5
-
 export default {
     user (state) {
         return state.user
@@ -14,7 +12,12 @@ export default {
         })
     },
     playerResults: (state, getters) => (playerId, seasonId = null) => {
-        let results = Object.values(state.results).filter(result => result.playerId === playerId).sort((a, b) => {
+        let results = Object.values(state.results).map(result => {
+            return {
+                ...result,
+                competition: state.competitions[result.competitionId]
+            }
+        }).filter(result => result.playerId === playerId).sort((a, b) => {
             if (a.date === b.date) {
                 return 0
             }
@@ -106,11 +109,6 @@ export default {
     },
     playerProfit: (state, getters) => (playerId) => {
         return getters.playerWinnings(playerId) - getters.playerFees(playerId)
-    },
-    playerCuts: (state) => (playerId) => {
-        const player = state.players[playerId]
-
-        return Math.floor(player.winnings / cutPrice) * 0.5
     },
     seasons (state, getters) {
         return Object.values(state.seasons).map(season => {
