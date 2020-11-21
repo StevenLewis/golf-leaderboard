@@ -12,19 +12,19 @@
                 <p>Recorded At: <span class="text-purple-700">{{ competition.recorded_at | formatDate }}</span></p>
             </aside>
             <template v-else>
-                <form @submit.prevent="recordResult" class="flex-none">
+                <form @submit.prevent="enterScore" class="flex-none">
                     <h3 class="mb-2 text-lg leading-6 font-medium text-gray-900">
                         Add new result
                     </h3>
                     <div>
                         <div class="flex mt-1 mb-2">
                             <div class="w-64 flex-auto rounded-md shadow-sm">
-                                <select v-model="player"
+                                <select v-model="result"
                                         class="block form-input w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                                         :class="{ 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-300' : errors.has('player') }"
                                 >
                                     <option value="" disabled selected>Select player</option>
-                                    <option v-for="player in players" :key="player.id" :value="player.id">{{ player.name }}</option>
+                                    <option v-for="result in missingResults" :key="result.id" :value="result.id">{{ result.player.name }}</option>
                                 </select>
                             </div>
                             <input type="text"
@@ -33,7 +33,7 @@
                                    class="w-16 form-input block ml-2 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                                    :class="{ 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-300' : errors.has('score') }"
                             />
-                            <button @click.prevent="recordResult" type="button" class="flex-none flex items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+                            <button @click.prevent="enterScore" type="button" class="flex-none flex items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
                                 Add Result
                             </button>
                         </div>
@@ -121,10 +121,10 @@
 </template>
 
 <script>
-import { ENTER_PLAYER, RECORD_COMPETITION, RECORD_RESULT, REMOVE_RESULT } from '../action-types'
+import { ENTER_SCORE, PAY_WINNINGS, RECORD_COMPETITION, REMOVE_RESULT } from '../action-types'
 import { mapState, mapGetters } from 'vuex'
 import Errors from '../classes/Errors'
-import { prizeMoney, entryFee } from '../config/money'
+import { prizeMoney } from '../config/money'
 
 export default {
     name: 'SingleCompetition',
@@ -132,15 +132,15 @@ export default {
     data () {
         return {
             score: 0,
-            player: '',
+            result: '',
             qualifying: true,
             errors: new Errors()
         }
     },
 
     computed: {
-        ...mapState(['competitions', 'players', 'user', 'seasons']),
-        ...mapGetters(['competitionResults', 'playerCuts']),
+        ...mapState(['competitions', 'user', 'seasons']),
+        ...mapGetters(['competitionResults']),
 
         competition () {
             return this.competitions[this.$route.params.id] || {}
@@ -158,6 +158,10 @@ export default {
             return []
         },
 
+        missingResults () {
+            return this.results.filter(result => result.score === 0)
+        },
+
         prizes () {
             return prizeMoney[this.results.length] || [0, 0, 0]
         }
@@ -165,7 +169,7 @@ export default {
 
     watch: {
         player: function () {
-            this.errors.clear('player')
+            this.errors.clear('result')
         },
 
         score: function () {
@@ -176,9 +180,9 @@ export default {
     methods: {
         async recordCompetition () {
             await this.results.forEach((result, index) => {
-                this.$store.dispatch(ENTER_PLAYER, {
-                    player: result.player.id,
-                    result: result.id,
+                this.$store.dispatch(PAY_WINNINGS, {
+                    playerId: result.player.id,
+                    resultId: result.id,
                     winnings: this.prizes[index] || 0
                 })
             })
@@ -186,26 +190,18 @@ export default {
             await this.$store.dispatch(RECORD_COMPETITION, this.competition.id)
         },
 
-        recordResult () {
+        enterScore () {
             this.errors.clear()
 
             this.validate()
                 .then(() => {
-                    const cuts = this.playerCuts(this.player)
-
-                    this.$store.dispatch(RECORD_RESULT, {
-                        playerId: this.player,
-                        competitionId: this.competition.id,
-                        qualifying: this.qualifying,
-                        score: this.score,
-                        date: this.competition.date,
-                        cuts,
-                        entryFee,
-                        winnings: 0
+                    this.$store.dispatch(ENTER_SCORE, {
+                        resultId: this.result,
+                        score: this.score
                     })
 
                     this.score = 0
-                    this.player = ''
+                    this.result = ''
                 })
                 .catch(() => {
                     // Good catch!
@@ -221,7 +217,7 @@ export default {
                 let playerErrors = []
                 let scoreErrors = []
 
-                if (this.player.length === 0) {
+                if (this.result.length === 0) {
                     playerErrors.push('We need the player')
                 }
 

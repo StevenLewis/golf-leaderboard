@@ -2,6 +2,8 @@ import api from './firebase'
 import * as actions from './action-types'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import { ENTER_PLAYERS, ENTER_PLAYER } from './action-types'
+import { entryFee } from './config/money'
 
 export default {
     [actions.INITIALISE] ({ commit }) {
@@ -48,37 +50,76 @@ export default {
             name
         })
     },
-    [actions.RECORD_RESULT] ({ getters }, { playerId, competitionId, qualifying, score, date, cuts, entryFee, winnings = 0 }) {
-        api.results.add({
-            playerId,
-            competitionId,
-            qualifying,
-            score,
-            date,
-            cuts,
-            entryFee,
-            winnings
+
+    [actions.CREATE_COMPETITION] ({ dispatch }, { date, seasonId, players = [] }) {
+        return new Promise(resolve => {
+            api.competitions.add({
+                date,
+                seasonId,
+                recorded_at: null
+            }).then(response => {
+                dispatch(ENTER_PLAYERS, {
+                    players,
+                    competitionId: response.id
+                })
+
+                resolve(response)
+            })
         })
     },
-    [actions.REMOVE_RESULT] ({ getters }, id) {
-        api.results.doc(id).delete()
-    },
-    [actions.CREATE_COMPETITION] ({ getters }, date) {
-        api.competitions.add({
-            date,
-            recorded_at: null
-        })
-    },
+
     [actions.RECORD_COMPETITION] ({ getters }, id) {
         let date = new Date()
         date.setHours(0, 0, 0, 0)
 
-        api.competitions.doc(id).set({
+        api.competitions.doc(id).update({
             recorded_at: date
-        }, { merge: true })
+        })
     },
-    [actions.ENTER_PLAYER] ({ getters }, { player, result, winnings }) {
-        api.players.doc(player).update('winnings', firebase.firestore.FieldValue.increment(winnings))
-        api.results.doc(result).set({ winnings }, { merge: true })
+
+    [actions.ENTER_PLAYERS] ({ state, dispatch, getters }, { players, competitionId }) {
+        if (players.length === 0) return
+
+        players.forEach(player => dispatch(ENTER_PLAYER, {
+            playerId: player.id,
+            competitionId,
+            qualifying: true,
+            cuts: getters.playerCuts(player.id),
+            entryFee
+        }))
+    },
+
+    [actions.ENTER_PLAYER] ({ getters }, { playerId, competitionId, qualifying, cuts, entryFee }) {
+        api.results.add({
+            playerId,
+            competitionId,
+            qualifying,
+            score: 0,
+            cuts,
+            entryFee,
+            winnings: 0
+        })
+    },
+
+    [actions.ENTER_SCORE] ({ getters }, { resultId, score }) {
+        api.results.doc(resultId).update({
+            score
+        })
+    },
+
+    [actions.PAY_WINNINGS] ({ getters }, { playerId, resultId, winnings }) {
+        const increment = firebase.firestore.FieldValue.increment(winnings)
+
+        api.results.doc(resultId).update({
+            winnings
+        })
+
+        api.players.doc(playerId).update({
+            winnings: increment
+        })
+    },
+
+    [actions.REMOVE_RESULT] ({ getters }, id) {
+        api.results.doc(id).delete()
     }
 }

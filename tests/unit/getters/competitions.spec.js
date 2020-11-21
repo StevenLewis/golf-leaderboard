@@ -7,9 +7,9 @@ describe('Competitions', () => {
             '#1': { id: '#1' }
         }
         state.results = [
-            { id: '#1', playerId: '#1', qualifying: true, score: 25, competitionId: '#1' },
-            { id: '#2', playerId: '#1', qualifying: true, score: 25, competitionId: '#1' },
-            { id: '#3', playerId: '#1', qualifying: true, score: 25, competitionId: '#2' }
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
+            { id: '#2', playerId: '#1', qualifying: true, score: 25, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
+            { id: '#3', playerId: '#1', qualifying: true, score: 25, competitionId: '#2', competition: { date: new Date('2000-01-01') } }
         ]
 
         let actual = getters.competitionResults(state)('#1')
@@ -20,10 +20,14 @@ describe('Competitions', () => {
 
 describe('Money & Cuts', () => {
     test('Player entry fees', () => {
+        state.competitions = {
+            '#1': { id: '#1' }
+        }
+
         state.results = [
-            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 5 },
-            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 10 },
-            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 0 }
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, entryFee: 2.5, winnings: 5, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, entryFee: 2.5, winnings: 10, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, entryFee: 2.5, winnings: 0, competitionId: '#1', competition: { date: new Date('2000-01-01') } }
         ]
 
         let playerResults = getters.playerResults(state)
@@ -35,10 +39,14 @@ describe('Money & Cuts', () => {
     })
 
     test('Player winnings', () => {
+        state.competitions = {
+            '#1': { id: '#1' }
+        }
+
         state.results = [
-            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 5 },
-            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 20 },
-            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 0 }
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, entryFee: 2.5, winnings: 5, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, entryFee: 2.5, winnings: 20, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, entryFee: 2.5, winnings: 0, competitionId: '#1', competition: { date: new Date('2000-01-01') } }
         ]
 
         let playerResults = getters.playerResults(state)
@@ -50,10 +58,14 @@ describe('Money & Cuts', () => {
     })
 
     test('Player profit', () => {
+        state.competitions = {
+            '#1': { id: '#1' }
+        }
+
         state.results = [
-            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 5 },
-            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 20 },
-            { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01'), entryFee: 2.5, winnings: 0 }
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, entryFee: 2.5, winnings: 5, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, entryFee: 2.5, winnings: 20, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, entryFee: 2.5, winnings: 0, competitionId: '#1', competition: { date: new Date('2000-01-01') } }
         ]
 
         let playerResults = getters.playerResults(state)

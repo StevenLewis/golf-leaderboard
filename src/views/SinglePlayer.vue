@@ -1,5 +1,5 @@
 <template>
-    <div id="player">
+    <div v-if="player" id="player">
         <header>
             <div class="mb-5 text-xs text-gray-500">
                 <router-link :to="{ name: 'players.index' }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none underline">Players</router-link>
@@ -18,7 +18,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="result in results" :key="result.id">
-                                <td class="px-6 py-4 bg-white whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.date | formatDate }}</td>
+                                <td v-if="result.competition" class="px-6 py-4 bg-white whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.competition.date | formatDate }}</td>
                                 <td class="px-6 py-4 bg-white whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.score }}</td>
                             </tr>
                         </tbody>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import PlayerDetails from '../components/PlayerDetails'
 
 export default {
@@ -41,10 +41,14 @@ export default {
     },
 
     computed: {
-        ...mapState(['players']),
+        ...mapGetters(['leaderboard']),
+
+        players () {
+            return this.leaderboard(null)
+        },
 
         player () {
-            return this.players[this.$route.params.id] || {}
+            return this.players.find(player => player.id === this.$route.params.id)
         },
 
         results () {

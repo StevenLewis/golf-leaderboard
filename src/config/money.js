@@ -38,7 +38,10 @@ const prizeMoney = {
 
 const entryFee = 2.5
 
+const cutPrice = 12.5
+
 export {
     prizeMoney,
-    entryFee
+    entryFee,
+    cutPrice
 }
