@@ -44,13 +44,13 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [x] Drop 'average'
 - [x] Order leaderboard by totalScore
 - [x] totalScore should be topTenTotal
-- [ ] Select season dropdown or 'All Time'
 
 ### Single player
 - [x] Date formatting
-- [ ] Edit player name
 - [x] Display meta info, ie. Best score, Worst Score
+- [ ] Edit player name
 - [ ] Select season dropdown or 'All Time'
+- [ ] Order results reverse chronilogically
 
 ### All Players
 - [ ] Remove player
@@ -67,6 +67,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ### Season
 - [x] Create a season, uuid & custom name (2019-20) 
 - [x] Season has a one to many relationship with competitions
+- [ ] Coloured leaderboard based on qualification
 
 ### General
 - [x] Datepicker
@@ -87,8 +88,13 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [x] Apply cuts to player based on profit
 - [x] Running total of winnings for each player, can be reset, separate to profit/loss
 - [x] Calculate cuts based on players runningTotal
-- [ ] Admin can 'Reset' runningTotal
+- [ ] Admin can 'Reset' winnings/runningTotal
 
 ### Future
- - [ ] Biggest differential
- - [ ] Best/Worst score for a season
+- [ ] Countback
+- [ ] Biggest differential
+- [ ] Best/Worst score for a season
+
+### Tech Debt
+- [ ] Test creating competition
+- [ ] Consistent import of actions/mutations
