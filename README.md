@@ -85,8 +85,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ### Cuts
 - [x] Nett score including cuts when result is entered
 - [x] Apply cuts to player based on profit
-- [ ] Running total of winnings for each player, can be reset, separate to profit/loss
-- [ ] Calculate cuts based on players runningTotal
+- [x] Running total of winnings for each player, can be reset, separate to profit/loss
+- [x] Calculate cuts based on players runningTotal
 - [ ] Admin can 'Reset' runningTotal
 
 ### Future
