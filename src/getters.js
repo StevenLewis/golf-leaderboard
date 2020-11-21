@@ -1,3 +1,5 @@
+import { cutPrice } from './config/money'
+
 export default {
     user (state) {
         return state.user
@@ -18,11 +20,11 @@ export default {
                 competition: state.competitions[result.competitionId]
             }
         }).filter(result => result.playerId === playerId).sort((a, b) => {
-            if (a.date === b.date) {
+            if (a.competition.date === b.competition.date) {
                 return 0
             }
 
-            return (a.date > b.date) ? 1 : -1
+            return (a.competition.date > b.competition.date) ? 1 : -1
         })
 
         if (seasonId) {
@@ -106,6 +108,11 @@ export default {
     },
     playerWinnings: (state, getters) => (playerId) => {
         return getters.qualifyingResults(playerId).reduce((accumulator, result) => accumulator + result.winnings, 0)
+    },
+    playerCuts: (state) => (playerId) => {
+        const player = state.players[playerId]
+
+        return Math.floor(player.winnings / cutPrice) * 0.5
     },
     playerProfit: (state, getters) => (playerId) => {
         return getters.playerWinnings(playerId) - getters.playerFees(playerId)

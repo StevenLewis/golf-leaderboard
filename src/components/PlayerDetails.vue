@@ -47,7 +47,7 @@
                         Scores To Beat
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        <template v-if="player.scoresToBeat">
+                        <template v-if="player.scoresToBeat.length > 2">
                             {{ player.scoresToBeat[0] }}, {{ player.scoresToBeat[1] }}, {{ player.scoresToBeat[2] }}
                         </template>
                         <template v-else>
@@ -137,7 +137,7 @@ export default {
         },
 
         cuts () {
-            return Math.floor(this.player.winnings / cutPrice) * 0.5
+            return this.playerCuts(this.$route.params.id)
         }
     }
 }

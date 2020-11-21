@@ -140,7 +140,7 @@ export default {
 
     computed: {
         ...mapState(['competitions', 'user', 'seasons']),
-        ...mapGetters(['competitionResults', 'playerCuts']),
+        ...mapGetters(['competitionResults']),
 
         competition () {
             return this.competitions[this.$route.params.id] || {}

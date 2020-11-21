@@ -21,18 +21,26 @@ describe('Players', () => {
     })
 
     test('All results for a given player in chronological order', () => {
-        state.results['#1'] = { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01') }
-        state.results['#2'] = { id: '#2', playerId: '#1', qualifying: true, score: 25, date: new Date('2002-12-20') }
-        state.results['#3'] = { id: '#3', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-02-01') }
-        state.results['#4'] = { id: '#4', playerId: '#1', qualifying: true, score: 30, date: new Date('2000-09-10') }
-        state.results['#5'] = { id: '#5', playerId: '#1', qualifying: true, score: 30, date: new Date('2003-02-02') }
+        state.competitions = {
+            '#1': { id: '#1', date: new Date('2000-01-01') },
+            '#2': { id: '#2', date: new Date('2002-12-20') },
+            '#3': { id: '#3', date: new Date('2000-02-01') },
+            '#4': { id: '#4', date: new Date('2000-09-10') },
+            '#5': { id: '#5', date: new Date('2003-02-02') }
+        }
+
+        state.results['#1'] = { id: '#1', playerId: '#1', qualifying: true, score: 25, competitionId: '#1' }
+        state.results['#2'] = { id: '#2', playerId: '#1', qualifying: true, score: 25, competitionId: '#2' }
+        state.results['#3'] = { id: '#3', playerId: '#1', qualifying: true, score: 25, competitionId: '#3' }
+        state.results['#4'] = { id: '#4', playerId: '#1', qualifying: true, score: 30, competitionId: '#4' }
+        state.results['#5'] = { id: '#5', playerId: '#1', qualifying: true, score: 30, competitionId: '#5' }
 
         let expected = [
-            state.results['#1'] = { id: '#1', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-01-01') },
-            state.results['#3'] = { id: '#3', playerId: '#1', qualifying: true, score: 25, date: new Date('2000-02-01') },
-            state.results['#4'] = { id: '#4', playerId: '#1', qualifying: true, score: 30, date: new Date('2000-09-10') },
-            state.results['#2'] = { id: '#2', playerId: '#1', qualifying: true, score: 25, date: new Date('2002-12-20') },
-            state.results['#5'] = { id: '#5', playerId: '#1', qualifying: true, score: 30, date: new Date('2003-02-02') }
+            state.results['#1'] = { id: '#1', playerId: '#1', qualifying: true, score: 25, competitionId: '#1', competition: { id: '#1', date: new Date('2000-01-01') } },
+            state.results['#3'] = { id: '#3', playerId: '#1', qualifying: true, score: 25, competitionId: '#3', competition: { id: '#3', date: new Date('2000-02-01') } },
+            state.results['#4'] = { id: '#4', playerId: '#1', qualifying: true, score: 30, competitionId: '#4', competition: { id: '#4', date: new Date('2000-09-10') } },
+            state.results['#2'] = { id: '#2', playerId: '#1', qualifying: true, score: 25, competitionId: '#2', competition: { id: '#2', date: new Date('2002-12-20') } },
+            state.results['#5'] = { id: '#5', playerId: '#1', qualifying: true, score: 30, competitionId: '#5', competition: { id: '#5', date: new Date('2003-02-02') } }
         ]
 
         let actual = getters.playerResults(state)('#1')
