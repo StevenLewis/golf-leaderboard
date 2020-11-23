@@ -5,12 +5,12 @@
                 <h2 class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
                     Sign in to your account
                 </h2>
-                <p class="mt-2 text-center text-sm leading-5 text-gray-600 max-w">
-                    Or
-                    <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
-                        sign up if you're not a member
-                    </a>
-                </p>
+                <!--<p class="mt-2 text-center text-sm leading-5 text-gray-600 max-w">-->
+                <!--Or-->
+                <!--<a href="#" class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">-->
+                <!--sign up if you're not a member-->
+                <!--</a>-->
+                <!--</p>-->
             </div>
 
             <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -82,7 +82,7 @@ export default {
                 .auth()
                 .signInWithEmailAndPassword(this.form.email, this.form.password)
                 .then(data => {
-                    this.$router.replace({ name: 'leaderboard.show' })
+                    this.$router.replace({ name: 'seasons.index' })
                 })
                 .catch(err => {
                     this.error = err.message
