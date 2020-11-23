@@ -7,9 +7,9 @@
                         <div class="relative pt-6 px-4 sm:px-6 lg:px-8">
                             <nav class="relative flex items-center justify-between sm:h-10 lg:justify-start">
                                 <div class="hidden md:block md:pr-4">
-                                    <router-link :to="{ name: 'competitions.index' }" class="mr-4 pr-4 py-2 font-medium text-gray-500 hover:text-gray-900 focus:outline-none focus:text-gray-900 transition duration-150 ease-in-out">Competitions</router-link>
+                                    <router-link :to="{ name: 'seasons.index' }" class="mr-4 pr-4 py-2 font-medium text-gray-500 hover:text-gray-900 focus:outline-none focus:text-gray-900 transition duration-150 ease-in-out">Seasons</router-link>
                                     <router-link :to="{ name: 'players.index' }" class="mr-4 px-4 py-2 font-medium text-gray-500 hover:text-gray-900 focus:outline-none focus:text-gray-900 transition duration-150 ease-in-out">Players</router-link>
-                                    <router-link :to="{ name: 'login' }" class="mr-4 px-4 py-2 font-medium text-indigo-600 hover:text-indigo-900 focus:outline-none focus:text-indigo-700 transition duration-150 ease-in-out">Log in</router-link>
+                                    <router-link v-if="!user.loggedIn" :to="{ name: 'login' }" class="mr-4 px-4 py-2 font-medium text-indigo-600 hover:text-indigo-900 focus:outline-none focus:text-indigo-700 transition duration-150 ease-in-out">Log in</router-link>
                                 </div>
                             </nav>
                         </div>
@@ -26,7 +26,7 @@
                                 </p>
                                 <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                                     <div class="rounded-md shadow">
-                                        <router-link :to="{}" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out md:py-4 md:text-lg md:px-10">
+                                        <router-link v-if="currentSeason" :to="{ name: 'seasons.show', params: { id: currentSeason.id }  }" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out md:py-4 md:text-lg md:px-10">
                                             Current Leaderboard
                                         </router-link>
                                     </div>
@@ -50,7 +50,11 @@ export default {
     name: 'Home',
 
     computed: {
-        ...mapGetters(['user'])
+        ...mapGetters(['user', 'seasons']),
+
+        currentSeason () {
+            return this.seasons[0]
+        }
     }
 }
 </script>

@@ -140,7 +140,7 @@ export default {
         },
 
         enterPlayer (index) {
-            if (index) {
+            if (typeof index === 'number') {
                 this.entered.push(this.results[index])
             } else {
                 this.entered.push(this.results[this.index])
@@ -148,6 +148,7 @@ export default {
 
             this.results = []
             this.query = ''
+            this.index = 0
         },
 
         removePlayer (id) {

@@ -94,7 +94,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { cutPrice } from '../config/money'
 
 export default {
     name: 'PlayerDetails',
