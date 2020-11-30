@@ -51,6 +51,12 @@ export default {
         })
     },
 
+    [actions.CREATE_SEASON] ({ getters }, name) {
+        api.seasons.add({
+            name
+        })
+    },
+
     [actions.CREATE_COMPETITION] ({ dispatch }, { date, seasonId, players = [] }) {
         return new Promise(resolve => {
             api.competitions.add({
