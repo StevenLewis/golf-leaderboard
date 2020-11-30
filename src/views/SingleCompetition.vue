@@ -194,7 +194,7 @@ export default {
             await this.checkForTies()
 
             if (this.hasTies) {
-                this.showTies()
+                this.$refs['ties'].show()
             } else {
                 await this.results.forEach((result, index) => {
                     this.$store.dispatch(PAY_WINNINGS, {
@@ -222,10 +222,6 @@ export default {
             } else {
                 return []
             }
-        },
-
-        showTies () {
-            this.$refs['ties'].show()
         },
 
         enterScore () {
