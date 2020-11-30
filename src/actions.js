@@ -97,7 +97,8 @@ export default {
             score: 0,
             cuts,
             entryFee,
-            winnings: 0
+            winnings: 0,
+            countback: 0
         })
     },
 
@@ -121,5 +122,11 @@ export default {
 
     [actions.REMOVE_RESULT] ({ getters }, id) {
         api.results.doc(id).delete()
+    },
+
+    [actions.ADD_COUNTBACK] ({ getters }, { resultId, countback }) {
+        return api.results.doc(resultId).update({
+            countback
+        })
     }
 }

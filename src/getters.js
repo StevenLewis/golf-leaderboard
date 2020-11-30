@@ -1,31 +1,19 @@
 import { cutPrice } from './config/money'
+import { byPlayer, byResult, byDate, byName, addNettScore, addCompetition, isQualifying } from './getter-helpers'
 
 export default {
     user (state) {
         return state.user
     },
     players (state) {
-        return Object.values(state.players).sort((a, b) => {
-            if (a.name.toLowerCase() === b.name.toLowerCase()) {
-                return 0
-            }
-
-            return (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1
-        })
+        return Object.values(state.players)
+            .sort(byName)
     },
     playerResults: (state, getters) => (playerId, seasonId = null) => {
-        let results = Object.values(state.results).map(result => {
-            return {
-                ...result,
-                competition: state.competitions[result.competitionId]
-            }
-        }).filter(result => result.playerId === playerId).sort((a, b) => {
-            if (a.competition.date === b.competition.date) {
-                return 0
-            }
-
-            return (a.competition.date > b.competition.date) ? 1 : -1
-        })
+        let results = Object.values(state.results)
+            .map(addCompetition(state))
+            .filter(byPlayer(playerId))
+            .sort(byDate)
 
         if (seasonId) {
             let competitions = getters.seasonCompetitions(seasonId)
@@ -38,7 +26,7 @@ export default {
         return results
     },
     qualifyingResults: (state, getters) => (playerId, seasonId = null) => {
-        return getters.playerResults(playerId, seasonId).filter(result => result.qualifying)
+        return getters.playerResults(playerId, seasonId).filter(isQualifying)
     },
     qualifyingScores: (state, getters) => (playerId, seasonId = null) => {
         return getters.qualifyingResults(playerId, seasonId).sort((a, b) => a.score - b.score).map(player => player.score)
@@ -85,16 +73,10 @@ export default {
         })
     },
     competitionResults: (state) => (competitionId) => {
-        let results = Object.values(state.results).filter(result => result.competitionId === competitionId).sort((a, b) => {
-            let netA = a.score - a.cuts
-            let netB = b.score - b.cuts
-
-            if (netA === netB) {
-                return 0
-            }
-
-            return (netA < netB) ? 1 : -1
-        })
+        let results = Object.values(state.results)
+            .map(addNettScore)
+            .filter(result => result.competitionId === competitionId)
+            .sort(byResult)
 
         return results.map(result => {
             return {

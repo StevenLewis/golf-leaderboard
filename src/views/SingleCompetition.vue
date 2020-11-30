@@ -104,7 +104,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.score }}</td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.cuts }}</td>
-                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.score - result.cuts }}</td>
+                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.nett }}</td>
                                 <td v-if="prizes" class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ prizes[index] | sterling }}</td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
                                     <svg v-if="user.loggedIn && !competition.recorded_at" @click.prevent="removeResult(result.id)" viewBox="0 0 24 24" width="24" height="24" class="cursor-pointer">
@@ -117,23 +117,31 @@
                 </div>
             </div>
         </div>
+
+        <ties v-if="hasTies" ref="ties" :ties="ties" @resolved="recordCompetition" />
     </div>
 </template>
 
 <script>
 import { ENTER_SCORE, PAY_WINNINGS, RECORD_COMPETITION, REMOVE_RESULT } from '../action-types'
 import { mapState, mapGetters } from 'vuex'
-import Errors from '../classes/Errors'
 import { prizeMoney } from '../config/money'
+import Errors from '../classes/Errors'
+import Ties from '../components/Ties'
 
 export default {
     name: 'SingleCompetition',
+
+    components: {
+        Ties
+    },
 
     data () {
         return {
             score: 0,
             result: '',
             qualifying: true,
+            ties: [],
             errors: new Errors()
         }
     },
@@ -164,6 +172,10 @@ export default {
 
         prizes () {
             return prizeMoney[this.results.length] || [0, 0, 0]
+        },
+
+        hasTies () {
+            return this.ties.some(tie => tie.length > 1)
         }
     },
 
@@ -179,15 +191,37 @@ export default {
 
     methods: {
         async recordCompetition () {
-            await this.results.forEach((result, index) => {
-                this.$store.dispatch(PAY_WINNINGS, {
-                    playerId: result.player.id,
-                    resultId: result.id,
-                    winnings: this.prizes[index] || 0
-                })
-            })
+            await this.checkForTies()
 
-            await this.$store.dispatch(RECORD_COMPETITION, this.competition.id)
+            if (this.hasTies) {
+                this.$refs['ties'].show()
+            } else {
+                await this.results.forEach((result, index) => {
+                    this.$store.dispatch(PAY_WINNINGS, {
+                        playerId: result.player.id,
+                        resultId: result.id,
+                        winnings: this.prizes[index] || 0
+                    })
+                })
+
+                await this.$store.dispatch(RECORD_COMPETITION, this.competition.id)
+            }
+        },
+
+        checkForTies () {
+            this.ties = []
+
+            this.results.slice(0, 4).forEach(result => {
+                this.ties.push(this.findTies(result.nett))
+            })
+        },
+
+        findTies (score) {
+            if (!this.ties.flat().some(result => result.nett === score)) {
+                return this.results.filter(result => result.nett === score && result.countback === 0)
+            } else {
+                return []
+            }
         },
 
         enterScore () {
