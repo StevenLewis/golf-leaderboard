@@ -63,6 +63,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [x] Show nett score column
 - [x] Show prize money column
 - [x] Show player count & prize money structure at top of page
+- [ ] Add score via text input in leaderboard
+- [ ] Enter brand new player after competition is created
 
 ### Season
 - [x] Create a season, uuid & custom name (2019-20) 
@@ -73,6 +75,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [x] Datepicker
 - [x] Styles & UI
 - [x] Firebase Hosting
+- [ ] Responsive
 
 ### Authentication
 - [x] Set up Users in Firestore
@@ -91,10 +94,10 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [ ] Admin can 'Reset' winnings/runningTotal
 
 ### Future
-- [ ] Countback
+- [x] Countback
 - [ ] Biggest differential
 - [ ] Best/Worst score for a season
 
 ### Tech Debt
-- [ ] Test creating competition
+- [ ] Test components
 - [ ] Consistent import of actions/mutations
