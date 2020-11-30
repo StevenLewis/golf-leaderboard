@@ -8,13 +8,79 @@ describe('Competitions', () => {
         }
         state.results = [
             { id: '#1', playerId: '#1', qualifying: true, score: 25, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
-            { id: '#2', playerId: '#1', qualifying: true, score: 25, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
-            { id: '#3', playerId: '#1', qualifying: true, score: 25, competitionId: '#2', competition: { date: new Date('2000-01-01') } }
+            { id: '#2', playerId: '#2', qualifying: true, score: 25, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
+            { id: '#3', playerId: '#3', qualifying: true, score: 25, competitionId: '#2', competition: { date: new Date('2000-01-01') } }
         ]
 
         let actual = getters.competitionResults(state)('#1')
 
         expect(actual.length).toEqual(2)
+    })
+
+    test('Competition results include nett score', () => {
+        state.competitions = {
+            '#1': { id: '#1' }
+        }
+        state.results = [
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, cuts: 1, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
+            { id: '#2', playerId: '#2', qualifying: true, score: 25, cuts: 2, competitionId: '#1', competition: { date: new Date('2000-01-01') } }
+        ]
+
+        let actual = getters.competitionResults(state)('#1')
+
+        expect(actual[0].nett).toEqual(24)
+        expect(actual[1].nett).toEqual(23)
+    })
+
+    test('Results are ordered by score', () => {
+        state.competitions = {
+            '#1': { id: '#1' }
+        }
+        state.results = [
+            { id: '#1', playerId: '#1', qualifying: true, score: 30, cuts: 0, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
+            { id: '#2', playerId: '#2', qualifying: true, score: 31, cuts: 0.5, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
+            { id: '#3', playerId: '#3', qualifying: true, score: 34, cuts: 1, competitionId: '#1', competition: { date: new Date('2000-01-01') } }
+        ]
+
+        let actual = getters.competitionResults(state)('#1')
+
+        expect(actual[0].id).toEqual('#3')
+        expect(actual[1].id).toEqual('#2')
+        expect(actual[2].id).toEqual('#1')
+    })
+
+    test('Results based on cuts', () => {
+        state.competitions = {
+            '#1': { id: '#1' }
+        }
+        state.results = [
+            { id: '#1', playerId: '#1', qualifying: true, score: 25, cuts: 0, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
+            { id: '#2', playerId: '#2', qualifying: true, score: 31, cuts: 1, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
+            { id: '#3', playerId: '#3', qualifying: true, score: 31, cuts: 2, competitionId: '#1', competition: { date: new Date('2000-01-01') } }
+        ]
+
+        let actual = getters.competitionResults(state)('#1')
+
+        expect(actual[0].id).toEqual('#2')
+        expect(actual[1].id).toEqual('#3')
+        expect(actual[2].id).toEqual('#1')
+    })
+
+    test('Results based on count back', () => {
+        state.competitions = {
+            '#1': { id: '#1' }
+        }
+        state.results = [
+            { id: '#1', playerId: '#1', qualifying: true, score: 32, cuts: 2, countback: 0, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
+            { id: '#2', playerId: '#2', qualifying: true, score: 31, cuts: 1, countback: 2, competitionId: '#1', competition: { date: new Date('2000-01-01') } },
+            { id: '#3', playerId: '#3', qualifying: true, score: 30, cuts: 0, countback: 1, competitionId: '#1', competition: { date: new Date('2000-01-01') } }
+        ]
+
+        let actual = getters.competitionResults(state)('#1')
+
+        expect(actual[0].id).toEqual('#1')
+        expect(actual[1].id).toEqual('#3')
+        expect(actual[2].id).toEqual('#2')
     })
 })
 
