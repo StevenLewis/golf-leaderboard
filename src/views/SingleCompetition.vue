@@ -7,48 +7,6 @@
             </div>
         </header>
 
-        <div v-if="user.loggedIn" class="mb-10 flex justify-between items-end">
-            <aside v-if="competition.recorded_at" class="flex-none">
-                <p>Recorded At: <span class="text-purple-700">{{ competition.recorded_at | formatDate }}</span></p>
-            </aside>
-            <template v-else>
-                <form @submit.prevent="enterScore" class="flex-none">
-                    <h3 class="mb-2 text-lg leading-6 font-medium text-gray-900">
-                        Add new result
-                    </h3>
-                    <div>
-                        <div class="flex mt-1 mb-2">
-                            <div class="w-64 flex-auto rounded-md shadow-sm">
-                                <select v-model="result"
-                                        class="block form-input w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                                        :class="{ 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-300' : errors.has('player') }"
-                                >
-                                    <option value="" disabled selected>Select player</option>
-                                    <option v-for="result in missingResults" :key="result.id" :value="result.id">{{ result.player.name }}</option>
-                                </select>
-                            </div>
-                            <input type="text"
-                                   v-model.number="score"
-                                   placeholder="Score..."
-                                   class="w-16 form-input block ml-2 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                                   :class="{ 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-300' : errors.has('score') }"
-                            />
-                            <button @click.prevent="enterScore" type="button" class="flex-none flex items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
-                                Add Result
-                            </button>
-                        </div>
-                        <p v-if="errors.has('player')" class="my-2 text-sm text-red-600">{{ errors.first('player') }}</p>
-                        <p v-if="errors.has('score')" class="my-2 text-sm text-red-600">{{ errors.first('score') }}</p>
-                    </div>
-                </form>
-                <form @submit.prevent="recordCompetition" class="flex-none">
-                    <button @click.prevent="recordCompetition" type="button" class="flex-none flex items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
-                        Record Competition
-                    </button>
-                </form>
-            </template>
-        </div>
-
         <header>
             <h1 class="mb-5 text-3xl font-bold leading-tight text-gray-900">{{ competition.date | formatDate }}</h1>
             <div class="mb-10 bg-white shadow overflow-hidden sm:rounded-lg">
@@ -82,6 +40,48 @@
                 </div>
             </div>
         </header>
+
+        <div v-if="user.loggedIn" class="mb-10 flex justify-between items-end">
+            <aside v-if="competition.recorded_at" class="flex-none">
+                <p>Recorded At: <span class="text-purple-700">{{ competition.recorded_at | formatDate }}</span></p>
+            </aside>
+            <template v-else>
+                <form @submit.prevent="enterScore" class="flex-none">
+                    <h3 class="mb-2 text-lg leading-6 font-medium text-gray-900">
+                        Add new result
+                    </h3>
+                    <div>
+                        <div class="flex mt-1">
+                            <div class="w-64 flex-auto rounded-md shadow-sm">
+                                <select v-model="result"
+                                        class="block form-input w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                                        :class="{ 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-300' : errors.has('player') }"
+                                >
+                                    <option value="" disabled selected>Select player</option>
+                                    <option v-for="result in missingResults" :key="result.id" :value="result.id">{{ result.player.name }}</option>
+                                </select>
+                            </div>
+                            <input type="text"
+                                   v-model.number="score"
+                                   placeholder="Score..."
+                                   class="w-16 form-input block ml-2 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                                   :class="{ 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-300' : errors.has('score') }"
+                            />
+                            <button @click.prevent="enterScore" type="button" class="flex-none flex items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+                                Add Result
+                            </button>
+                        </div>
+                        <p v-if="errors.has('player')" class="mt-2 text-sm text-red-600">{{ errors.first('player') }}</p>
+                        <p v-if="errors.has('score')" class="mt-2 text-sm text-red-600">{{ errors.first('score') }}</p>
+                    </div>
+                </form>
+                <form @submit.prevent="recordCompetition" class="flex-none">
+                    <button @click.prevent="recordCompetition" type="button" class="flex-none flex items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+                        Record Competition
+                    </button>
+                </form>
+            </template>
+        </div>
 
         <div class="flex flex-col mb-10">
             <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
