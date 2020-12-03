@@ -85,6 +85,9 @@ export default {
             }
         })
     },
+    findCompetition: (state, getters) => (competitionId) => {
+        return getters.competitions.find(competition => competition.id === competitionId)
+    },
     playerFees: (state, getters) => (playerId) => {
         return getters.qualifyingResults(playerId).reduce((accumulator, result) => accumulator + result.entryFee, 0)
     },

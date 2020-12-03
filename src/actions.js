@@ -6,10 +6,15 @@ import { ENTER_PLAYERS, ENTER_PLAYER } from './action-types'
 import { entryFee } from './config/money'
 
 export default {
-    [actions.INITIALISE] ({ commit }) {
+    [actions.INITIALISE] ({ state, commit }) {
         api.players.onSnapshot((snapshot) => {
             snapshot.docChanges().forEach((change) => {
                 commit('SET_PLAYER', Object.assign({}, change.doc.data(), { id: change.doc.id }))
+            })
+        })
+        api.competitions.onSnapshot((snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+                commit('SET_COMPETITION', Object.assign({}, change.doc.data(), { id: change.doc.id }))
             })
         })
         api.results.onSnapshot((snapshot) => {
@@ -19,11 +24,6 @@ export default {
                 } else {
                     commit('SET_RESULT', Object.assign({}, change.doc.data(), { id: change.doc.id }))
                 }
-            })
-        })
-        api.competitions.onSnapshot((snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-                commit('SET_COMPETITION', Object.assign({}, change.doc.data(), { id: change.doc.id }))
             })
         })
         api.seasons.onSnapshot((snapshot) => {

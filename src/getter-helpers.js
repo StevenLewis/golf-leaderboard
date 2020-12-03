@@ -27,7 +27,7 @@ export const byDate = (a, b) => {
         return 0
     }
 
-    return (a.competition.date > b.competition.date) ? 1 : -1
+    return (a.competition.date < b.competition.date) ? 1 : -1
 }
 
 export const byResult = (a, b) => {

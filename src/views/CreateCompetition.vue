@@ -7,18 +7,16 @@
             </div>
         </header>
 
-        <header class="flex justify-between">
+        <header class="md:flex justify-between">
             <h1 class="mb-5 text-3xl font-bold leading-tight text-gray-900">Create Competition</h1>
-            <aside>
-                <button v-if="!noPlayers" @click.prevent="createCompetition" class="flex-none flex items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
-                    Create Competition
-                </button>
-            </aside>
+            <button v-if="!noPlayers" @click.prevent="createCompetition" class="hidden md:flex flex-none justify-center items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+                Create Competition
+            </button>
         </header>
 
-        <div v-if="user.loggedIn" class="flex items-start mb-10">
-            <form @submit.prevent="submit" class="flex-1 max-w-md">
-                <div class="mb-10">
+        <div v-if="user.loggedIn" class="md:flex items-start mb-10">
+            <form @submit.prevent="submit" class="flex-1 max-w-md mb-10">
+                <div class="mb-4 md:mb-10">
                     <label for="name" class="text-sm font-medium">Date</label>
                     <div class="flex mt-1 mb-2">
                         <div class="w-full relative rounded-md shadow-sm">
@@ -27,7 +25,7 @@
                     </div>
                     <p v-if="errors.has('date')" class="my-2 text-sm text-red-600">{{ errors.first('date') }}</p>
                 </div>
-                <div>
+                <div class="relative">
                     <label for="name" class="text-sm font-medium">Add Player</label>
                     <div class="mt-1 mb-2">
                         <div class="w-full relative rounded-md shadow-sm mb-2">
@@ -40,18 +38,23 @@
                                 @keyup="search"
                             />
                         </div>
-                        <div v-if="results.length > 0" v-shortkey="{up: ['arrowup'], down: ['arrowdown'], enter: ['enter']}" @shortkey="shortcut" class="bg-white shadow rounded-md">
+                        <div v-if="results.length > 0" v-shortkey="{up: ['arrowup'], down: ['arrowdown'], enter: ['enter']}" @shortkey="shortcut" class="absolute w-full bg-white shadow rounded-md overflow-hidden">
                             <div v-for="(result, index) in results" :key="result.id" @click.prevent="enterPlayer(index)" class="block p-2 cursor-pointer" :class="{ 'bg-gray-200' : isActive(index) }">{{ result.name }}</div>
                         </div>
                     </div>
                 </div>
             </form>
-            <div class="flex-1 ml-10">
+            <div class="flex-1 mb-10 md:ml-10">
                 <p class="mb-4 text-sm font-medium">Field</p>
                 <ul class="bg-white shadow overflow-hidden sm:rounded-md">
                     <player v-for="player in entered" :key="player.id" :player="player" @removed="removePlayer" />
                 </ul>
             </div>
+            <footer class="md:hidden mb-10">
+                <button v-if="!noPlayers" @click.prevent="createCompetition" class="flex-none justify-center items-center w-full px-3 py-4 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+                    Create Competition
+                </button>
+            </footer>
         </div>
     </div>
 </template>
