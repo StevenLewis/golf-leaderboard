@@ -9,12 +9,12 @@
                             <th class="px-4 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Player</th>
                             <th class="px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-center md:text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"><strong>Top 10 Total</strong></th>
                             <th class="px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-center md:text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Total Games</th>
-                            <th class="hidden px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Total Qualifying Games</th>
-                            <th class="hidden px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Total Score</th>
-                            <th class="hidden px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Average</th>
+                            <th class="hidden md:table-cell px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Total Qualifying Games</th>
+                            <th class="hidden md:table-cell px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Total Score</th>
+                            <th class="hidden md:table-cell px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Average</th>
                             <th class="px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-center md:text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">10th Best</th>
-                            <th class="hidden px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">9th Best</th>
-                            <th class="hidden px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">8th Best</th>
+                            <th class="hidden md:table-cell px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">9th Best</th>
+                            <th class="hidden md:table-cell px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">8th Best</th>
                         </thead>
                         <tbody>
                             <tr v-for="(player, index) in seasonLeaderboard" :key="player.id" :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
@@ -24,12 +24,12 @@
                                 </td>
                                 <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm text-center md:text-left leading-5 font-medium text-gray-500"><strong>{{ player.topTenTotal }}</strong></td>
                                 <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm text-center md:text-left leading-5 font-medium text-gray-500">{{ player.totalGames }}</td>
-                                <td class="hidden px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ player.totalQualifyingGames }}</td>
-                                <td class="hidden px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ player.totalQualifyingScore }}</td>
-                                <td class="hidden px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ player.qualifyingAverage }}</td>
+                                <td class="hidden md:table-cell px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ player.totalQualifyingGames }}</td>
+                                <td class="hidden md:table-cell px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ player.totalQualifyingScore }}</td>
+                                <td class="hidden md:table-cell px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ player.qualifyingAverage }}</td>
                                 <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm text-center md:text-left leading-5 font-medium text-gray-500">{{ player.scoresToBeat[0] }}</td>
-                                <td class="hidden px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ player.scoresToBeat[1] }}</td>
-                                <td class="hidden px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ player.scoresToBeat[2] }}</td>
+                                <td class="hidden md:table-cell px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ player.scoresToBeat[1] }}</td>
+                                <td class="hidden md:table-cell px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ player.scoresToBeat[2] }}</td>
                             </tr>
                         </tbody>
                     </table>
