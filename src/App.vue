@@ -6,13 +6,13 @@
         <template v-else>
             <div class="background min-h-screen bg-white">
                 <nav class="bg-white border-b border-gray-200">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-7xl mx-auto px-2 md:px-6 lg:px-8">
                         <navigation />
                     </div>
                 </nav>
-                <div class="py-10">
+                <div class="py-4 md:py-10">
                     <main>
-                        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
                             <router-view/>
                         </div>
                     </main>
@@ -32,12 +32,12 @@ export default {
         Navigation
     },
 
-    created () {
-        this.$store.dispatch(INITIALISE)
-    },
-
     computed: {
         ...mapGetters(['user'])
+    },
+
+    created () {
+        this.$store.dispatch(INITIALISE)
     }
 }
 </script>

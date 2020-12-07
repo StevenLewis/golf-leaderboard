@@ -1,5 +1,5 @@
 <template>
-    <div v-if="player" class="mb-10 bg-white shadow overflow-hidden sm:rounded-lg">
+    <div v-if="player" class="mb-10 bg-white shadow overflow-hidden rounded-lg">
         <div class="px-4 py-5 sm:px-6">
             <dl class="grid grid-cols-1 col-gap-4 row-gap-8 sm:grid-cols-3">
                 <div class="sm:col-span-1">
