@@ -176,6 +176,37 @@ export default {
 
         hasTies () {
             return this.ties.some(tie => tie.length > 1)
+        },
+
+        firstTies () {
+            return this.results.filter(result => result.nett === this.results[0].nett && result.countback === 0)
+        },
+
+        secondTies () {
+            return this.results.filter(result => {
+                return result.nett === this.results[1].nett &&
+                result.countback === 0 &&
+                  !this.firstTies.includes(result)
+            })
+        },
+
+        thirdTies () {
+            return this.results.filter(result => {
+                return result.nett === this.results[2].nett &&
+              result.countback === 0 &&
+              !this.firstTies.includes(result) &&
+              !this.secondTies.includes(result)
+            })
+        },
+
+        fourthTies () {
+            return this.results.filter(result => {
+                return result.nett === this.results[3].nett &&
+              result.countback === 0 &&
+              !this.firstTies.includes(result) &&
+              !this.secondTies.includes(result) &&
+              !this.thirdTies.includes(result)
+            })
         }
     },
 
