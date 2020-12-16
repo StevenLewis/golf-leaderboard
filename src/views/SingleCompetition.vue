@@ -141,6 +141,7 @@ export default {
             score: 0,
             result: '',
             qualifying: true,
+            ties: [],
             errors: new Errors()
         }
     },
@@ -204,17 +205,11 @@ export default {
             })
         },
 
-        ties () {
-            return [
-                this.firstTies,
-                this.secondTies,
-                this.thirdTies,
-                this.fourthTies
-            ]
-        },
-
         hasTies () {
-            return this.ties.some(tie => tie.length > 1)
+            return this.firstTies.length > 1 ||
+            this.secondTies.length > 1 ||
+            this.thirdTies.length > 1 ||
+            this.fourthTies.length > 1
         }
     },
 
@@ -230,7 +225,10 @@ export default {
 
     methods: {
         async recordCompetition () {
+            this.ties = []
+
             if (this.hasTies) {
+                this.ties.push(this.firstTies, this.secondTies, this.thirdTies, this.fourthTies)
                 this.$refs['ties'].show()
             } else {
                 await this.results.forEach((result, index) => {
