@@ -141,7 +141,6 @@ export default {
             score: 0,
             result: '',
             qualifying: true,
-            ties: [],
             errors: new Errors()
         }
     },
@@ -174,10 +173,6 @@ export default {
             return prizeMoney[this.results.length] || [0, 0, 0]
         },
 
-        hasTies () {
-            return this.ties.some(tie => tie.length > 1)
-        },
-
         firstTies () {
             return this.results.filter(result => result.nett === this.results[0].nett && result.countback === 0)
         },
@@ -207,6 +202,19 @@ export default {
               !this.secondTies.includes(result) &&
               !this.thirdTies.includes(result)
             })
+        },
+
+        ties () {
+            return [
+                this.firstTies,
+                this.secondTies,
+                this.thirdTies,
+                this.fourthTies
+            ]
+        },
+
+        hasTies () {
+            return this.ties.some(tie => tie.length > 1)
         }
     },
 
@@ -222,8 +230,6 @@ export default {
 
     methods: {
         async recordCompetition () {
-            await this.checkForTies()
-
             if (this.hasTies) {
                 this.$refs['ties'].show()
             } else {
@@ -236,22 +242,6 @@ export default {
                 })
 
                 await this.$store.dispatch(RECORD_COMPETITION, this.competition.id)
-            }
-        },
-
-        checkForTies () {
-            this.ties = []
-
-            this.results.slice(0, 4).forEach(result => {
-                this.ties.push(this.findTies(result.nett))
-            })
-        },
-
-        findTies (score) {
-            if (!this.ties.flat().some(result => result.nett === score)) {
-                return this.results.filter(result => result.nett === score && result.countback === 0)
-            } else {
-                return []
             }
         },
 
