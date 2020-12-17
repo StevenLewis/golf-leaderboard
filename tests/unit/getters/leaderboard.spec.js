@@ -3,10 +3,11 @@ import state from '@/state'
 
 describe('Leaderboard', () => {
     beforeEach(() => {
-        state.players['#1'] = { id: '#1', name: 'Steve' }
-        state.players['#2'] = { id: '#2', name: 'Cris' }
-        state.players['#3'] = { id: '#3', name: 'sam' }
-        state.players['#4'] = { id: '#4', name: 'Matt' }
+        state.players['#1'] = { id: '#1', name: 'Steve', isGuest: false }
+        state.players['#2'] = { id: '#2', name: 'Cris', isGuest: false }
+        state.players['#3'] = { id: '#3', name: 'Sam', isGuest: false }
+        state.players['#4'] = { id: '#4', name: 'Matt', isGuest: false }
+        state.players['#5'] = { id: '#5', name: 'Guesty McGuest', isGuest: true }
 
         state.seasons['#1'] = { id: '#1', name: '2000-01' }
         state.seasons['#2'] = { id: '#2', name: '2001-02' }
@@ -202,6 +203,7 @@ describe('Leaderboard', () => {
         let expected = [
             {
                 id: '#1',
+                isGuest: false,
                 name: 'Steve',
                 totalGames: 14,
                 totalQualifyingGames: 13,
@@ -212,6 +214,7 @@ describe('Leaderboard', () => {
             },
             {
                 id: '#2',
+                isGuest: false,
                 name: 'Cris',
                 totalGames: 10,
                 totalQualifyingGames: 10,
@@ -221,8 +224,9 @@ describe('Leaderboard', () => {
                 scoresToBeat: [20, 20, 20]
             },
             {
-                id: '#3',
-                name: 'sam',
+                id: '#4',
+                isGuest: false,
+                name: 'Matt',
                 totalGames: 0,
                 totalQualifyingGames: 0,
                 totalQualifyingScore: 0,
@@ -231,8 +235,9 @@ describe('Leaderboard', () => {
                 scoresToBeat: []
             },
             {
-                id: '#4',
-                name: 'Matt',
+                id: '#3',
+                isGuest: false,
+                name: 'Sam',
                 totalGames: 0,
                 totalQualifyingGames: 0,
                 totalQualifyingScore: 0,
@@ -242,6 +247,8 @@ describe('Leaderboard', () => {
             }
         ]
 
+        let players = getters.players(state)
+        let members = getters.members(state, { players })
         let playerResults = getters.playerResults(state)
         let qualifyingResults = getters.qualifyingResults(state, { playerResults })
         let qualifyingScores = getters.qualifyingScores(state, { qualifyingResults })
@@ -250,7 +257,7 @@ describe('Leaderboard', () => {
         let qualifyingAverage = getters.qualifyingAverage(state, { qualifyingTotalScore, qualifyingScores })
         let qualifyingScoresToBeat = getters.qualifyingScoresToBeat(state, { qualifyingScores })
 
-        let actual = getters.leaderboard(state, { playerResults, qualifyingResults, qualifyingScores, qualifyingTotalScore, topTenTotal, qualifyingAverage, qualifyingScoresToBeat })()
+        let actual = getters.leaderboard(state, { members, playerResults, qualifyingResults, qualifyingScores, qualifyingTotalScore, topTenTotal, qualifyingAverage, qualifyingScoresToBeat })()
 
         expect(actual).toEqual(expected)
     })
@@ -259,6 +266,7 @@ describe('Leaderboard', () => {
         let expected = [
             {
                 id: '#1',
+                isGuest: false,
                 name: 'Steve',
                 totalGames: 10,
                 totalQualifyingGames: 10,
@@ -269,6 +277,7 @@ describe('Leaderboard', () => {
             },
             {
                 id: '#2',
+                isGuest: false,
                 name: 'Cris',
                 totalGames: 10,
                 totalQualifyingGames: 10,
@@ -278,8 +287,9 @@ describe('Leaderboard', () => {
                 scoresToBeat: [20, 20, 20]
             },
             {
-                id: '#3',
-                name: 'sam',
+                id: '#4',
+                isGuest: false,
+                name: 'Matt',
                 totalGames: 0,
                 totalQualifyingGames: 0,
                 totalQualifyingScore: 0,
@@ -288,8 +298,9 @@ describe('Leaderboard', () => {
                 scoresToBeat: []
             },
             {
-                id: '#4',
-                name: 'Matt',
+                id: '#3',
+                isGuest: false,
+                name: 'Sam',
                 totalGames: 0,
                 totalQualifyingGames: 0,
                 totalQualifyingScore: 0,
@@ -299,6 +310,8 @@ describe('Leaderboard', () => {
             }
         ]
 
+        let players = getters.players(state)
+        let members = getters.members(state, { players })
         let competitions = getters.competitions(state)
         let seasonCompetitions = getters.seasonCompetitions(state, { competitions })
         let playerResults = getters.playerResults(state, { seasonCompetitions })
@@ -309,7 +322,7 @@ describe('Leaderboard', () => {
         let qualifyingAverage = getters.qualifyingAverage(state, { qualifyingTotalScore, qualifyingScores })
         let qualifyingScoresToBeat = getters.qualifyingScoresToBeat(state, { qualifyingScores })
 
-        let actual = getters.leaderboard(state, { playerResults, qualifyingResults, qualifyingScores, qualifyingTotalScore, topTenTotal, qualifyingAverage, qualifyingScoresToBeat })('#1')
+        let actual = getters.leaderboard(state, { members, playerResults, qualifyingResults, qualifyingScores, qualifyingTotalScore, topTenTotal, qualifyingAverage, qualifyingScoresToBeat })('#1')
 
         expect(actual).toEqual(expected)
     })

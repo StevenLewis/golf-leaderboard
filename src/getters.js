@@ -1,5 +1,5 @@
 import { cutPrice } from './config/money'
-import { byPlayer, byResult, byDate, byName, addNettScore, addCompetition, isQualifying } from './getter-helpers'
+import { byPlayer, byResult, byDate, byName, addNettScore, addCompetition, isQualifying, withoutGuests } from './getter-helpers'
 
 export default {
     user (state) {
@@ -8,6 +8,9 @@ export default {
     players (state) {
         return Object.values(state.players)
             .sort(byName)
+    },
+    members (state, getters) {
+        return getters.players.filter(withoutGuests)
     },
     playerResults: (state, getters) => (playerId, seasonId = null) => {
         let results = Object.values(state.results)
@@ -48,7 +51,7 @@ export default {
         return getters.qualifyingScores(playerId, seasonId).slice(-10, -7)
     },
     leaderboard: (state, getters) => (seasonId = null) => {
-        let leaderboard = Object.values(state.players)
+        let leaderboard = Object.values(getters.members)
 
         leaderboard.forEach((player) => {
             player.totalGames = getters.playerResults(player.id, seasonId).length

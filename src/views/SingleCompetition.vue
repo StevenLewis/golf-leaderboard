@@ -101,6 +101,7 @@
                                 <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ index + 1 }}</td>
                                 <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
                                     <router-link :to="{ name: 'players.show', params: { id: result.player.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ result.player.name }}</router-link>
+                                    <template v-if="result.player.isGuest"> (G)</template>
                                 </td>
                                 <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.score }}</td>
                                 <td class="hidden md:table-cell px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.cuts }}</td>

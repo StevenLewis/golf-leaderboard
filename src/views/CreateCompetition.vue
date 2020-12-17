@@ -39,7 +39,10 @@
                             />
                         </div>
                         <div v-if="results.length > 0" v-shortkey="{up: ['arrowup'], down: ['arrowdown'], enter: ['enter']}" @shortkey="shortcut" class="absolute w-full bg-white shadow rounded-md overflow-hidden">
-                            <div v-for="(result, index) in results" :key="result.id" @click.prevent="enterPlayer(index)" class="block p-2 cursor-pointer" :class="{ 'bg-gray-200' : isActive(index) }">{{ result.name }}</div>
+                            <div v-for="(result, index) in results" :key="result.id" @click.prevent="enterPlayer(index)" class="block p-2 cursor-pointer" :class="{ 'bg-gray-200' : isActive(index) }">
+                                {{ result.name }}
+                                <template v-if="result.isGuest">(G)</template>
+                            </div>
                         </div>
                     </div>
                 </div>

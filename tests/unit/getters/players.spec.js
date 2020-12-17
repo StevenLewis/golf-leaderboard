@@ -20,6 +20,15 @@ describe('Players', () => {
         expect(actual).toEqual(expected)
     })
 
+    test('All players without guest', () => {
+        state.players['#5'] = { id: '#5', name: 'Guesty', isGuest: true }
+
+        let players = getters.players(state)
+        let members = getters.members(state, { players })
+
+        expect(members.length).toBe(4)
+    })
+
     test('All results for a given player in chronological order', () => {
         state.competitions = {
             '#1': { id: '#1', date: new Date('2000-01-01') },

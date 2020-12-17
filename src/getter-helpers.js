@@ -42,3 +42,5 @@ export const byResult = (a, b) => {
 export const byPlayer = (id) => result => result.playerId === id
 
 export const isQualifying = result => result.qualifying
+
+export const withoutGuests = player => !player.isGuest
