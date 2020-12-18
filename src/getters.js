@@ -119,7 +119,7 @@ export default {
             return (a.createdAt < b.createdAt) ? 1 : -1
         })
     },
-    seasonCompetitions: (state, getters) => (seasonId) => {
-        return getters.competitions.filter(competition => competition.seasonId === seasonId)
+    seasonCompetitions: (state) => (seasonId) => {
+        return state.competitions.filterBySeason(seasonId).all()
     }
 }

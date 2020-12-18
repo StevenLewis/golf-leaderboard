@@ -1,3 +1,5 @@
+import CompetitionCollection from './models/CompetitionCollection'
+
 export default {
     user: {
         loggedIn: false,
@@ -5,6 +7,6 @@ export default {
     },
     players: {},
     results: {},
-    competitions: {},
+    competitions: new CompetitionCollection(),
     seasons: {}
 }

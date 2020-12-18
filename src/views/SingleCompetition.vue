@@ -129,6 +129,7 @@ import { mapState, mapGetters } from 'vuex'
 import { prizeMoney } from '../config/money'
 import Errors from '../classes/Errors'
 import Ties from '../components/Ties'
+import Competition from '../models/Competition'
 
 export default {
     name: 'SingleCompetition',
@@ -143,17 +144,14 @@ export default {
             result: '',
             qualifying: true,
             ties: [],
-            errors: new Errors()
+            errors: new Errors(),
+            competition: null
         }
     },
 
     computed: {
         ...mapState(['competitions', 'user', 'seasons']),
         ...mapGetters(['competitionResults']),
-
-        competition () {
-            return this.competitions[this.$route.params.id] || {}
-        },
 
         season () {
             return this.seasons[this.competition.seasonId]
@@ -215,6 +213,10 @@ export default {
     },
 
     watch: {
+        competitions: function () {
+            this.competition = new Competition(this.competitions[this.$route.params.id])
+        },
+
         player: function () {
             this.errors.clear('result')
         },

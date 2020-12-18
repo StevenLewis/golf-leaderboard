@@ -17,7 +17,7 @@ export default {
         Vue.delete(state.results, id)
     },
     'SET_COMPETITION' (state, competition) {
-        Vue.set(state.competitions, competition.id, competition)
+        state.competitions.add(competition)
     },
     'SET_SEASON' (state, season) {
         Vue.set(state.seasons, season.id, season)

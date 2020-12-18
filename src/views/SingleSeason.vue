@@ -13,12 +13,15 @@
                 New Competition
             </router-link>
         </header>
+
         <Leaderboard :season="season.id" />
+
         <footer v-if="user.loggedIn" class="md:hidden mb-10">
             <router-link :to="{ name: 'competitions.create', params: { id: season.id } }" class="flex-none flex items-center justify-center px-3 py-4 ml-2 border border-transparent text-sm text-center leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
                 New Competition
             </router-link>
         </footer>
+
         <div class="mb-10 flex flex-col">
             <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                 <div class="align-middle inline-block min-w-full shadow overflow-hidden rounded-lg border-b border-gray-200">
@@ -43,7 +46,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import Leaderboard from '../components/Leaderboard'
 
 export default {
@@ -55,13 +58,14 @@ export default {
 
     computed: {
         ...mapState(['seasons', 'user']),
+        ...mapGetters(['seasonCompetitions']),
 
         season () {
             return this.seasons[this.$route.params.id] || {}
         },
 
         competitions () {
-            return this.$store.getters.seasonCompetitions(this.season.id)
+            return this.seasonCompetitions(this.season.id)
         }
     },
 
