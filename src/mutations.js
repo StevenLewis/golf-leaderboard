@@ -20,6 +20,6 @@ export default {
         state.competitions.add(competition)
     },
     'SET_SEASON' (state, season) {
-        Vue.set(state.seasons, season.id, season)
+        state.seasons.add(season)
     }
 }

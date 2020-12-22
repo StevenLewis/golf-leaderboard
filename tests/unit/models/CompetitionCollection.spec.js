@@ -9,8 +9,8 @@ describe('CompetitionCollection', () => {
         collection.add({ id: '3', seasonId: '1' })
         collection.add({ id: '4', seasonId: '2' })
 
-        let actual = collection.filterBySeason('1')
+        let actual = collection.filterBySeason('1').all()
 
-        expect(actual.items).toHaveLength(3)
+        expect(actual).toHaveLength(3)
     })
 })

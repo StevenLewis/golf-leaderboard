@@ -1,4 +1,5 @@
 import CompetitionCollection from './models/CompetitionCollection'
+import SeasonCollection from './models/SeasonCollection'
 
 export default {
     user: {
@@ -8,5 +9,5 @@ export default {
     players: {},
     results: {},
     competitions: new CompetitionCollection(),
-    seasons: {}
+    seasons: new SeasonCollection()
 }

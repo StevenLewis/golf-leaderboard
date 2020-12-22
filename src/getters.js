@@ -106,18 +106,7 @@ export default {
         return getters.playerWinnings(playerId) - getters.playerFees(playerId)
     },
     seasons (state, getters) {
-        return Object.values(state.seasons).map(season => {
-            return {
-                ...season,
-                competitions: getters.seasonCompetitions(season.id)
-            }
-        }).sort((a, b) => {
-            if (a.createdAt === b.createdAt) {
-                return 0
-            }
-
-            return (a.createdAt < b.createdAt) ? 1 : -1
-        })
+        return state.seasons.withCompetitions(state).all()
     },
     seasonCompetitions: (state) => (seasonId) => {
         return state.competitions.filterBySeason(seasonId).all()
