@@ -1,17 +1,17 @@
 import { cutPrice } from './config/money'
-import { byPlayer, byResult, byDate, byName, addNettScore, addCompetition, isQualifying, withoutGuests } from './getter-helpers'
+import { byPlayer, byResult, byDate, addNettScore, addCompetition, isQualifying } from './getter-helpers'
 
 export default {
     user (state) {
         return state.user
     },
     players (state) {
-        return Object.values(state.players)
-            .sort(byName)
+        return state.players.withResults(state).all()
     },
     members (state, getters) {
-        return getters.players.filter(withoutGuests)
+        return state.players.where('isGuest', '===', false)
     },
+    // LEGACY
     playerResults: (state, getters) => (playerId, seasonId = null) => {
         let results = Object.values(state.results)
             .map(addCompetition(state))
@@ -33,38 +33,6 @@ export default {
     },
     qualifyingScores: (state, getters) => (playerId, seasonId = null) => {
         return getters.qualifyingResults(playerId, seasonId).sort((a, b) => a.score - b.score).map(player => player.score)
-    },
-    qualifyingTotalScore: (state, getters) => (playerId, seasonId = null) => {
-        return getters.qualifyingScores(playerId, seasonId).reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-    },
-    qualifyingAverage: (state, getters) => (playerId, seasonId = null) => {
-        if (getters.qualifyingTotalScore(playerId, seasonId) && getters.qualifyingScores(playerId, seasonId).length) {
-            return parseFloat((getters.qualifyingTotalScore(playerId, seasonId) / getters.qualifyingScores(playerId, seasonId).length).toFixed(2))
-        }
-
-        return 0
-    },
-    topTenTotal: (state, getters) => (playerId, seasonId = null) => {
-        return getters.qualifyingScores(playerId, seasonId).slice(-10).reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-    },
-    qualifyingScoresToBeat: (state, getters) => (playerId, seasonId = null) => {
-        return getters.qualifyingScores(playerId, seasonId).slice(-10, -7)
-    },
-    leaderboard: (state, getters) => (seasonId = null) => {
-        let leaderboard = Object.values(getters.members)
-
-        leaderboard.forEach((player) => {
-            player.totalGames = getters.playerResults(player.id, seasonId).length
-            player.totalQualifyingGames = getters.qualifyingResults(player.id, seasonId).length
-            player.totalQualifyingScore = getters.qualifyingTotalScore(player.id, seasonId)
-            player.qualifyingAverage = getters.qualifyingAverage(player.id, seasonId)
-            player.topTenTotal = getters.topTenTotal(player.id, seasonId)
-            player.scoresToBeat = getters.qualifyingScoresToBeat(player.id, seasonId)
-        })
-
-        leaderboard.sort((a, b) => b.topTenTotal - a.topTenTotal)
-
-        return leaderboard
     },
     competitions (state) {
         return Object.values(state.competitions).sort((a, b) => {
@@ -88,8 +56,8 @@ export default {
             }
         })
     },
-    findCompetition: (state, getters) => (competitionId) => {
-        return getters.competitions.find(competition => competition.id === competitionId)
+    findCompetition: (state) => (competitionId) => {
+        return state.competitions.find(competitionId)
     },
     playerFees: (state, getters) => (playerId) => {
         return getters.qualifyingResults(playerId).reduce((accumulator, result) => accumulator + result.entryFee, 0)
@@ -110,5 +78,8 @@ export default {
     },
     seasonCompetitions: (state) => (seasonId) => {
         return state.competitions.filterBySeason(seasonId).all()
+    },
+    findSeason: (state) => (seasonId) => {
+        return state.seasons.withCompetitions(state).find(seasonId)
     }
 }

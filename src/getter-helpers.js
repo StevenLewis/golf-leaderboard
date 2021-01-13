@@ -23,6 +23,8 @@ export const byName = (a, b) => {
 }
 
 export const byDate = (a, b) => {
+    if (!a.competition || !b.competition) return 0
+
     if (a.competition.date === b.competition.date) {
         return 0
     }

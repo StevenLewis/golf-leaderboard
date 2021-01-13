@@ -15,12 +15,7 @@ class SeasonCollection extends ModelCollection {
     }
 
     withCompetitions (state) {
-        let items = this.items.map(item => {
-            return {
-                ...item,
-                competitions: state.competitions.where('seasonId', '===', item.id).all()
-            }
-        })
+        let items = this.items.map(item => item.withCompetitions(state))
 
         return new this.constructor(items)
     }
@@ -30,6 +25,6 @@ class SeasonCollection extends ModelCollection {
     }
 }
 
-SeasonCollection.prototype.modal = Season
+SeasonCollection.prototype.model = Season
 
 export default SeasonCollection

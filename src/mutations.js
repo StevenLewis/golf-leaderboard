@@ -8,10 +8,10 @@ export default {
         state.user.data = data
     },
     'SET_PLAYER' (state, player) {
-        Vue.set(state.players, player.id, player)
+        state.players.add(player)
     },
     'SET_RESULT' (state, result) {
-        Vue.set(state.results, result.id, result)
+        state.results.add(result)
     },
     'REMOVE_RESULT' (state, id) {
         Vue.delete(state.results, id)
