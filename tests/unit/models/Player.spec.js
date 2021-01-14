@@ -130,7 +130,7 @@ describe('Player', () => {
         expect(player.scoresToBeat).toEqual([29, 30, 31])
     })
 
-    test('It can filter the result by a given season', () => {
+    test('It can filter the results by a given season', () => {
         let player = new Player({ id: '1' })
         let results = [
             { id: '1', qualifying: true, score: 40, competition: { date: new Date('2020-01-01'), seasonId: '1' } },

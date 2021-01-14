@@ -1,16 +1,24 @@
 import { cutPrice } from './config/money'
 import { byPlayer, byResult, byDate, addNettScore, addCompetition, isQualifying } from './getter-helpers'
+import LeaderboardPresenter from './presenters/LeaderboardPresenter'
 
 export default {
     user (state) {
         return state.user
     },
+
     players (state) {
-        return state.players.withResults(state).all()
+        return state.players.withResults(state.results).all()
     },
+
     members (state, getters) {
         return state.players.where('isGuest', '===', false)
     },
+
+    results (state) {
+        return state.results.withCompetitions(state.competitions).all()
+    },
+
     // LEGACY
     playerResults: (state, getters) => (playerId, seasonId = null) => {
         let results = Object.values(state.results)
@@ -81,5 +89,11 @@ export default {
     },
     findSeason: (state) => (seasonId) => {
         return state.seasons.withCompetitions(state).find(seasonId)
+    },
+
+    presentLeaderboard: (state, getters) => (seasonId = null) => {
+        let results = state.results.withCompetitions(state)
+
+        return LeaderboardPresenter.present(state.players.withResults(results), seasonId)
     }
 }

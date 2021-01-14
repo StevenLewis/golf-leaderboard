@@ -45,7 +45,7 @@ describe('PlayerCollection', () => {
         collection.add({ id: '2', name: 'Rory' })
         collection.add({ id: '3', name: 'Steve' })
 
-        let actual = collection.withResults({ results }).all()
+        let actual = collection.withResults(results).all()
 
         expect(actual[0].results).toHaveLength(2)
         expect(actual[1].results).toHaveLength(0)

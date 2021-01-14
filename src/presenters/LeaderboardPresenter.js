@@ -1,8 +1,12 @@
 class LeaderboardPresenter {
-    static present (players = []) {
-        let leaderboard = players.filter(player => !player.isGuest)
+    static present (players, seasonId = null) {
+        let leaderboard = players.where('isGuest', '===', false)
 
-        leaderboard = leaderboard.map((player) => {
+        if (seasonId) {
+            leaderboard.items.map(player => player.filterBySeason(seasonId))
+        }
+
+        leaderboard = leaderboard.items.map(player => {
             return {
                 id: player.id,
                 isGuest: player.isGuest,

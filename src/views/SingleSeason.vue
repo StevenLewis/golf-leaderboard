@@ -14,7 +14,7 @@
             </router-link>
         </header>
 
-        <Leaderboard v-if="players.length" :players="season.leaderboard" />
+        <Leaderboard :season-id="season.id" />
 
         <footer v-if="user.loggedIn" class="md:hidden mb-10">
             <router-link :to="{ name: 'competitions.create', params: { id: season.id } }" class="flex-none flex items-center justify-center px-3 py-4 ml-2 border border-transparent text-sm text-center leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
@@ -58,24 +58,14 @@ export default {
 
     computed: {
         ...mapState(['user']),
-        ...mapGetters(['findSeason', 'competitionResults', 'players']),
+        ...mapGetters(['findSeason', 'competitionResults']),
 
         season () {
             return this.findSeason(this.$route.params.id)
         }
     },
 
-    watch: {
-        season: {
-            handler: 'generateLeaderboard'
-        }
-    },
-
     methods: {
-        generateLeaderboard () {
-            this.season.presentLeaderboard(this.players)
-        },
-
         playerCount (id) {
             return this.competitionResults(id).length || 0
         }

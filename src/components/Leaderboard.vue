@@ -1,5 +1,5 @@
 <template>
-    <div id="leadeboard">
+    <div v-if="leaderboard" id="leadeboard">
         <div class="flex flex-col mb-10 md:mb-24">
             <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                 <div class="align-middle inline-block min-w-full shadow overflow-hidden rounded-lg border-b border-gray-200">
@@ -17,7 +17,7 @@
                             <th class="hidden md:table-cell px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">8th Best</th>
                         </thead>
                         <tbody>
-                            <tr v-for="(player, index) in players" :key="player.id" :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
+                            <tr v-for="(player, index) in leaderboard" :key="player.id" :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
                                 <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ index + 1 }}</td>
                                 <td class="px-4 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
                                     <router-link :to="{ name: 'players.show', params: { id: player.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ player.name }}</router-link>
@@ -40,13 +40,24 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
     name: 'Leaderboard',
 
     props: {
-        players: {
-            type: Array,
-            required: true
+        seasonId: {
+            required: false,
+            type: [String, null],
+            default: null
+        }
+    },
+
+    computed: {
+        ...mapGetters(['presentLeaderboard']),
+
+        leaderboard () {
+            return this.presentLeaderboard(this.seasonId)
         }
     }
 }

@@ -9,13 +9,10 @@ class PlayerCollection extends ModelCollection {
         return new this.constructor(items)
     }
 
-    withResults (state) {
+    withResults (results) {
         let items = this.items
 
-        items.forEach(item => {
-            let results = state.results.where('playerId', '===', item.id).all()
-            item.recordResults(results)
-        })
+        items.forEach(item => item.recordResults(results.where('playerId', '===', item.id).all()))
 
         return new this.constructor(items)
     }
