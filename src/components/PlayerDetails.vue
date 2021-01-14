@@ -15,7 +15,7 @@
                         Total Qualifying Games
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        {{ player.totalQualifyingGames }}
+                        {{ player.qualifyingResults.length }}
                     </dd>
                 </div>
                 <div class="sm:col-span-1">
@@ -39,7 +39,7 @@
                         Best Score
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        {{ bestScore }}
+                        {{ player.bestScore }}
                     </dd>
                 </div>
                 <div class="sm:col-span-1">
@@ -60,7 +60,7 @@
                         Entry Fees
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        {{ fees | sterling }}
+                        {{ player.totalFees | sterling }}
                     </dd>
                 </div>
                 <div class="sm:col-span-1">
@@ -68,7 +68,7 @@
                         Winnings
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        {{ winnings | sterling }}
+                        {{ player.totalWinnings | sterling }}
                     </dd>
                 </div>
                 <div class="sm:col-span-1">
@@ -76,7 +76,7 @@
                         Nett Profit
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        {{ profit | sterling }}
+                        {{ player.totalProfit | sterling }}
                     </dd>
                 </div>
                 <div class="sm:col-span-1">
@@ -84,7 +84,7 @@
                         Cuts
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        {{ cuts }}
+                        {{ player.cuts }}
                     </dd>
                 </div>
             </dl>
@@ -93,8 +93,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
     name: 'PlayerDetails',
 
@@ -102,41 +100,6 @@ export default {
         player: {
             type: Object,
             required: true
-        }
-    },
-
-    computed: {
-        ...mapGetters({
-            players: 'leaderboard'
-        }),
-        ...mapGetters(['playerFees', 'playerWinnings', 'playerResults', 'playerProfit', 'playerCuts']),
-
-        results () {
-            return this.playerResults(this.$route.params.id) || []
-        },
-
-        bestScore () {
-            if (this.results) {
-                return Math.max(...this.results.map(result => result.score))
-            }
-
-            return 0
-        },
-
-        fees () {
-            return this.playerFees(this.$route.params.id)
-        },
-
-        winnings () {
-            return this.playerWinnings(this.$route.params.id)
-        },
-
-        profit () {
-            return this.playerProfit(this.$route.params.id)
-        },
-
-        cuts () {
-            return this.playerCuts(this.$route.params.id)
         }
     }
 }

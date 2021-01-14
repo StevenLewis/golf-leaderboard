@@ -1,4 +1,5 @@
 import Player from '../../../src/models/Player'
+import { entryFee } from '../../../src/config/money'
 
 describe('Player', () => {
     test('It can record the player results', () => {
@@ -146,5 +147,65 @@ describe('Player', () => {
         expect(player.results).toHaveLength(3)
         expect(player.totalQualifyingScore).toEqual(93)
         expect(player.qualifyingAverage).toEqual(31)
+    })
+
+    test('It return the players best score', () => {
+        let player = new Player({ id: '1' })
+        let results = [
+            { id: '1', qualifying: true, score: 40 },
+            { id: '2', qualifying: true, score: 20 }
+        ]
+
+        player.recordResults(results)
+
+        expect(player.bestScore).toEqual(40)
+    })
+
+    test('It returns the players total fees paid', () => {
+        let player = new Player({ id: '1' })
+        let results = [
+            { id: '1', qualifying: true, entryFee: 3 },
+            { id: '2', qualifying: true, entryFee: 3 }
+        ]
+
+        player.recordResults(results)
+
+        expect(player.totalFees).toEqual(6)
+    })
+
+    test('It returns the players total winnings', () => {
+        let player = new Player({ id: '1' })
+        let results = [
+            { id: '1', qualifying: true, winnings: 30 },
+            { id: '2', qualifying: true, winnings: 7.5 }
+        ]
+
+        player.recordResults(results)
+
+        expect(player.totalWinnings).toEqual(37.5)
+    })
+
+    test('It returns the players total profit', () => {
+        let player = new Player({ id: '1' })
+        let results = [
+            { id: '1', qualifying: true, entryFee: 3, winnings: 30 },
+            { id: '2', qualifying: true, entryFee: 3, winnings: 7.5 }
+        ]
+
+        player.recordResults(results)
+
+        expect(player.totalProfit).toEqual(31.5)
+    })
+
+    test('It returns the players current cuts', () => {
+        let player = new Player({ id: '1' })
+        let results = [
+            { id: '1', qualifying: true, winnings: 30 },
+            { id: '2', qualifying: true, winnings: 7.5 }
+        ]
+
+        player.recordResults(results)
+
+        expect(player.cuts).toEqual(1.5)
     })
 })

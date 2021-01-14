@@ -1,4 +1,3 @@
-import { cutPrice } from './config/money'
 import { byPlayer, byResult, byDate, addNettScore, addCompetition, isQualifying } from './getter-helpers'
 import LeaderboardPresenter from './presenters/LeaderboardPresenter'
 
@@ -7,6 +6,7 @@ export default {
         return state.user
     },
 
+    // Players
     players (state) {
         return state.players.withResults(state.results).all()
     },
@@ -15,8 +15,38 @@ export default {
         return state.players.where('isGuest', '===', false)
     },
 
+    findPlayer: (state) => (playerId) => {
+        return state.players.withResults(state.results).find(playerId)
+    },
+
+    // Results
     results (state) {
         return state.results.withCompetitions(state.competitions).all()
+    },
+
+    // Competitions
+    findCompetition: (state) => (competitionId) => {
+        return state.competitions.find(competitionId)
+    },
+
+    // Seasons
+    seasons (state, getters) {
+        return state.seasons.withCompetitions(state).all()
+    },
+
+    seasonCompetitions: (state) => (seasonId) => {
+        return state.competitions.filterBySeason(seasonId).all()
+    },
+
+    findSeason: (state) => (seasonId) => {
+        return state.seasons.withCompetitions(state).find(seasonId)
+    },
+
+    // Leaderboard
+    presentLeaderboard: (state, getters) => (seasonId = null) => {
+        let results = state.results.withCompetitions(state)
+
+        return LeaderboardPresenter.present(state.players.withResults(results), seasonId)
     },
 
     // LEGACY
@@ -63,37 +93,5 @@ export default {
                 player: state.players[result.playerId]
             }
         })
-    },
-    findCompetition: (state) => (competitionId) => {
-        return state.competitions.find(competitionId)
-    },
-    playerFees: (state, getters) => (playerId) => {
-        return getters.qualifyingResults(playerId).reduce((accumulator, result) => accumulator + result.entryFee, 0)
-    },
-    playerWinnings: (state, getters) => (playerId) => {
-        return getters.qualifyingResults(playerId).reduce((accumulator, result) => accumulator + result.winnings, 0)
-    },
-    playerCuts: (state) => (playerId) => {
-        const player = state.players[playerId]
-
-        return Math.floor(player.winnings / cutPrice) * 0.5
-    },
-    playerProfit: (state, getters) => (playerId) => {
-        return getters.playerWinnings(playerId) - getters.playerFees(playerId)
-    },
-    seasons (state, getters) {
-        return state.seasons.withCompetitions(state).all()
-    },
-    seasonCompetitions: (state) => (seasonId) => {
-        return state.competitions.filterBySeason(seasonId).all()
-    },
-    findSeason: (state) => (seasonId) => {
-        return state.seasons.withCompetitions(state).find(seasonId)
-    },
-
-    presentLeaderboard: (state, getters) => (seasonId = null) => {
-        let results = state.results.withCompetitions(state)
-
-        return LeaderboardPresenter.present(state.players.withResults(results), seasonId)
     }
 }
