@@ -1,4 +1,4 @@
-import { byPlayer, byResult, byDate, addNettScore, addCompetition, isQualifying } from './getter-helpers'
+import { byPlayer, byDate, addCompetition, isQualifying } from './getter-helpers'
 import LeaderboardPresenter from './presenters/LeaderboardPresenter'
 
 export default {
@@ -25,6 +25,10 @@ export default {
     },
 
     // Competitions
+    competitions (state) {
+        return state.competitions.withResults(state.results).all()
+    },
+
     findCompetition: (state) => (competitionId) => {
         return state.competitions.find(competitionId)
     },
@@ -43,8 +47,8 @@ export default {
     },
 
     // Leaderboard
-    presentLeaderboard: (state, getters) => (seasonId = null) => {
-        let results = state.results.withCompetitions(state)
+    presentLeaderboard: (state) => (seasonId = null) => {
+        let results = state.results.withCompetitions(state.competitions)
 
         return LeaderboardPresenter.present(state.players.withResults(results), seasonId)
     },
@@ -71,27 +75,5 @@ export default {
     },
     qualifyingScores: (state, getters) => (playerId, seasonId = null) => {
         return getters.qualifyingResults(playerId, seasonId).sort((a, b) => a.score - b.score).map(player => player.score)
-    },
-    competitions (state) {
-        return Object.values(state.competitions).sort((a, b) => {
-            if (a.date === b.date) {
-                return 0
-            }
-
-            return (a.date < b.date) ? 1 : -1
-        })
-    },
-    competitionResults: (state) => (competitionId) => {
-        let results = Object.values(state.results)
-            .map(addNettScore)
-            .filter(result => result.competitionId === competitionId)
-            .sort(byResult)
-
-        return results.map(result => {
-            return {
-                ...result,
-                player: state.players[result.playerId]
-            }
-        })
     }
 }

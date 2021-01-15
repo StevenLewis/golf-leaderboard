@@ -7,6 +7,14 @@ class CompetitionCollection extends ModelCollection {
 
         return new this.constructor(items)
     }
+
+    withResults (results) {
+        let items = this.items
+
+        items.forEach(item => item.withResults(results))
+
+        return new this.constructor(items)
+    }
 }
 
 CompetitionCollection.prototype.model = Competition

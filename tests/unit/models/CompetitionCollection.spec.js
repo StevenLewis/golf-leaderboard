@@ -1,4 +1,5 @@
 import CompetitionCollection from '../../../src/models/CompetitionCollection'
+import ResultCollection from '../../../src/models/ResultCollection'
 
 describe('CompetitionCollection', () => {
     test('It can filter by a season', () => {
@@ -28,5 +29,24 @@ describe('CompetitionCollection', () => {
         expect(actual[1].id).toEqual('4')
         expect(actual[2].id).toEqual('3')
         expect(actual[3].id).toEqual('2')
+    })
+
+    test('It should return the competitions with their results', () => {
+        let results = new ResultCollection()
+        let collection = new CompetitionCollection()
+
+        collection.add({ id: '1', seasonId: '1', date: new Date('2020-01-21') })
+        collection.add({ id: '2', seasonId: '1', date: new Date('2020-01-01') })
+
+        results.add({ id: '1', competitionId: '1' })
+        results.add({ id: '2', competitionId: '1' })
+        results.add({ id: '3', competitionId: '2' })
+        results.add({ id: '4', competitionId: '2' })
+        results.add({ id: '5', competitionId: '1' })
+
+        let actual = collection.withResults(results)
+
+        expect(actual.find('1').results).toHaveLength(3)
+        expect(actual.find('2').results).toHaveLength(2)
     })
 })
