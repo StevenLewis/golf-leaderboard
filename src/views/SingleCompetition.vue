@@ -1,8 +1,8 @@
 <template>
-    <div v-if="season" id="competition">
+    <div v-if="competition" id="competition">
         <header>
             <div class="mb-10 text-xs text-gray-500">
-                <router-link :to="{ name: 'seasons.show', params: { id: season.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none underline">Back to season</router-link>
+                <router-link :to="{ name: 'seasons.show', params: { id: competition.seasonId } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none underline">Back to season</router-link>
                 / <span>{{ competition.date | formatDate }}</span>
             </div>
         </header>
@@ -17,7 +17,7 @@
                                 No. of players
                             </dt>
                             <dd class="mt-1 text-sm leading-5 text-gray-900">
-                                {{ results.length }}
+                                {{ competition.results.length }}
                             </dd>
                         </div>
                         <div v-if="prizes" class="sm:col-span-1">
@@ -97,10 +97,11 @@
                             <th class="hidden md:table-cell px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
                         </thead>
                         <tbody>
-                            <tr v-for="(result, index) in results" :key="result.id" :class="background(index)">
+                            <tr v-for="(result, index) in competition.results" :key="result.id" :class="background(index)">
                                 <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ index + 1 }}</td>
                                 <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
                                     <router-link :to="{ name: 'players.show', params: { id: result.player.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ result.player.name }}</router-link>
+                                    <template v-if="result.player.isGuest"> (G)</template>
                                 </td>
                                 <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.score }}</td>
                                 <td class="hidden md:table-cell px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.cuts }}</td>
@@ -147,35 +148,57 @@ export default {
     },
 
     computed: {
-        ...mapState(['competitions', 'user', 'seasons']),
-        ...mapGetters(['competitionResults']),
+        ...mapState(['user']),
+        ...mapGetters(['findCompetition']),
 
         competition () {
-            return this.competitions[this.$route.params.id] || {}
-        },
-
-        season () {
-            return this.seasons[this.competition.seasonId]
-        },
-
-        results () {
-            if (this.competition.date) {
-                return this.competitionResults(this.competition.id) || []
-            }
-
-            return []
+            return this.findCompetition(this.$route.params.id)
         },
 
         missingResults () {
-            return this.results.filter(result => result.score === 0)
+            return this.competition.results.filter(result => result.score === 0)
         },
 
         prizes () {
-            return prizeMoney[this.results.length] || [0, 0, 0]
+            return prizeMoney[this.competition.results.length] || [0, 0, 0]
+        },
+
+        firstTies () {
+            return this.competition.results.filter(result => result.nett === this.competition.results[0].nett && result.countback === 0)
+        },
+
+        secondTies () {
+            return this.competition.results.filter(result => {
+                return result.nett === this.competition.results[1].nett &&
+                result.countback === 0 &&
+                  !this.firstTies.includes(result)
+            })
+        },
+
+        thirdTies () {
+            return this.competition.results.filter(result => {
+                return result.nett === this.competition.results[2].nett &&
+              result.countback === 0 &&
+              !this.firstTies.includes(result) &&
+              !this.secondTies.includes(result)
+            })
+        },
+
+        fourthTies () {
+            return this.competition.results.filter(result => {
+                return result.nett === this.competition.results[3].nett &&
+              result.countback === 0 &&
+              !this.firstTies.includes(result) &&
+              !this.secondTies.includes(result) &&
+              !this.thirdTies.includes(result)
+            })
         },
 
         hasTies () {
-            return this.ties.some(tie => tie.length > 1)
+            return this.firstTies.length > 1 ||
+            this.secondTies.length > 1 ||
+            this.thirdTies.length > 1 ||
+            this.fourthTies.length > 1
         }
     },
 
@@ -191,12 +214,13 @@ export default {
 
     methods: {
         async recordCompetition () {
-            await this.checkForTies()
+            this.ties = []
 
             if (this.hasTies) {
+                this.ties.push(this.firstTies, this.secondTies, this.thirdTies, this.fourthTies)
                 this.$refs['ties'].show()
             } else {
-                await this.results.forEach((result, index) => {
+                await this.competition.results.forEach((result, index) => {
                     this.$store.dispatch(PAY_WINNINGS, {
                         playerId: result.player.id,
                         resultId: result.id,
@@ -205,22 +229,6 @@ export default {
                 })
 
                 await this.$store.dispatch(RECORD_COMPETITION, this.competition.id)
-            }
-        },
-
-        checkForTies () {
-            this.ties = []
-
-            this.results.slice(0, 4).forEach(result => {
-                this.ties.push(this.findTies(result.nett))
-            })
-        },
-
-        findTies (score) {
-            if (!this.ties.flat().some(result => result.nett === score)) {
-                return this.results.filter(result => result.nett === score && result.countback === 0)
-            } else {
-                return []
             }
         },
 
@@ -286,7 +294,7 @@ export default {
         },
 
         hasAlreadyEntered (player) {
-            return this.results.some(result => result.playerId === player)
+            return this.competition.results.some(result => result.playerId === player)
         },
 
         background (index) {

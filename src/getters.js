@@ -1,14 +1,64 @@
-import { cutPrice } from './config/money'
-import { byPlayer, byResult, byDate, byName, addNettScore, addCompetition, isQualifying } from './getter-helpers'
+import { byPlayer, byDate, addCompetition, isQualifying } from './getter-helpers'
+import LeaderboardPresenter from './presenters/LeaderboardPresenter'
 
 export default {
     user (state) {
         return state.user
     },
+
+    // Players
     players (state) {
-        return Object.values(state.players)
-            .sort(byName)
+        return state.players.withResults(state.results).all()
     },
+
+    members (state, getters) {
+        return state.players.where('isGuest', '===', false)
+    },
+
+    findPlayer: (state) => (playerId) => {
+        return state.players
+            .withResults(state.results)
+            .find(playerId)
+    },
+
+    // Results
+    results (state) {
+        return state.results.all()
+    },
+
+    // Competitions
+    competitions (state) {
+        const results = state.results.withPlayers(state.players)
+        return state.competitions
+            .withResults(results)
+            .all()
+    },
+
+    findCompetition: (state) => (competitionId) => {
+        return state.competitions.find(competitionId)
+    },
+
+    // Seasons
+    seasons (state) {
+        return state.seasons.withCompetitions(state).all()
+    },
+
+    seasonCompetitions: (state) => (seasonId) => {
+        return state.competitions.filterBySeason(seasonId).all()
+    },
+
+    findSeason: (state) => (seasonId) => {
+        return state.seasons.withCompetitions(state).find(seasonId)
+    },
+
+    // Leaderboard
+    presentLeaderboard: (state) => (seasonId = null) => {
+        let results = state.results.withCompetitions(state.competitions)
+
+        return LeaderboardPresenter.present(state.players.withResults(results), seasonId)
+    },
+
+    // LEGACY
     playerResults: (state, getters) => (playerId, seasonId = null) => {
         let results = Object.values(state.results)
             .map(addCompetition(state))
@@ -30,93 +80,5 @@ export default {
     },
     qualifyingScores: (state, getters) => (playerId, seasonId = null) => {
         return getters.qualifyingResults(playerId, seasonId).sort((a, b) => a.score - b.score).map(player => player.score)
-    },
-    qualifyingTotalScore: (state, getters) => (playerId, seasonId = null) => {
-        return getters.qualifyingScores(playerId, seasonId).reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-    },
-    qualifyingAverage: (state, getters) => (playerId, seasonId = null) => {
-        if (getters.qualifyingTotalScore(playerId, seasonId) && getters.qualifyingScores(playerId, seasonId).length) {
-            return parseFloat((getters.qualifyingTotalScore(playerId, seasonId) / getters.qualifyingScores(playerId, seasonId).length).toFixed(2))
-        }
-
-        return 0
-    },
-    topTenTotal: (state, getters) => (playerId, seasonId = null) => {
-        return getters.qualifyingScores(playerId, seasonId).slice(-10).reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-    },
-    qualifyingScoresToBeat: (state, getters) => (playerId, seasonId = null) => {
-        return getters.qualifyingScores(playerId, seasonId).slice(-10, -7)
-    },
-    leaderboard: (state, getters) => (seasonId = null) => {
-        let leaderboard = Object.values(state.players)
-
-        leaderboard.forEach((player) => {
-            player.totalGames = getters.playerResults(player.id, seasonId).length
-            player.totalQualifyingGames = getters.qualifyingResults(player.id, seasonId).length
-            player.totalQualifyingScore = getters.qualifyingTotalScore(player.id, seasonId)
-            player.qualifyingAverage = getters.qualifyingAverage(player.id, seasonId)
-            player.topTenTotal = getters.topTenTotal(player.id, seasonId)
-            player.scoresToBeat = getters.qualifyingScoresToBeat(player.id, seasonId)
-        })
-
-        leaderboard.sort((a, b) => b.topTenTotal - a.topTenTotal)
-
-        return leaderboard
-    },
-    competitions (state) {
-        return Object.values(state.competitions).sort((a, b) => {
-            if (a.date === b.date) {
-                return 0
-            }
-
-            return (a.date < b.date) ? 1 : -1
-        })
-    },
-    competitionResults: (state) => (competitionId) => {
-        let results = Object.values(state.results)
-            .map(addNettScore)
-            .filter(result => result.competitionId === competitionId)
-            .sort(byResult)
-
-        return results.map(result => {
-            return {
-                ...result,
-                player: state.players[result.playerId]
-            }
-        })
-    },
-    findCompetition: (state, getters) => (competitionId) => {
-        return getters.competitions.find(competition => competition.id === competitionId)
-    },
-    playerFees: (state, getters) => (playerId) => {
-        return getters.qualifyingResults(playerId).reduce((accumulator, result) => accumulator + result.entryFee, 0)
-    },
-    playerWinnings: (state, getters) => (playerId) => {
-        return getters.qualifyingResults(playerId).reduce((accumulator, result) => accumulator + result.winnings, 0)
-    },
-    playerCuts: (state) => (playerId) => {
-        const player = state.players[playerId]
-
-        return Math.floor(player.winnings / cutPrice) * 0.5
-    },
-    playerProfit: (state, getters) => (playerId) => {
-        return getters.playerWinnings(playerId) - getters.playerFees(playerId)
-    },
-    seasons (state, getters) {
-        return Object.values(state.seasons).map(season => {
-            return {
-                ...season,
-                competitions: getters.seasonCompetitions(season.id)
-            }
-        }).sort((a, b) => {
-            if (a.createdAt === b.createdAt) {
-                return 0
-            }
-
-            return (a.createdAt < b.createdAt) ? 1 : -1
-        })
-    },
-    seasonCompetitions: (state, getters) => (seasonId) => {
-        return getters.competitions.filter(competition => competition.seasonId === seasonId)
     }
 }

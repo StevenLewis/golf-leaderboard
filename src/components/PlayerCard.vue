@@ -4,7 +4,10 @@
             <div class="min-w-0 flex-1 flex items-center">
                 <div class="min-w-0 flex-1 pr-3 md:grid md:grid-cols-2 md:gap-4">
                     <div>
-                        <div class="text-sm leading-5 font-medium text-indigo-600 truncate">{{ player.name }}</div>
+                        <div class="text-sm leading-5 font-medium text-indigo-600 truncate">
+                            {{ player.name }}
+                            <span v-if="player.isGuest" class="text-gray-400"> Guest</span>
+                        </div>
                     </div>
                 </div>
             </div>

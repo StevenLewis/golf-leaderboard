@@ -45,9 +45,11 @@ export default {
         }
     },
 
-    [actions.CREATE_PLAYER] ({ getters }, name) {
+    [actions.CREATE_PLAYER] ({ getters }, { name, isGuest }) {
         api.players.add({
-            name
+            name,
+            isGuest,
+            winnings: 0
         })
     },
 

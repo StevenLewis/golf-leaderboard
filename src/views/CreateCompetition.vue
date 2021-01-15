@@ -7,7 +7,7 @@
             </div>
         </header>
 
-        <header class="md:flex justify-between">
+        <header class="md:flex justify-between items-center">
             <h1 class="mb-5 text-3xl font-bold leading-tight text-gray-900">Create Competition</h1>
             <button v-if="!noPlayers" @click.prevent="createCompetition" class="hidden md:flex flex-none justify-center items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
                 Create Competition
@@ -39,7 +39,10 @@
                             />
                         </div>
                         <div v-if="results.length > 0" v-shortkey="{up: ['arrowup'], down: ['arrowdown'], enter: ['enter']}" @shortkey="shortcut" class="absolute w-full bg-white shadow rounded-md overflow-hidden">
-                            <div v-for="(result, index) in results" :key="result.id" @click.prevent="enterPlayer(index)" class="block p-2 cursor-pointer" :class="{ 'bg-gray-200' : isActive(index) }">{{ result.name }}</div>
+                            <div v-for="(result, index) in results" :key="result.id" @click.prevent="enterPlayer(index)" class="block p-2 cursor-pointer" :class="{ 'bg-gray-200' : isActive(index) }">
+                                {{ result.name }}
+                                <template v-if="result.isGuest">(G)</template>
+                            </div>
                         </div>
                     </div>
                 </div>

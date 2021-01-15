@@ -23,6 +23,8 @@ export const byName = (a, b) => {
 }
 
 export const byDate = (a, b) => {
+    if (!a.competition || !b.competition) return 0
+
     if (a.competition.date === b.competition.date) {
         return 0
     }
@@ -42,3 +44,5 @@ export const byResult = (a, b) => {
 export const byPlayer = (id) => result => result.playerId === id
 
 export const isQualifying = result => result.qualifying
+
+export const withoutGuests = player => !player.isGuest

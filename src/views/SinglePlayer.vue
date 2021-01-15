@@ -7,7 +7,9 @@
             </div>
             <h1 class="mb-5 text-3xl font-bold leading-tight text-gray-900">{{ player.name }}</h1>
         </header>
+
         <player-details v-if="player" :player="player" />
+
         <div class="flex flex-col">
             <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                 <div class="align-middle inline-block min-w-full shadow overflow-hidden rounded-lg border-b border-gray-200">
@@ -17,7 +19,7 @@
                             <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Score</th>
                         </thead>
                         <tbody>
-                            <tr v-for="result in results" :key="result.id">
+                            <tr v-for="result in player.results" :key="result.id">
                                 <td v-if="result.competition" class="px-6 py-4 bg-white whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.competition.date | formatDate }}</td>
                                 <td class="px-6 py-4 bg-white whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.score }}</td>
                             </tr>
@@ -41,18 +43,10 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['leaderboard']),
-
-        players () {
-            return this.leaderboard(null)
-        },
+        ...mapGetters(['findPlayer']),
 
         player () {
-            return this.players.find(player => player.id === this.$route.params.id)
-        },
-
-        results () {
-            return this.$store.getters.playerResults(this.$route.params.id) || []
+            return this.findPlayer(this.$route.params.id)
         }
     }
 }
