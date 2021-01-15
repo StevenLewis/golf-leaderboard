@@ -16,17 +16,22 @@ export default {
     },
 
     findPlayer: (state) => (playerId) => {
-        return state.players.withResults(state.results).find(playerId)
+        return state.players
+            .withResults(state.results)
+            .find(playerId)
     },
 
     // Results
     results (state) {
-        return state.results.withCompetitions(state.competitions).all()
+        return state.results.all()
     },
 
     // Competitions
     competitions (state) {
-        return state.competitions.withResults(state.results).all()
+        const results = state.results.withPlayers(state.players)
+        return state.competitions
+            .withResults(results)
+            .all()
     },
 
     findCompetition: (state) => (competitionId) => {
@@ -34,7 +39,7 @@ export default {
     },
 
     // Seasons
-    seasons (state, getters) {
+    seasons (state) {
         return state.seasons.withCompetitions(state).all()
     },
 

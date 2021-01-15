@@ -6,6 +6,12 @@ class Result extends Model {
 
         return new this.constructor(this)
     }
+
+    withPlayer (players) {
+        this.player = players.find(this.playerId)
+
+        return new this.constructor(this)
+    }
 }
 
 export default Result
