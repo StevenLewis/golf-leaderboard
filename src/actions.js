@@ -85,14 +85,14 @@ export default {
         })
     },
 
-    [actions.ENTER_PLAYERS] ({ state, dispatch, getters }, { players, competitionId }) {
+    [actions.ENTER_PLAYERS] ({ dispatch }, { players, competitionId }) {
         if (players.length === 0) return
 
         players.forEach(player => dispatch(ENTER_PLAYER, {
             playerId: player.id,
             competitionId,
             qualifying: true,
-            cuts: getters.playerCuts(player.id),
+            cuts: player.cuts,
             entryFee
         }))
     },
