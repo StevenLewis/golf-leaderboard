@@ -8,27 +8,40 @@ import { entryFee } from './config/money'
 export default {
     [actions.INITIALISE] ({ state, commit }) {
         api.players.onSnapshot((snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-                commit('SET_PLAYER', Object.assign({}, change.doc.data(), { id: change.doc.id }))
-            })
-        })
-        api.competitions.onSnapshot((snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-                commit('SET_COMPETITION', Object.assign({}, change.doc.data(), { id: change.doc.id }))
-            })
-        })
-        api.results.onSnapshot((snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-                if (change.type === 'removed') {
-                    commit('REMOVE_RESULT', change.doc.id)
+            snapshot.docChanges().forEach(({ type, doc }) => {
+                if (type === 'added') {
+                    commit('ADD_PLAYER', { ...doc.data(), id: doc.id })
                 } else {
-                    commit('SET_RESULT', Object.assign({}, change.doc.data(), { id: change.doc.id }))
+                    commit('UPDATE_PLAYER', { ...doc.data(), id: doc.id })
                 }
             })
         })
+
+        api.competitions.onSnapshot((snapshot) => {
+            snapshot.docChanges().forEach(({ type, doc }) => {
+                if (type === 'added') {
+                    commit('ADD_COMPETITION', { ...doc.data(), id: doc.id })
+                } else {
+                    commit('UPDATE_COMPETITION', { ...doc.data(), id: doc.id })
+                }
+            })
+        })
+
+        api.results.onSnapshot((snapshot) => {
+            snapshot.docChanges().forEach(({ type, doc }) => {
+                if (type === 'removed') {
+                    commit('REMOVE_RESULT', doc.id)
+                } else if (type === 'added') {
+                    commit('ADD_RESULT', { ...doc.data(), id: doc.id })
+                } else {
+                    commit('UPDATE_RESULT', { ...doc.data(), id: doc.id })
+                }
+            })
+        })
+
         api.seasons.onSnapshot((snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-                commit('SET_SEASON', Object.assign({}, change.doc.data(), { id: change.doc.id }))
+            snapshot.docChanges().forEach(({ doc }) => {
+                commit('ADD_SEASON', { ...doc.data(), id: doc.id })
             })
         })
     },
@@ -98,7 +111,7 @@ export default {
     },
 
     [actions.ENTER_PLAYER] ({ getters }, { playerId, competitionId, qualifying, cuts, entryFee }) {
-        api.results.add({
+        return api.results.add({
             playerId,
             competitionId,
             qualifying,

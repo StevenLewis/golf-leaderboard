@@ -10,9 +10,17 @@ class Competition extends Model {
     }
 
     withResults (results) {
-        this.results = results.where('competitionId', '===', this.id).all()
+        this.results = results.where('competitionId', '===', this.id)
 
         return new this.constructor(this)
+    }
+
+    orderResultsByScore () {
+        this.results.sortByScore()
+    }
+
+    get isRecorded () {
+        return !!this.recorded_at
     }
 }
 

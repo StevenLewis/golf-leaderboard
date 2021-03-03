@@ -18,28 +18,53 @@
             </aside>
             <template v-else>
                 <add-player :competition="competition" />
-                <form @submit.prevent="recordCompetition" class="flex-none">
-                    <button @click.prevent="recordCompetition" type="button" class="flex-none flex items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
-                        Record Competition
-                    </button>
-                </form>
+                <button @click.prevent="recordScores" type="button" class="flex-none flex items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+                    Record Scores
+                </button>
             </template>
         </div>
 
-        <template v-if="competition.isRecorded">
-            <results-table :results="competition.results" />
-            <ties v-if="hasTies" ref="ties" :ties="ties" @resolved="recordCompetition" />
-        </template>
+        <results-table v-if="competition.isRecorded" :results="sortedResults" />
 
-        <score-sheet v-else :competition="competition" />
+        <template v-else>
+            <div v-if="errors.has('scores')" class="rounded-md bg-red-50 p-4 mb-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-red-800">
+                            There were some errors with your scores
+                        </h3>
+                        <div class="mt-2 text-sm text-red-700">
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>
+                                    {{  errors.first('scores') }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <score-sheet
+                :competition="competition"
+                :scores="scores"
+                :countbacks="countbacks"
+                @scores="scores = $event"
+                @countbacks="countbacks = $event"
+            />
+        </template>
     </div>
 </template>
 
 <script>
-import { PAY_WINNINGS, RECORD_COMPETITION } from '../action-types'
+import { PAY_WINNINGS, RECORD_COMPETITION, ENTER_SCORE } from '@/action-types'
 import { mapState, mapGetters } from 'vuex'
-import { prizeMoney } from '../config/money'
-import Ties from '../components/Ties'
+import { prizeMoney } from '@/config/money'
+import Errors from '@/classes/Errors'
 import ResultsTable from '../components/ResultsTable'
 import CompetitionData from '../components/CompetitionData'
 import AddPlayer from '../components/AddPlayer'
@@ -49,7 +74,6 @@ export default {
     name: 'SingleCompetition',
 
     components: {
-        Ties,
         ResultsTable,
         CompetitionData,
         AddPlayer,
@@ -59,7 +83,9 @@ export default {
     data () {
         return {
             qualifying: true,
-            ties: []
+            scores: [],
+            countbacks: [],
+            errors: new Errors()
         }
     },
 
@@ -71,68 +97,69 @@ export default {
             return this.findCompetition(this.$route.params.id)
         },
 
+        sortedResults () {
+            if (this.competition.results.length > 0) {
+                return [...this.competition.results].sort((a, b) => a.nett - b.nett)
+            }
+
+            return []
+        },
+
         // Can we put in Competition model?
         prizes () {
             return prizeMoney[this.competition.results.length] || [0, 0, 0]
-        },
-
-        firstTies () {
-            return this.competition.results.filter(result => result.nett === this.competition.results[0].nett && result.countback === 0)
-        },
-
-        secondTies () {
-            return this.competition.results.filter(result => {
-                return result.nett === this.competition.results[1].nett &&
-                result.countback === 0 &&
-                  !this.firstTies.includes(result)
-            })
-        },
-
-        thirdTies () {
-            return this.competition.results.filter(result => {
-                return result.nett === this.competition.results[2].nett &&
-              result.countback === 0 &&
-              !this.firstTies.includes(result) &&
-              !this.secondTies.includes(result)
-            })
-        },
-
-        fourthTies () {
-            return this.competition.results.filter(result => {
-                return result.nett === this.competition.results[3].nett &&
-              result.countback === 0 &&
-              !this.firstTies.includes(result) &&
-              !this.secondTies.includes(result) &&
-              !this.thirdTies.includes(result)
-            })
-        },
-
-        hasTies () {
-            return this.firstTies.length > 1 ||
-            this.secondTies.length > 1 ||
-            this.thirdTies.length > 1 ||
-            this.fourthTies.length > 1
         }
     },
 
     methods: {
-        async recordCompetition () {
-            this.ties = []
-
-            if (this.hasTies) {
-                this.ties.push(this.firstTies, this.secondTies, this.thirdTies, this.fourthTies)
-                this.$refs['ties'].show()
-            } else {
-                await this.competition.results.forEach((result, index) => {
-                    this.$store.dispatch(PAY_WINNINGS, {
-                        playerId: result.player.id,
-                        resultId: result.id,
-                        winnings: this.prizes[index] || 0
+        recordScores () {
+            this.validate()
+                .then(async () => {
+                    await this.competition.results.forEach((result, index) => {
+                        this.$store.dispatch(ENTER_SCORE, {
+                            resultId: result.id,
+                            score: this.scores[index]
+                        })
                     })
-                })
 
-                await this.$store.dispatch(RECORD_COMPETITION, this.competition.id)
-            }
+                    // await this.recordCompetition()
+                })
+                .catch(() => {
+                    // Good Catch!
+                })
+        },
+
+        async recordCompetition () {
+            await this.competition.results.forEach((result, index) => {
+                this.$store.dispatch(PAY_WINNINGS, {
+                    playerId: result.player.id,
+                    resultId: result.id,
+                    winnings: this.prizes[index] || 0
+                })
+            })
+
+            await this.$store.dispatch(RECORD_COMPETITION, this.competition.id)
+        },
+
+        validate () {
+            return new Promise((resolve, reject) => {
+                let errors = []
+
+                if (this.scores.length < this.competition.results.length) {
+                    errors.push('We need all the scores')
+                }
+
+                if (this.scores.some(score => typeof score !== 'number')) {
+                    errors.push('The scores must be a number')
+                }
+
+                if (errors.length > 0) {
+                    this.errors.record({ scores: errors })
+                    reject(this.errors)
+                }
+
+                resolve('Valid!')
+            })
         }
     }
 }

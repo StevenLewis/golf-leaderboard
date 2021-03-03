@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import { prizeMoney } from '@/config/money'
+
 export default {
     name: 'ResultsTable',
 
@@ -38,6 +40,13 @@ export default {
         results: {
             required: true,
             type: Array
+        }
+    },
+
+    computed: {
+        // Can we put in Competition model?
+        prizes () {
+            return prizeMoney[this.results.length] || [0, 0, 0]
         }
     },
 

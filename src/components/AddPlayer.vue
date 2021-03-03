@@ -11,7 +11,7 @@
                             :class="{ 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-300' : errors.has('player') }"
                     >
                         <option value="" disabled selected>Select player</option>
-                        <option v-for="player in missingPlayers" :key="player.id" :value="player.id">{{ player.name }}</option>
+                        <option v-for="player in missingPlayers" :key="player.id" :value="player">{{ player.name }}</option>
                     </select>
                 </div>
                 <button @click.prevent="addPlayer" type="button" class="flex-none flex items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
@@ -25,8 +25,8 @@
 
 <script>
 import Errors from '../classes/Errors'
-import { ENTER_PLAYER } from '../action-types'
-import { entryFee } from '../config/money'
+import { ENTER_PLAYER } from '@/action-types'
+import { entryFee } from '@/config/money'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -50,8 +50,9 @@ export default {
         ...mapGetters(['players']),
 
         missingPlayers () {
-        // TODO: Make dynamic
-            return this.players
+            return this.players.filter(player => {
+                return !this.competition.results.some(result => result.playerId === player.id)
+            })
         }
     },
 
@@ -86,11 +87,7 @@ export default {
             return new Promise((resolve, reject) => {
                 let errors = []
 
-                if (this.result.length === 0) {
-                    errors.push('We need the player')
-                }
-
-                if (this.hasAlreadyEntered(this.player)) {
+                if (this.hasAlreadyEntered(this.player.id)) {
                     errors.push('This player has already entered')
                 }
 
@@ -103,8 +100,8 @@ export default {
             })
         },
 
-        hasAlreadyEntered (player) {
-            return this.competition.results.some(result => result.playerId === player)
+        hasAlreadyEntered (id) {
+            return this.competition.results.some(result => result.playerId === id)
         }
     }
 }
