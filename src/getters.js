@@ -29,13 +29,14 @@ export default {
     // Competitions
     competitions (state) {
         const results = state.results.withPlayers(state.players)
+
         return state.competitions
             .withResults(results)
             .all()
     },
 
     findCompetition: (state) => (competitionId) => {
-        return state.competitions.find(competitionId)
+        return state.competitions.withResults(state.results).find(competitionId)
     },
 
     // Seasons
@@ -78,6 +79,7 @@ export default {
     qualifyingResults: (state, getters) => (playerId, seasonId = null) => {
         return getters.playerResults(playerId, seasonId).filter(isQualifying)
     },
+
     qualifyingScores: (state, getters) => (playerId, seasonId = null) => {
         return getters.qualifyingResults(playerId, seasonId).sort((a, b) => a.score - b.score).map(player => player.score)
     }

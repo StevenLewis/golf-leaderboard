@@ -1,6 +1,12 @@
 import Model from './Model'
 
 class Result extends Model {
+    constructor (attributes) {
+        super(attributes)
+
+        this.cuts = 0
+    }
+
     withCompetition (competitions) {
         this.competition = competitions.find(this.competitionId)
 
@@ -11,6 +17,10 @@ class Result extends Model {
         this.player = players.find(this.playerId)
 
         return new this.constructor(this)
+    }
+
+    get nett () {
+        return this.score - this.cuts
     }
 }
 

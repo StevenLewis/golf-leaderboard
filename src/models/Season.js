@@ -9,8 +9,8 @@ class Season extends Model {
         }
     }
 
-    withCompetitions (state) {
-        this.competitions = state.competitions.where('seasonId', '===', this.id).sortByDesc('date').all()
+    withCompetitions ({ competitions, results }) {
+        this.competitions = competitions.withResults(results).where('seasonId', '===', this.id).sortByDesc('date').all()
 
         return new this.constructor(this)
     }

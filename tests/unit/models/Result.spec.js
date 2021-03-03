@@ -26,4 +26,10 @@ describe('Result', () => {
 
         expect(result.player.id).toEqual('1')
     })
+
+    test('It return the nett score', () => {
+        let result = new Result({ id: '2', score: 30, cuts: 1 })
+
+        expect(result.nett).toEqual(29)
+    })
 })

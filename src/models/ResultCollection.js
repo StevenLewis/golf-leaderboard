@@ -13,6 +13,16 @@ class ResultCollection extends ModelCollection {
 
         return new this.constructor(items)
     }
+
+    sortByScore () {
+        this.items.sort((a, b) => {
+            if (a.nett === b.nett) {
+                return b.countback - a.countback
+            }
+
+            return b.nett - a.nett
+        })
+    }
 }
 
 ResultCollection.prototype.model = Result
