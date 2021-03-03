@@ -20,7 +20,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="result in player.results" :key="result.id">
-                                <td v-if="result.competition" class="px-6 py-4 bg-white whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.competition.date | formatDate }}</td>
+                                <td class="px-6 py-4 bg-white whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ resultDate(result) | formatDate }}</td>
                                 <td class="px-6 py-4 bg-white whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.score }}</td>
                             </tr>
                         </tbody>
@@ -43,10 +43,16 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['findPlayer']),
+        ...mapGetters(['findPlayer', 'playerResults', 'findCompetition']),
 
         player () {
             return this.findPlayer(this.$route.params.id)
+        }
+    },
+
+    methods: {
+        resultDate (result) {
+            return this.findCompetition(result.competitionId).date
         }
     }
 }

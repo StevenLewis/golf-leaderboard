@@ -63,7 +63,7 @@
 <script>
 import Errors from '../classes/Errors'
 import { mapGetters } from 'vuex'
-import { CREATE_PLAYER } from '../action-types'
+import { CREATE_PLAYER } from '@/action-types'
 
 export default {
     data () {

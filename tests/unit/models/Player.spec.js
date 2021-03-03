@@ -1,5 +1,4 @@
 import Player from '../../../src/models/Player'
-import { entryFee } from '../../../src/config/money'
 
 describe('Player', () => {
     test('It can record the player results', () => {

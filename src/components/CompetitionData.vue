@@ -7,7 +7,7 @@
                         No. of players
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        {{ competition.results.length }}
+                        {{ results.length }}
                     </dd>
                 </div>
                 <div v-if="prizes" class="sm:col-span-1">
@@ -32,21 +32,21 @@
 </template>
 
 <script>
-import { prizeMoney } from '../config/money'
+import { prizeMoney } from '@/config/money'
 
 export default {
     name: 'CompetitionData',
 
     props: {
-        competition: {
-            required: true,
-            type: Object
+        results: {
+            type: Array,
+            required: true
         }
     },
 
     computed: {
         prizes () {
-            return prizeMoney[this.competition.results.length] || [0, 0, 0]
+            return prizeMoney[this.results.length] || [0, 0, 0]
         }
     }
 }

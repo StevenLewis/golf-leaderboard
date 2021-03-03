@@ -43,7 +43,7 @@
                                     <router-link :to="{ name: 'seasons.show', params: { id: season.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ season.name }}</router-link>
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
-                                    {{ season.competitions.length }}
+                                    {{ seasonCompetitionCount(season.id) }}
                                 </td>
                             </tr>
                         </tbody>
@@ -57,7 +57,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Errors from '../classes/Errors'
-import { CREATE_SEASON } from '../action-types'
+import { CREATE_SEASON } from '@/action-types'
 
 export default {
     name: 'AllSeasons',
@@ -70,7 +70,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['user', 'seasons'])
+        ...mapGetters(['user', 'seasons', 'seasonCompetitionCount'])
     },
 
     methods: {
