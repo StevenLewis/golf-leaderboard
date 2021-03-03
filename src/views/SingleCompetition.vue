@@ -123,11 +123,12 @@ export default {
                     await this.results.forEach((result, index) => {
                         this.$store.dispatch(ENTER_SCORE, {
                             resultId: result.id,
-                            score: this.scores[index]
+                            score: this.scores[index],
+                            countback: this.countbacks[index]
                         })
                     })
 
-                    // await this.recordCompetition()
+                    await this.recordCompetition()
                 })
                 .catch(() => {
                     // Good Catch!
@@ -135,9 +136,9 @@ export default {
         },
 
         async recordCompetition () {
-            await this.results.forEach((result, index) => {
+            this.sortedResults.forEach((result, index) => {
                 this.$store.dispatch(PAY_WINNINGS, {
-                    playerId: result.player.id,
+                    playerId: result.playerId,
                     resultId: result.id,
                     winnings: this.prizes[index] || 0
                 })

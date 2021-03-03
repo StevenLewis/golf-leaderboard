@@ -123,9 +123,10 @@ export default {
         })
     },
 
-    [actions.ENTER_SCORE] ({ getters }, { resultId, score }) {
+    [actions.ENTER_SCORE] ({ getters }, { resultId, score, countback = 0 }) {
         api.results.doc(resultId).update({
-            score
+            score,
+            countback
         })
     },
 
@@ -136,7 +137,7 @@ export default {
             winnings
         })
 
-        api.players.doc(playerId).update({
+        return api.players.doc(playerId).update({
             winnings: increment
         })
     },

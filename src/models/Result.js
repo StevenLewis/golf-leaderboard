@@ -4,7 +4,9 @@ class Result extends Model {
     constructor (attributes) {
         super(attributes)
 
-        this.cuts = 0
+        if (this.cuts === undefined) {
+            this.cuts = 0
+        }
     }
 
     withCompetition (competitions) {

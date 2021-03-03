@@ -1,4 +1,3 @@
-import { isQualifying } from './getter-helpers'
 import LeaderboardPresenter from './presenters/LeaderboardPresenter'
 
 export default {

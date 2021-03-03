@@ -15,8 +15,8 @@
                         <tr v-for="(result, index) in results" :key="result.id" :class="background(index)">
                             <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ index + 1 }}</td>
                             <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
-                                <router-link :to="{ name: 'players.show', params: { id: result.player.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ result.player.name }}</router-link>
-                                <template v-if="result.player.isGuest"> (G)</template>
+                                <router-link :to="{ name: 'players.show', params: { id: player(result).id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ player(result).name }}</router-link>
+                                <template v-if="player(result).isGuest"> (G)</template>
                             </td>
                             <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.score }}</td>
                             <td class="hidden md:table-cell px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.cuts }}</td>
@@ -32,6 +32,7 @@
 
 <script>
 import { prizeMoney } from '@/config/money'
+import { mapGetters } from 'vuex'
 
 export default {
     name: 'ResultsTable',
@@ -44,13 +45,18 @@ export default {
     },
 
     computed: {
-        // Can we put in Competition model?
+        ...mapGetters(['findPlayer']),
+
         prizes () {
             return prizeMoney[this.results.length] || [0, 0, 0]
         }
     },
 
     methods: {
+        player (result) {
+            return this.findPlayer(result.playerId)
+        },
+
         background (index) {
             switch (index) {
             case 0:

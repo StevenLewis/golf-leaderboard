@@ -65,7 +65,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Errors from '../classes/Errors'
-import { CREATE_COMPETITION } from '../action-types'
+import { CREATE_COMPETITION } from '@/action-types'
 import Datepicker from 'vuejs-datepicker'
 import Player from '../components/PlayerCard'
 
