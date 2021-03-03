@@ -1,6 +1,6 @@
 import Model from './Model'
-import { byDate, isQualifying } from '../getter-helpers'
-import { cutPrice } from '../config/money'
+import { byDate, isQualifying } from '@/getter-helpers'
+import { cutPrice } from '@/config/money'
 
 class Player extends Model {
     constructor (attributes) {
@@ -15,12 +15,6 @@ class Player extends Model {
         this.results = results
 
         this.results.sort(byDate)
-    }
-
-    filterBySeason (seasonId) {
-        this.results = this.results.filter(result => {
-            return result.competition.seasonId === seasonId
-        })
     }
 
     get qualifyingResults () {

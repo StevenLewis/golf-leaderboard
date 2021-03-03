@@ -1,10 +1,7 @@
 class LeaderboardPresenter {
+    // TODO: Filter by Season
     static present (players, seasonId = null) {
         let leaderboard = players.where('isGuest', '===', false)
-
-        if (seasonId) {
-            leaderboard.items.map(player => player.filterBySeason(seasonId))
-        }
 
         leaderboard = leaderboard.items.map(player => {
             return {

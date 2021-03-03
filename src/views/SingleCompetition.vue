@@ -9,7 +9,7 @@
 
         <header>
             <h1 class="mb-5 text-3xl font-bold leading-tight text-gray-900">{{ competition.date | formatDate }}</h1>
-            <competition-data :competition="competition" />
+            <competition-data :results="results" />
         </header>
 
         <div v-if="user.loggedIn" class="mb-10 flex justify-between items-end">
@@ -50,7 +50,7 @@
             </div>
 
             <score-sheet
-                :competition="competition"
+                :results="results"
                 :scores="scores"
                 :countbacks="countbacks"
                 @scores="scores = $event"
@@ -91,23 +91,28 @@ export default {
 
     computed: {
         ...mapState(['user']),
-        ...mapGetters(['findCompetition']),
+        ...mapGetters(['findCompetition', 'competitionResults']),
 
         competition () {
             return this.findCompetition(this.$route.params.id)
         },
 
-        sortedResults () {
-            if (this.competition.results.length > 0) {
-                return [...this.competition.results].sort((a, b) => a.nett - b.nett)
-            }
-
-            return []
+        results () {
+            return this.competitionResults(this.competition.id)
         },
 
-        // Can we put in Competition model?
+        sortedResults () {
+            return [...this.results].sort((a, b) => {
+                if (a.nett === b.nett) {
+                    return b.countback - a.countback
+                }
+
+                return b.nett - a.nett
+            })
+        },
+
         prizes () {
-            return prizeMoney[this.competition.results.length] || [0, 0, 0]
+            return prizeMoney[this.results.length] || [0, 0, 0]
         }
     },
 
@@ -115,7 +120,7 @@ export default {
         recordScores () {
             this.validate()
                 .then(async () => {
-                    await this.competition.results.forEach((result, index) => {
+                    await this.results.forEach((result, index) => {
                         this.$store.dispatch(ENTER_SCORE, {
                             resultId: result.id,
                             score: this.scores[index]
@@ -130,7 +135,7 @@ export default {
         },
 
         async recordCompetition () {
-            await this.competition.results.forEach((result, index) => {
+            await this.results.forEach((result, index) => {
                 this.$store.dispatch(PAY_WINNINGS, {
                     playerId: result.player.id,
                     resultId: result.id,
@@ -145,7 +150,7 @@ export default {
             return new Promise((resolve, reject) => {
                 let errors = []
 
-                if (this.scores.length < this.competition.results.length) {
+                if (this.scores.length < this.results.length) {
                     errors.push('We need all the scores')
                 }
 

@@ -14,12 +14,6 @@ class SeasonCollection extends ModelCollection {
         return new this.constructor(items)
     }
 
-    withCompetitions (state) {
-        let items = this.items.map(item => item.withCompetitions(state))
-
-        return new this.constructor(items)
-    }
-
     all () {
         return this.sortByDate().items
     }

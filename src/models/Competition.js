@@ -15,10 +15,6 @@ class Competition extends Model {
         return new this.constructor(this)
     }
 
-    orderResultsByScore () {
-        this.results.sortByScore()
-    }
-
     get isRecorded () {
         return !!this.recorded_at
     }

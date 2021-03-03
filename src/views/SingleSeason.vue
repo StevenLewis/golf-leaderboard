@@ -31,11 +31,11 @@
                             <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Players</th>
                         </thead>
                         <tbody>
-                            <tr v-for="(competition, index) in season.competitions" :key="competition.id" :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
+                            <tr v-for="(competition, index) in competitions" :key="competition.id" :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
                                     <router-link :to="{ name: 'competitions.show', params: { id: competition.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ competition.date | formatDate }}</router-link>
                                 </td>
-                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ competition.results.length }}</td>
+                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ competitionResultCount(competition.id) }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import Leaderboard from '../components/Leaderboard'
 
 export default {
@@ -57,11 +57,14 @@ export default {
     },
 
     computed: {
-        ...mapState(['user']),
-        ...mapGetters(['findSeason']),
+        ...mapGetters(['user', 'findSeason', 'seasonCompetitions', 'competitionResultCount']),
 
         season () {
             return this.findSeason(this.$route.params.id)
+        },
+
+        competitions () {
+            return this.seasonCompetitions(this.season.id)
         }
     }
 }

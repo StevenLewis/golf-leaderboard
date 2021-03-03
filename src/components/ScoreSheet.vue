@@ -13,7 +13,7 @@
                         <th class="px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
                     </thead>
                     <tbody>
-                        <tr v-for="(result, index) in competition.results" :key="result.id" :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
+                        <tr v-for="(result, index) in results" :key="result.id" :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
                             <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ index + 1 }}</td>
                             <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
                                 {{ player(result.playerId).name }}
@@ -48,9 +48,9 @@ export default {
     name: 'ScoreSheet',
 
     props: {
-        competition: {
-            required: true,
-            type: Object
+        results: {
+            type: Array,
+            required: true
         },
 
         scores: {
