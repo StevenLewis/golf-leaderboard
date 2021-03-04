@@ -87,19 +87,6 @@ describe('Players', () => {
 
         expect(actual.name).toEqual('Bob')
     })
-
-    test('It returns the results for a given player', () => {
-        const state = { results: new ResultCollection() }
-
-        state.results.add({ id: '1', playerId: '1' })
-        state.results.add({ id: '2', playerId: '1' })
-        state.results.add({ id: '3', playerId: '1' })
-        state.results.add({ id: '4', playerId: '2' })
-
-        const actual = getters.playerResults(state)('1')
-
-        expect(actual).toHaveLength(3)
-    })
 })
 
 describe('Competitions', () => {

@@ -1,21 +1,19 @@
-import { players, steveResults, crisResults } from '../../mocks/leaderboard'
+import { players, results } from '../../mocks/leaderboard'
 import LeaderboardPresenter from '../../../src/presenters/LeaderboardPresenter'
 
 describe('LeaderboardPresenter', () => {
     test('It generates a leaderboard', () => {
-        players.find('#1').recordResults(steveResults)
-        players.find('#2').recordResults(crisResults)
+        players.loadResults(results)
 
-        let leaderboard = LeaderboardPresenter.present(players)
+        const leaderboard = LeaderboardPresenter.present(players)
 
         expect(leaderboard).toHaveLength(4)
     })
 
     test('The presents the correct leaderboard', () => {
-        players.find('#1').recordResults(steveResults)
-        players.find('#2').recordResults(crisResults)
+        players.loadResults(results)
 
-        let leaderboard = LeaderboardPresenter.present(players)
+        const leaderboard = LeaderboardPresenter.present(players)
 
         let expected = [
             {
@@ -68,10 +66,9 @@ describe('LeaderboardPresenter', () => {
     })
 
     test('It presents the correct leaderboard for a given season', () => {
-        players.find('#1').recordResults(steveResults)
-        players.find('#2').recordResults(crisResults)
+        players.loadResults(results)
 
-        let leaderboard = LeaderboardPresenter.present(players, '#1')
+        const leaderboard = LeaderboardPresenter.present(players, '#1')
 
         let expected = [
             {

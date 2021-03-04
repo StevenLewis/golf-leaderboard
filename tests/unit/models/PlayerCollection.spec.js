@@ -33,7 +33,7 @@ describe('PlayerCollection', () => {
 
     test('It returns the seasons with their competitions', () => {
         let results = new ResultCollection()
-        let collection = new PlayerCollection()
+        let players = new PlayerCollection()
 
         results.add({ id: '1', playerId: '1' })
         results.add({ id: '2', playerId: '1' })
@@ -41,14 +41,14 @@ describe('PlayerCollection', () => {
         results.add({ id: '4', playerId: '2' })
         results.add({ id: '5', playerId: '2' })
 
-        collection.add({ id: '1', name: 'Tiger' })
-        collection.add({ id: '2', name: 'Rory' })
-        collection.add({ id: '3', name: 'Steve' })
+        players.add({ id: '1', name: 'Tiger' })
+        players.add({ id: '2', name: 'Rory' })
+        players.add({ id: '3', name: 'Steve' })
 
-        let actual = collection.withResults(results).all()
+        players.loadResults(results)
 
-        expect(actual[0].results).toHaveLength(2)
-        expect(actual[1].results).toHaveLength(0)
-        expect(actual[2].results).toHaveLength(3)
+        expect(players.find('1').results).toHaveLength(3)
+        expect(players.find('2').results).toHaveLength(2)
+        expect(players.find('3').results).toHaveLength(0)
     })
 })

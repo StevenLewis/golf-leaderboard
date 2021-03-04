@@ -1,8 +1,10 @@
 import PlayerCollection from '../../src/models/PlayerCollection'
 import CompetitionCollection from '../../src/models/CompetitionCollection'
+import ResultCollection from '@/models/ResultCollection'
 
 export const players = new PlayerCollection()
 export const competitions = new CompetitionCollection()
+export const results = new ResultCollection()
 
 players.add({ id: '#1', name: 'Steve', isGuest: false })
 players.add({ id: '#2', name: 'Cris', isGuest: false })
@@ -25,7 +27,7 @@ competitions.add({ id: '#12', seasonId: '#2', date: new Date('2020-11-01') })
 competitions.add({ id: '#13', seasonId: '#2', date: new Date('2000-02-01') })
 competitions.add({ id: '#14', seasonId: '#2', date: new Date('2000-01-01') })
 
-export const steveResults = [
+results.collect([
     { id: '#1', playerId: '#1', qualifying: true, score: 25, competitionId: '#1', competition: competitions.find('#1') },
     { id: '#2', playerId: '#1', qualifying: true, score: 25, competitionId: '#2', competition: competitions.find('#2') },
     { id: '#3', playerId: '#1', qualifying: true, score: 25, competitionId: '#3', competition: competitions.find('#3') },
@@ -39,10 +41,7 @@ export const steveResults = [
     { id: '#11', playerId: '#1', qualifying: true, score: 24, competitionId: '#11', competition: competitions.find('#11') },
     { id: '#12', playerId: '#1', qualifying: true, score: 36, competitionId: '#12', competition: competitions.find('#12') },
     { id: '#13', playerId: '#1', qualifying: true, score: 36, competitionId: '#13', competition: competitions.find('#13') },
-    { id: '#14', playerId: '#1', qualifying: false, score: 40, competitionId: '#14', competition: competitions.find('#14') }
-]
-
-export const crisResults = [
+    { id: '#14', playerId: '#1', qualifying: false, score: 40, competitionId: '#14', competition: competitions.find('#14') },
     { id: '#15', playerId: '#2', qualifying: true, score: 20, competitionId: '#1', competition: competitions.find('#1') },
     { id: '#16', playerId: '#2', qualifying: true, score: 20, competitionId: '#2', competition: competitions.find('#2') },
     { id: '#17', playerId: '#2', qualifying: true, score: 20, competitionId: '#3', competition: competitions.find('#3') },
@@ -53,4 +52,4 @@ export const crisResults = [
     { id: '#22', playerId: '#2', qualifying: true, score: 25, competitionId: '#8', competition: competitions.find('#8') },
     { id: '#23', playerId: '#2', qualifying: true, score: 25, competitionId: '#9', competition: competitions.find('#9') },
     { id: '#24', playerId: '#2', qualifying: true, score: 25, competitionId: '#10', competition: competitions.find('#10') }
-]
+])

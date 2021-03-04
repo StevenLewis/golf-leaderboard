@@ -43,7 +43,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['findPlayer', 'playerResults', 'findCompetition']),
+        ...mapGetters(['findPlayer', 'findCompetition']),
 
         player () {
             return this.findPlayer(this.$route.params.id)

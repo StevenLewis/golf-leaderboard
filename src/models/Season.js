@@ -1,4 +1,5 @@
 import Model from './Model'
+import { byDate } from '@/getter-helpers'
 
 class Season extends Model {
     constructor (attributes) {
@@ -7,6 +8,12 @@ class Season extends Model {
         if (this.competitions === undefined) {
             this.competitions = []
         }
+    }
+
+    loadCompetitions (/* CompetitionCollection */ competitions) {
+        this.competitions = competitions.where('seasonId', '===', this.id).all()
+
+        return new this.constructor(this)
     }
 }
 

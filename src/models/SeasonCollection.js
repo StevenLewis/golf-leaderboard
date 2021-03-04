@@ -2,20 +2,12 @@ import ModelCollection from './ModelCollection'
 import Season from './Season'
 
 class SeasonCollection extends ModelCollection {
-    sortByDate () {
-        let items = this.items.sort((a, b) => {
-            if (a.createdAt === b.createdAt) {
-                return 0
-            }
+    loadCompetitions (competitions) {
+        let items = this.items
 
-            return (a.createdAt < b.createdAt) ? 1 : -1
-        })
+        items.forEach(item => item.loadCompetitions(competitions))
 
         return new this.constructor(items)
-    }
-
-    all () {
-        return this.sortByDate().items
     }
 }
 

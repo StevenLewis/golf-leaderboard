@@ -6,25 +6,21 @@ export default {
     },
 
     // Players
-    players (state) {
-        return state.players.withResults(state.results).all()
+    players ({ players, results }) {
+        return players.all()
     },
 
-    members (state, getters) {
-        return state.players.where('isGuest', '===', false).all()
+    members ({ players, results }) {
+        return players.where('isGuest', '===', false).all()
     },
 
-    findPlayer: (state) => (playerId) => {
-        return state.players.find(playerId)
-    },
-
-    playerResults: (state, getters) => (playerId) => {
-        return state.results.where('playerId', '===', playerId).all()
+    findPlayer: ({ players, results }) => (playerId) => {
+        return players.find(playerId).load(results)
     },
 
     // Results
-    results (state) {
-        return state.results.all()
+    results ({ results, players, competitions }) {
+        return results.all()
     },
 
     // Competitions

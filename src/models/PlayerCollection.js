@@ -1,6 +1,6 @@
 import ModelCollection from './ModelCollection'
 import Player from './Player'
-import { byName } from '../getter-helpers'
+import { byName } from '@/getter-helpers'
 
 class PlayerCollection extends ModelCollection {
     sortByName () {
@@ -9,10 +9,10 @@ class PlayerCollection extends ModelCollection {
         return new this.constructor(items)
     }
 
-    withResults (results) {
+    loadResults (results) {
         let items = this.items
 
-        items.map(item => item.recordResults(results.where('playerId', '===', item.id).all()))
+        items.map(item => item.loadResults(results))
 
         return new this.constructor(items)
     }
