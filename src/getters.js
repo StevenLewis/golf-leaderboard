@@ -11,13 +11,15 @@ export default {
     },
 
     members ({ players, results }) {
-        return players.where('isGuest', '===', false).all()
+        return players
+            .where('isGuest', '===', false)
+            .all()
     },
 
-    findPlayer: ({ players, results }) => (playerId) => {
-        const player = players.find(playerId)
-
-        return player ? player.loadResults(results) : player
+    findPlayer: ({ players, results, competitions }) => (playerId) => {
+        return players
+            .loadResults(results.loadCompetitions(competitions))
+            .find(playerId)
     },
 
     // Results

@@ -104,6 +104,7 @@ export default {
                 })
         },
 
+        // TODO: Move to validator
         validate () {
             return new Promise((resolve, reject) => {
                 let errors = []

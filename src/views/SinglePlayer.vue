@@ -19,9 +19,13 @@
                             <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Score</th>
                         </thead>
                         <tbody>
-                            <tr v-for="result in player.results" :key="result.id">
-                                <td class="px-6 py-4 bg-white whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ resultDate(result) | formatDate }}</td>
-                                <td class="px-6 py-4 bg-white whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.score }}</td>
+                            <tr v-for="(result, index) in player.results" :key="result.id" :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
+                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
+                                    <router-link :to="{ name: 'competitions.show', params: { id: result.competitionId } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">
+                                        {{ result.competition.date | formatDate }}
+                                    </router-link>
+                                </td>
+                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.score }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -43,16 +47,10 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['findPlayer', 'findCompetition']),
+        ...mapGetters(['findPlayer']),
 
         player () {
             return this.findPlayer(this.$route.params.id)
-        }
-    },
-
-    methods: {
-        resultDate (result) {
-            return this.findCompetition(result.competitionId).date
         }
     }
 }
