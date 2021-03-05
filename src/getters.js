@@ -15,7 +15,9 @@ export default {
     },
 
     findPlayer: ({ players, results }) => (playerId) => {
-        return players.find(playerId).load(results)
+        const player = players.find(playerId)
+
+        return player ? player.loadResults(results) : player
     },
 
     // Results
@@ -33,7 +35,9 @@ export default {
     },
 
     competitionResults: (state) => (competitionId) => {
-        return state.results.where('competitionId', '===', competitionId).all()
+        const results = state.results.loadPlayers(state.players)
+
+        return results.where('competitionId', '===', competitionId).all()
     },
 
     competitionResultCount: (state) => (competitionId) => {
@@ -59,7 +63,8 @@ export default {
 
     // Leaderboard
     presentLeaderboard: (state) => (seasonId = null) => {
-        const players = state.players.withResults(state.results)
+        const results = state.results.loadCompetitions(state.competitions)
+        const players = state.players.loadResults(results)
 
         return LeaderboardPresenter.present(players, seasonId)
     }

@@ -1,5 +1,4 @@
 import Model from './Model'
-import { byDate } from '@/getter-helpers'
 
 class Season extends Model {
     constructor (attributes) {

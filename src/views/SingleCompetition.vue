@@ -97,10 +97,12 @@ export default {
             return this.findCompetition(this.$route.params.id)
         },
 
+        // TODO: Refactor to competion.results
         results () {
             return this.competitionResults(this.competition.id)
         },
 
+        // TODO: Use Competition getter
         sortedResults () {
             return [...this.results].sort((a, b) => {
                 if (a.nett === b.nett) {
@@ -111,12 +113,14 @@ export default {
             })
         },
 
+        // TODO: Extract to Competiton Model
         prizes () {
             return prizeMoney[this.results.length] || [0, 0, 0]
         }
     },
 
     methods: {
+        // TODO: Extract to Competiton Model
         recordScores () {
             this.validate()
                 .then(async () => {
@@ -135,6 +139,7 @@ export default {
                 })
         },
 
+        // TODO: Extract to Competiton Model
         async recordCompetition () {
             this.sortedResults.forEach((result, index) => {
                 this.$store.dispatch(PAY_WINNINGS, {
@@ -147,6 +152,7 @@ export default {
             await this.$store.dispatch(RECORD_COMPETITION, this.competition.id)
         },
 
+        // TODO: Extract to validator class?
         validate () {
             return new Promise((resolve, reject) => {
                 let errors = []
