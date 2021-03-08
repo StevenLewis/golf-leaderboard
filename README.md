@@ -48,12 +48,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ### Single player
 - [x] Date formatting
 - [x] Display meta info, ie. Best score, Worst Score
-- [ ] Edit player name
-- [ ] Select season dropdown or 'All Time'
-- [ ] Order results reverse chronilogically
-
-### All Players
-- [ ] Remove player
+- [x] Edit player name
+- [x] Select season dropdown or 'All Time'
+- [x] Order results reverse chronilogically
 
 ### Competitions
 - [x] Create competition
@@ -63,19 +60,18 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - [x] Show nett score column
 - [x] Show prize money column
 - [x] Show player count & prize money structure at top of page
-- [ ] Add score via text input in leaderboard
-- [ ] Enter brand new player after competition is created
+- [x] Enter brand new player after competition is created
 
 ### Season
 - [x] Create a season, uuid & custom name (2019-20) 
 - [x] Season has a one to many relationship with competitions
-- [ ] Coloured leaderboard based on qualification
+- [x] Coloured leaderboard based on qualification
 
 ### General
 - [x] Datepicker
 - [x] Styles & UI
 - [x] Firebase Hosting
-- [ ] Responsive
+- [x] Responsive
 
 ### Authentication
 - [x] Set up Users in Firestore
