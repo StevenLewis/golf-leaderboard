@@ -3,6 +3,11 @@ import Player from './Player'
 import { byName } from '@/getter-helpers'
 
 class PlayerCollection extends ModelCollection {
+    members () {
+        let players = this.where('isGuest', '===', false)
+
+        return players
+    }
     filterBySeason (seasonId = null) {
         let items = seasonId ? [...this.items].map(item => item.filterBySeason(seasonId)) : this.items
 

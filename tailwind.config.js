@@ -8,7 +8,11 @@ module.exports = {
             }
         }
     },
-    variants: {},
+    variants: {
+        extend: {
+            opacity: ['group-hover']
+        }
+    },
     plugins: [
         require('@tailwindcss/ui')
     ]

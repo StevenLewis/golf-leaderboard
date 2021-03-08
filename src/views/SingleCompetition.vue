@@ -9,7 +9,7 @@
 
         <header>
             <h1 class="mb-5 text-3xl font-bold leading-tight text-gray-900">{{ competition.date | formatDate }}</h1>
-            <competition-data :results="results" />
+            <CompetitionData :results="results" />
         </header>
 
         <div v-if="user.loggedIn" class="mb-10 flex justify-between items-end">
@@ -17,14 +17,14 @@
                 <p>Recorded At: <span class="text-purple-700">{{ competition.recorded_at | formatDate }}</span></p>
             </aside>
             <template v-else>
-                <add-player :competition="competition" />
+                <AddPlayer :competition="competition" />
                 <button @click.prevent="recordScores" type="button" class="flex-none flex items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
                     Record Scores
                 </button>
             </template>
         </div>
 
-        <results-table v-if="competition.isRecorded" :results="sortedResults" />
+        <ResultsTable v-if="competition.isRecorded" :results="sortedResults" />
 
         <template v-else>
             <div v-if="errors.has('scores')" class="rounded-md bg-red-50 p-4 mb-4">
@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <score-sheet
+            <ScoreSheet
                 :results="results"
                 :scores="scores"
                 :countbacks="countbacks"

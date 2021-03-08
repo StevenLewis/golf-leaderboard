@@ -66,6 +66,13 @@ export default {
         })
     },
 
+    [actions.UPDATE_PLAYER] ({ getters }, { playerId, name, isGuest }) {
+        return api.players.doc(playerId).update({
+            name,
+            isGuest
+        })
+    },
+
     [actions.CREATE_SEASON] ({ getters }, name) {
         api.seasons.add({
             name
