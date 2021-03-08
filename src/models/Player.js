@@ -10,7 +10,7 @@ class Player extends Model {
         }
     }
 
-    loadResults (/* ResultCollection */ results) {
+    withResults (/* ResultCollection */ results) {
         this.results = results.where('playerId', '===', this.id).all()
         this.results.sort(byDate)
 

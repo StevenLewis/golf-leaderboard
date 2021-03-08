@@ -8,10 +8,10 @@ class CompetitionCollection extends ModelCollection {
         return new this.constructor(items)
     }
 
-    loadResults (results) {
+    withResults (results) {
         let items = this.items
 
-        items.forEach(item => item.loadResults(results))
+        items.forEach(item => item.withResults(results))
 
         return new this.constructor(items)
     }

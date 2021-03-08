@@ -45,7 +45,7 @@ describe('PlayerCollection', () => {
         players.add({ id: '2', name: 'Rory' })
         players.add({ id: '3', name: 'Steve' })
 
-        players.loadResults(results)
+        players.withResults(results)
 
         expect(players.find('1').results).toHaveLength(3)
         expect(players.find('2').results).toHaveLength(2)

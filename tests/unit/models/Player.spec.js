@@ -12,7 +12,7 @@ describe('Player', () => {
             { id: '5', playerId: '2' }
         ])
 
-        player.loadResults(results)
+        player.withResults(results)
 
         expect(player.results).toHaveLength(4)
     })
@@ -25,7 +25,7 @@ describe('Player', () => {
             { id: '3', playerId: '1', competition: { date: new Date('2020-02-01') } }
         ])
 
-        player.loadResults(results)
+        player.withResults(results)
 
         expect(player.results[0].id).toBe('2')
         expect(player.results[1].id).toBe('3')

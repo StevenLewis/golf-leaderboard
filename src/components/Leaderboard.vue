@@ -17,7 +17,7 @@
                             <th class="hidden md:table-cell px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">8th Best</th>
                         </thead>
                         <tbody>
-                            <tr v-for="(player, index) in leaderboard" :key="player.id" :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
+                            <tr v-for="(player, index) in leaderboard" :key="player.id" :class="backgroundColor(index)">
                                 <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ index + 1 }}</td>
                                 <td class="px-4 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
                                     <router-link :to="{ name: 'players.show', params: { id: player.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ player.name }}</router-link>
@@ -41,6 +41,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import leaderboardColors from '@/config/leaderboardColors'
 
 export default {
     name: 'Leaderboard',
@@ -58,6 +59,16 @@ export default {
 
         leaderboard () {
             return this.presentLeaderboard(this.seasonId)
+        }
+    },
+
+    methods: {
+        backgroundColor (index) {
+            if (index <= 15) {
+                return leaderboardColors[index]
+            }
+
+            return index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
         }
     }
 }

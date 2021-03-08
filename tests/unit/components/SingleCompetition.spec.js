@@ -13,7 +13,7 @@ describe('SingleCompetition', () => {
         results.add({ id: '4', competitionId: competition.id, score: 36, countback: 0 })
         results.add({ id: '5', competitionId: competition.id, score: 30, countback: 2 })
 
-        competition.loadResults(results)
+        competition.withResults(results)
         competition.sortResults()
 
         expect(competition.results[0].id).toEqual('1')
