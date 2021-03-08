@@ -10,7 +10,6 @@ players.add({ id: '#1', name: 'Steve', isGuest: false })
 players.add({ id: '#2', name: 'Cris', isGuest: false })
 players.add({ id: '#3', name: 'Sam', isGuest: false })
 players.add({ id: '#4', name: 'Matt', isGuest: false })
-players.add({ id: '#5', name: 'Guesty McGuest', isGuest: true })
 
 competitions.add({ id: '#1', seasonId: '#1', date: new Date('2000-01-01') })
 competitions.add({ id: '#2', seasonId: '#1', date: new Date('2010-12-25') })

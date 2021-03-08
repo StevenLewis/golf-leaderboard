@@ -1,15 +1,7 @@
 import ModelCollection from './ModelCollection'
 import Season from './Season'
 
-class SeasonCollection extends ModelCollection {
-    loadCompetitions (competitions) {
-        let items = this.items
-
-        items.forEach(item => item.loadCompetitions(competitions))
-
-        return new this.constructor(items)
-    }
-}
+class SeasonCollection extends ModelCollection {}
 
 SeasonCollection.prototype.model = Season
 

@@ -93,17 +93,6 @@ describe('Players', () => {
 })
 
 describe('Competitions', () => {
-    test('It returns all the competitions', () => {
-        const state = { competitions: new CompetitionCollection() }
-
-        state.competitions.add({ id: '1' })
-        state.competitions.add({ id: '2' })
-
-        const actual = getters.competitions(state)
-
-        expect(actual).toHaveLength(2)
-    })
-
     test('It returns a competition given an ID', () => {
         const state = { competitions: new CompetitionCollection() }
 
@@ -117,7 +106,10 @@ describe('Competitions', () => {
     })
 
     test('It returns the results for a given competition', () => {
-        const state = { results: new ResultCollection() }
+        const state = {
+            results: new ResultCollection(),
+            players: new PlayerCollection()
+        }
 
         state.results.add({ id: '1', competitionId: '1' })
         state.results.add({ id: '2', competitionId: '1' })
@@ -139,22 +131,5 @@ describe('Competitions', () => {
         const actual = getters.competitionResultCount(state)('1')
 
         expect(actual).toEqual(2)
-    })
-})
-
-describe('Results', () => {
-    test('It return the correct amount of results', () => {
-        const state = {
-            results: new ResultCollection([
-                { id: '1' },
-                { id: '2' },
-                { id: '3' }
-            ]),
-            competitions: []
-        }
-
-        const actual = getters.results(state)
-
-        expect(actual).toHaveLength(3)
     })
 })

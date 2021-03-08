@@ -15,7 +15,7 @@ class PlayerCollection extends ModelCollection {
         return new this.constructor(items)
     }
 
-    loadResults (results) {
+    withResults (results) {
         let items = this.items
 
         items.map(item => item.loadResults(results))

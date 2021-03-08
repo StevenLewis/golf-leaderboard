@@ -7,7 +7,7 @@ describe('Result', () => {
         let competitions = new CompetitionCollection([{ id: '1' }])
         let result = new Result({ id: '34', competitionId: '1' })
 
-        result.loadCompetition(competitions)
+        result.withCompetition(competitions)
 
         expect(result.competition.id).toEqual('1')
     })
@@ -16,7 +16,7 @@ describe('Result', () => {
         let players = new PlayerCollection([{ id: '1' }])
         let result = new Result({ id: '34', playerId: '1' })
 
-        result.loadPlayer(players)
+        result.withPlayer(players)
 
         expect(result.player.id).toEqual('1')
     })

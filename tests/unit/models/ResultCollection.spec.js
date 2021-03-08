@@ -15,7 +15,7 @@ describe('ResultCollection', () => {
         results.add({ id: '3', competitionId: '1' })
         results.add({ id: '4', competitionId: '1' })
 
-        results.loadCompetitions(competitions)
+        results.withCompetitions(competitions)
 
         expect(results.find('1').competition.id).toEqual('1')
         expect(results.find('2').competition.id).toEqual('2')
@@ -35,7 +35,7 @@ describe('ResultCollection', () => {
         results.add({ id: '3', playerId: '1' })
         results.add({ id: '4', playerId: '1' })
 
-        results.loadPlayers(players)
+        results.withPlayers(players)
 
         expect(results.find('1').player.id).toEqual('1')
         expect(results.find('2').player.id).toEqual('2')
