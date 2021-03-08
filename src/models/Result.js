@@ -9,13 +9,13 @@ class Result extends Model {
         }
     }
 
-    loadCompetition (/* CompetitionCollection */ competitions) {
+    withCompetition (/* CompetitionCollection */ competitions) {
         this.competition = competitions.find(this.competitionId)
 
         return new this.constructor(this)
     }
 
-    loadPlayer (/* PlayerCollection */ players) {
+    withPlayer (/* PlayerCollection */ players) {
         this.player = players.find(this.playerId)
 
         return new this.constructor(this)

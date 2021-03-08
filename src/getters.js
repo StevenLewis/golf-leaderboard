@@ -5,6 +5,27 @@ export default {
         return state.user
     },
 
+    // Seasons
+    seasons ({ seasons }) {
+        return seasons.all()
+    },
+
+    seasonCompetitions: ({ competitions }) => (seasonId) => {
+        return competitions
+            .filterBySeason(seasonId)
+            .all()
+    },
+
+    seasonCompetitionCount: ({ competitions }) => (seasonId) => {
+        return competitions
+            .filterBySeason(seasonId)
+            .count()
+    },
+
+    findSeason: ({ seasons }) => (seasonId) => {
+        return seasons.find(seasonId)
+    },
+
     // Players
     players ({ players, results }) {
         return players.all()
@@ -16,58 +37,41 @@ export default {
             .all()
     },
 
-    findPlayer: ({ players, results, competitions }) => (playerId) => {
-        return players
-            .loadResults(results.loadCompetitions(competitions))
-            .find(playerId)
+    findPlayer: ({ players }) => (playerId) => {
+        return players.find(playerId)
     },
 
     // Results
-    results ({ results, players, competitions }) {
-        return results.all()
+    playerResults: ({ results, competitions }) => (playerId) => {
+        return results
+            .withCompetitions(competitions)
+            .where('playerId', '===', playerId)
+            .all()
     },
 
     // Competitions
-    competitions (state) {
-        return state.competitions.all()
+    findCompetition: ({ competitions }) => (competitionId) => {
+        return competitions.find(competitionId)
     },
 
-    findCompetition: (state) => (competitionId) => {
-        return state.competitions.find(competitionId)
+    competitionResults: ({ results, players }) => (competitionId) => {
+        return results
+            .withPlayers(players)
+            .where('competitionId', '===', competitionId)
+            .all()
     },
 
-    competitionResults: (state) => (competitionId) => {
-        const results = state.results.loadPlayers(state.players)
-
-        return results.where('competitionId', '===', competitionId).all()
-    },
-
-    competitionResultCount: (state) => (competitionId) => {
-        return state.results.where('competitionId', '===', competitionId).count()
-    },
-
-    // Seasons
-    seasons (state) {
-        return state.seasons.all()
-    },
-
-    seasonCompetitions: (state) => (seasonId) => {
-        return state.competitions.filterBySeason(seasonId).all()
-    },
-
-    seasonCompetitionCount: (state) => (seasonId) => {
-        return state.competitions.filterBySeason(seasonId).count()
-    },
-
-    findSeason: (state) => (seasonId) => {
-        return state.seasons.find(seasonId)
+    competitionResultCount: ({ results }) => (competitionId) => {
+        return results
+            .where('competitionId', '===', competitionId)
+            .count()
     },
 
     // Leaderboard
     presentLeaderboard: (state) => (seasonId = null) => {
-        const results = state.results.loadCompetitions(state.competitions)
-        const players = state.players.loadResults(results)
+        const results = state.results.withCompetitions(state.competitions)
+        const players = state.players.loadResults(results).filterBySeason(seasonId).all()
 
-        return LeaderboardPresenter.present(players, seasonId)
+        return LeaderboardPresenter.present(players)
     }
 }

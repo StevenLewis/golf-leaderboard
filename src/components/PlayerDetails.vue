@@ -93,13 +93,20 @@
 </template>
 
 <script>
+import Details from '@/classes/PlayerStats'
 export default {
     name: 'PlayerDetails',
 
     props: {
-        player: {
-            type: Object,
+        results: {
+            type: Array,
             required: true
+        }
+    },
+
+    computed: {
+        player () {
+            return new Details(this.results)
         }
     }
 }

@@ -2,14 +2,20 @@ import ModelCollection from './ModelCollection'
 import Result from './Result'
 
 class ResultCollection extends ModelCollection {
-    loadCompetitions (competitions) {
-        let items = this.items.map(result => result.loadCompetition(competitions))
+    filterBySeason (seasonId) {
+        let items = [...this.items].filter(item => item.competitions.seasonId === seasonId)
 
         return new this.constructor(items)
     }
 
-    loadPlayers (players) {
-        let items = this.items.map(result => result.loadPlayer(players))
+    withCompetitions (competitions) {
+        let items = this.items.map(result => result.withCompetition(competitions))
+
+        return new this.constructor(items)
+    }
+
+    withPlayers (players) {
+        let items = this.items.map(result => result.withPlayer(players))
 
         return new this.constructor(items)
     }

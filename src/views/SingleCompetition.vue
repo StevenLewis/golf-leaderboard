@@ -64,6 +64,7 @@
 import { PAY_WINNINGS, RECORD_COMPETITION, ENTER_SCORE } from '@/action-types'
 import { mapState, mapGetters } from 'vuex'
 import { prizeMoney } from '@/config/money'
+import { byScore } from '@/getter-helpers'
 import Errors from '@/classes/Errors'
 import ResultsTable from '../components/ResultsTable'
 import CompetitionData from '../components/CompetitionData'
@@ -97,20 +98,12 @@ export default {
             return this.findCompetition(this.$route.params.id)
         },
 
-        // TODO: Refactor to competion.results
         results () {
             return this.competitionResults(this.competition.id)
         },
 
-        // TODO: Use Competition getter
         sortedResults () {
-            return [...this.results].sort((a, b) => {
-                if (a.nett === b.nett) {
-                    return b.countback - a.countback
-                }
-
-                return b.nett - a.nett
-            })
+            return [...this.results].sort(byScore)
         },
 
         // TODO: Extract to Competiton Model

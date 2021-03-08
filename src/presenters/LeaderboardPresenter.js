@@ -1,26 +1,29 @@
+import PlayerStats from '@/classes/PlayerStats'
+
 class LeaderboardPresenter {
     static present (players, seasonId = null) {
-        let leaderboard = players.where('isGuest', '===', false)
+        let leaderboard = players.map(player => {
+            return {
+                ...player,
+                stats: new PlayerStats(player.results)
+            }
+        })
 
-        if (seasonId) {
-            leaderboard.items.map(player => player.filterBySeason(seasonId))
-        }
+        leaderboard.sort((a, b) => b.stats.topTenTotal - a.stats.topTenTotal)
 
-        leaderboard = leaderboard.items.map(player => {
+        leaderboard = leaderboard.map(player => {
             return {
                 id: player.id,
                 isGuest: player.isGuest,
                 name: player.name,
                 totalGames: player.results.length,
-                totalQualifyingGames: player.qualifyingResults.length,
-                totalQualifyingScore: player.totalQualifyingScore,
-                qualifyingAverage: player.qualifyingAverage,
-                topTenTotal: player.topTenTotal,
-                scoresToBeat: player.scoresToBeat
+                totalQualifyingGames: player.stats.qualifyingResults.length,
+                totalQualifyingScore: player.stats.totalQualifyingScore,
+                qualifyingAverage: player.stats.qualifyingAverage,
+                topTenTotal: player.stats.topTenTotal,
+                scoresToBeat: player.stats.scoresToBeat
             }
         })
-
-        leaderboard.sort((a, b) => b.topTenTotal - a.topTenTotal)
 
         return leaderboard
     }

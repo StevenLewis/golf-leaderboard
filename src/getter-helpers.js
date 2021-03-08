@@ -40,6 +40,14 @@ export const byResult = (a, b) => {
     return (a.nett < b.nett) ? 1 : -1
 }
 
+export const byScore = (a, b) => {
+    if (a.nett === b.nett) {
+        return b.countback - a.countback
+    }
+
+    return b.nett - a.nett
+}
+
 // Filter
 export const byPlayer = (id) => result => result.playerId === id
 

@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import AllPlayers from './views/AllPlayers'
 import SinglePlayer from './views/SinglePlayer'
-import AllCompetitions from './views/AllCompetitions'
 import SingleCompetition from './views/SingleCompetition'
 import CreateCompetition from './views/CreateCompetition'
 import AllSeasons from './views/AllSeasons'
@@ -51,11 +50,6 @@ export default new Router({
             path: '/seasons/:id',
             name: 'seasons.show',
             component: SingleSeason
-        },
-        {
-            path: '/competitions',
-            name: 'competitions.index',
-            component: AllCompetitions
         },
         {
             path: '/competitions/:id',
