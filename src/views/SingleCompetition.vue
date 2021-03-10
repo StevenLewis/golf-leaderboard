@@ -17,7 +17,7 @@
                 <p>Recorded At: <span class="text-purple-700">{{ competition.recorded_at | formatDate }}</span></p>
             </aside>
             <template v-else>
-                <AddPlayer :competition="competition" />
+                <AddPlayer :competition="competition" :results="results" />
                 <button @click.prevent="recordScores" type="button" class="flex-none flex items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
                     Record Scores
                 </button>
@@ -117,32 +117,28 @@ export default {
         recordScores () {
             this.validate()
                 .then(async () => {
-                    await this.results.forEach((result, index) => {
-                        this.$store.dispatch(ENTER_SCORE, {
+                    await Promise.all(this.results.map((result, index) => {
+                        return this.$store.dispatch(ENTER_SCORE, {
                             resultId: result.id,
                             score: this.scores[index],
                             countback: this.countbacks[index]
                         })
-                    })
+                    }))
 
-                    await this.recordCompetition()
-                })
-                .catch(() => {
-                    // Good Catch!
+                    this.recordCompetition()
                 })
         },
 
         // TODO: Extract to Competiton Model
-        async recordCompetition () {
-            this.sortedResults.forEach((result, index) => {
-                this.$store.dispatch(PAY_WINNINGS, {
+        recordCompetition () {
+            Promise.all(this.sortedResults.map((result, index) => {
+                return this.$store.dispatch(PAY_WINNINGS, {
                     playerId: result.playerId,
                     resultId: result.id,
                     winnings: this.prizes[index] || 0
                 })
-            })
-
-            await this.$store.dispatch(RECORD_COMPETITION, this.competition.id)
+            }))
+                .then(() => this.$store.dispatch(RECORD_COMPETITION, this.competition.id))
         },
 
         // TODO: Extract to validator class?

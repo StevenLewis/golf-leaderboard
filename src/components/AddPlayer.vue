@@ -36,6 +36,11 @@ export default {
         competition: {
             required: true,
             type: Object
+        },
+
+        results: {
+            required: true,
+            type: Array
         }
     },
 
@@ -51,7 +56,7 @@ export default {
 
         missingPlayers () {
             return this.players.filter(player => {
-                return !this.competition.results.some(result => result.playerId === player.id)
+                return !this.results.some(result => result.playerId === player.id)
             })
         }
     },
@@ -101,7 +106,7 @@ export default {
         },
 
         hasAlreadyEntered (id) {
-            return this.competition.results.some(result => result.playerId === id)
+            return this.results.some(result => result.playerId === id)
         }
     }
 }

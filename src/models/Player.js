@@ -1,5 +1,6 @@
 import Model from './Model'
 import { byDate } from '@/getter-helpers'
+import { cutPrice } from '@/config/money'
 
 class Player extends Model {
     constructor (attributes) {
@@ -21,6 +22,10 @@ class Player extends Model {
         this.results = [...this.results].filter(result => result.competition.seasonId === seasonId)
 
         return new this.constructor(this)
+    }
+
+    get cuts () {
+        return Math.floor(this.winnings / cutPrice) * 0.5
     }
 }
 

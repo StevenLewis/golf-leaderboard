@@ -9,9 +9,16 @@
             </router-link>
             <router-link
                 :to="{ name: 'players.index' }"
-                class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 focus:outline-none transition duration-150 ease-in-out"
+                class="mr-2 md:mr-8 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 focus:outline-none transition duration-150 ease-in-out"
                 :class="linkClasses('players.index')">
                 Players
+            </router-link>
+            <router-link
+                v-if="user.loggedIn"
+                :to="{ name: 'admin' }"
+                class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 focus:outline-none transition duration-150 ease-in-out"
+                :class="linkClasses('admin')">
+                Admin
             </router-link>
         </div>
         <div class="flex">

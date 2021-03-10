@@ -140,15 +140,4 @@ describe('PlayerStats', () => {
 
         expect(actual.totalProfit).toEqual(31.5)
     })
-
-    test('It returns the players current cuts', () => {
-        let results = new ResultCollection([
-            { id: '1', playerId: '1', qualifying: true, winnings: 30 },
-            { id: '2', playerId: '1', qualifying: true, winnings: 7.5 }
-        ]).all()
-
-        const actual = new PlayerStats(results)
-
-        expect(actual.cuts).toEqual(1.5)
-    })
 })

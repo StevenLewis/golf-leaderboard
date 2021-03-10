@@ -131,7 +131,7 @@ export default {
     },
 
     [actions.ENTER_SCORE] ({ getters }, { resultId, score, countback = 0 }) {
-        api.results.doc(resultId).update({
+        return api.results.doc(resultId).update({
             score,
             countback
         })
@@ -157,5 +157,13 @@ export default {
         return api.results.doc(resultId).update({
             countback
         })
+    },
+
+    [actions.RESET_WINNINGS] ({ getters }, players) {
+        return Promise.all(players.map(player => {
+            return api.players.doc(player.id).update({
+                winnings: 0
+            })
+        }))
     }
 }

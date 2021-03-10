@@ -1,5 +1,4 @@
 import { isQualifying } from '@/getter-helpers'
-import { cutPrice } from '@/config/money'
 
 class PlayerStats {
     constructor (results) {
@@ -52,10 +51,6 @@ class PlayerStats {
 
     get totalProfit () {
         return this.totalWinnings - this.totalFees
-    }
-
-    get cuts () {
-        return Math.floor(this.totalWinnings / cutPrice) * 0.5
     }
 }
 

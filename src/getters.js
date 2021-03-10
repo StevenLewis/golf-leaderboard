@@ -13,6 +13,7 @@ export default {
     seasonCompetitions: ({ competitions }) => (seasonId) => {
         return competitions
             .filterBySeason(seasonId)
+            .sortByDesc('date')
             .all()
     },
 

@@ -7,7 +7,7 @@
                         Top 10 Total
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        {{ player.topTenTotal }}
+                        {{ stats.topTenTotal }}
                     </dd>
                 </div>
                 <div class="sm:col-span-1">
@@ -15,7 +15,7 @@
                         Total Qualifying Games
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        {{ player.qualifyingResults.length }}
+                        {{ stats.qualifyingResults.length }}
                     </dd>
                 </div>
                 <div class="sm:col-span-1">
@@ -23,7 +23,7 @@
                         Total Score
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        {{ player.totalQualifyingScore }}
+                        {{ stats.totalQualifyingScore }}
                     </dd>
                 </div>
                 <div class="sm:col-span-1">
@@ -31,7 +31,7 @@
                         Average Score
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        {{ player.qualifyingAverage }}
+                        {{ stats.qualifyingAverage }}
                     </dd>
                 </div>
                 <div class="sm:col-span-1">
@@ -39,7 +39,7 @@
                         Best Score
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        {{ player.bestScore }}
+                        {{ stats.bestScore }}
                     </dd>
                 </div>
                 <div class="sm:col-span-1">
@@ -47,8 +47,8 @@
                         Scores To Beat
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        <template v-if="player.scoresToBeat.length > 2">
-                            {{ player.scoresToBeat[0] }}, {{ player.scoresToBeat[1] }}, {{ player.scoresToBeat[2] }}
+                        <template v-if="stats.scoresToBeat.length > 2">
+                            {{ stats.scoresToBeat[0] }}, {{ stats.scoresToBeat[1] }}, {{ stats.scoresToBeat[2] }}
                         </template>
                         <template v-else>
                             You need at least 10 Qualifying Scores
@@ -60,7 +60,7 @@
                         Entry Fees
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        {{ player.totalFees | sterling }}
+                        {{ stats.totalFees | sterling }}
                     </dd>
                 </div>
                 <div class="sm:col-span-1">
@@ -68,7 +68,7 @@
                         Winnings
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        {{ player.totalWinnings | sterling }}
+                        {{ stats.totalWinnings | sterling }}
                     </dd>
                 </div>
                 <div class="sm:col-span-1">
@@ -76,7 +76,7 @@
                         Nett Profit
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        {{ player.totalProfit | sterling }}
+                        {{ stats.totalProfit | sterling }}
                     </dd>
                 </div>
                 <div class="sm:col-span-1">
@@ -93,11 +93,16 @@
 </template>
 
 <script>
-import Details from '@/classes/PlayerStats'
+import Stats from '@/classes/PlayerStats'
 export default {
     name: 'PlayerDetails',
 
     props: {
+        player: {
+            type: Object,
+            required: true
+        },
+
         results: {
             type: Array,
             required: true
@@ -105,8 +110,8 @@ export default {
     },
 
     computed: {
-        player () {
-            return new Details(this.results)
+        stats () {
+            return new Stats(this.results)
         }
     }
 }

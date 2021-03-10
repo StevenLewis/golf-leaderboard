@@ -31,4 +31,12 @@ describe('Player', () => {
         expect(player.results[1].id).toBe('3')
         expect(player.results[2].id).toBe('1')
     })
+
+    test('It calculates their current cuts', () => {
+        let player = new Player({ id: '1', winnings: 26 })
+
+        const actual = player.cuts
+
+        expect(actual).toEqual(1)
+    })
 })

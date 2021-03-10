@@ -48,7 +48,7 @@
                 </div>
             </form>
             <div class="flex-1 mb-10 md:ml-10">
-                <p class="mb-4 text-sm font-medium">Field</p>
+                <p class="mb-4 text-sm font-medium">Field ({{ entered.length }})</p>
                 <ul class="bg-white shadow overflow-hidden sm:rounded-md">
                     <player v-for="player in entered" :key="player.id" :player="player" @removed="removePlayer" />
                 </ul>

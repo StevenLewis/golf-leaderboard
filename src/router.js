@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import AllPlayers from './views/AllPlayers'
-import SinglePlayer from './views/SinglePlayer'
-import SingleCompetition from './views/SingleCompetition'
-import CreateCompetition from './views/CreateCompetition'
-import AllSeasons from './views/AllSeasons'
-import SingleSeason from './views/SingleSeason'
-import Login from './views/Login'
-import Register from './views/Register'
-import Home from './views/Home'
+import AllPlayers from '@/views/AllPlayers'
+import SinglePlayer from '@/views/SinglePlayer'
+import SingleCompetition from '@/views/SingleCompetition'
+import CreateCompetition from '@/views/CreateCompetition'
+import AllSeasons from '@/views/AllSeasons'
+import SingleSeason from '@/views/SingleSeason'
+import Login from '@/views/Login'
+import Register from '@/views/Register'
+import Home from '@/views/Home'
+import Admin from '@/views/Admin'
 
 Vue.use(Router)
 
@@ -60,6 +61,11 @@ export default new Router({
             path: '/seasons/:id/competitions/create',
             name: 'competitions.create',
             component: CreateCompetition
+        },
+        {
+            path: '/admin',
+            name: 'admin',
+            component: Admin
         }
     ]
 })
