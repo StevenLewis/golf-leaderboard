@@ -25,7 +25,7 @@
                     </div>
                     <p v-if="errors.has('date')" class="my-2 text-sm text-red-600">{{ errors.first('date') }}</p>
                 </div>
-                <div class="relative">
+                <div class="relative mb-10">
                     <label for="name" class="text-sm font-medium">Add Player</label>
                     <div class="mt-1 mb-2">
                         <div class="w-full relative rounded-md shadow-sm mb-2">
@@ -46,6 +46,28 @@
                         </div>
                     </div>
                 </div>
+                <h4 class="text-sm font-medium mb-2">Frequent Players</h4>
+                <ul class="bg-white shadow overflow-hidden sm:rounded-md">
+                    <li v-for="player in frequentPlayers" :key="player.id" @click.prevent="addPlayer(player)" class="block border-b border-gray-200 cursor-pointer">
+                        <div class="flex items-center px-3 py-3 sm:px-6">
+                            <div class="min-w-0 flex-1 flex items-center">
+                                <div class="min-w-0 flex-1 pr-3 md:grid md:grid-cols-2 md:gap-4">
+                                    <div>
+                                        <div class="text-sm leading-5 font-medium truncate">
+                                            {{ player.name }}
+                                            <span v-if="player.isGuest" class="text-gray-400"> Guest</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <svg class="w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </form>
             <div class="flex-1 mb-10 md:ml-10">
                 <p class="mb-4 text-sm font-medium">Field ({{ entered.length }})</p>
@@ -89,7 +111,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['user', 'players']),
+        ...mapGetters(['user', 'players', 'playerResultsCount']),
 
         datepickerClass () {
             let string = this.errors.has('date') ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-300 ' : ''
@@ -101,6 +123,12 @@ export default {
             return this.players.filter(player => {
                 return !this.entered.some(item => item.id === player.id)
             })
+        },
+
+        frequentPlayers () {
+            return [...this.availablePlayers]
+                .sort((a, b) => this.playerResultsCount(b.id) - this.playerResultsCount(a.id))
+                .slice(0, 8)
         },
 
         noPlayers () {
@@ -159,6 +187,10 @@ export default {
 
         removePlayer (id) {
             this.entered = this.entered.filter(player => player.id !== id)
+        },
+
+        addPlayer (player) {
+            this.entered.push(player)
         },
 
         search () {

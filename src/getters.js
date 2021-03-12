@@ -50,6 +50,12 @@ export default {
             .all()
     },
 
+    playerResultsCount: ({ results }) => (playerId) => {
+        return results
+            .where('playerId', '===', playerId)
+            .count()
+    },
+
     // Competitions
     findCompetition: ({ competitions }) => (competitionId) => {
         return competitions.find(competitionId)
