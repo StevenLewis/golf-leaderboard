@@ -57,6 +57,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { byDate } from '@/getter-helpers'
 import PlayerForm from '@/components/PlayerForm'
 import PlayerDetails from '@/components/PlayerDetails'
 
@@ -83,7 +84,7 @@ export default {
         },
 
         results () {
-            return this.playerResults(this.player.id)
+            return this.playerResults(this.player.id).sort(byDate)
         },
 
         filteredResults () {

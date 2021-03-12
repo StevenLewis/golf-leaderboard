@@ -16,7 +16,7 @@
                         </p>
                     </div>
                     <div class="mt-5">
-                        <button @click.prevent="resetCuts" type="button" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm">
+                        <button @click.prevent="resetCuts" type="button" :disabled="isProcessing" class="inline-flex items-center justify-center px-4 py-2 border border-transparent font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm">
                             Reset cuts
                         </button>
                     </div>
@@ -38,15 +38,26 @@ export default {
         Alert
     },
 
+    data () {
+        return {
+            isProcessing: false
+        }
+    },
+
     computed: {
         ...mapGetters(['user', 'players'])
     },
 
     methods: {
         resetCuts () {
+            if (this.isProcessing) return
+
+            this.isProcessing = true
+
             this.$store.dispatch(RESET_WINNINGS, this.players)
                 .then(() => this.notify('Succesfully reset cuts'))
                 .catch(() => this.notify('Something went wrong', 'danger'))
+                .finally(() => { this.isProcessing = false })
         },
 
         notify (message, type = 'success') {

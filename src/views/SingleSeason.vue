@@ -29,6 +29,7 @@
                         <thead>
                             <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Competition Date</th>
                             <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Players</th>
+                            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
                         </thead>
                         <tbody>
                             <tr v-for="(competition, index) in competitions" :key="competition.id" :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
@@ -36,6 +37,11 @@
                                     <router-link :to="{ name: 'competitions.show', params: { id: competition.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ competition.date | formatDate }}</router-link>
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ competitionResultCount(competition.id) }}</td>
+                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
+                                    <svg v-if="user.loggedIn && hasNoResults(competition.id)" @click.prevent="removeCompetition(competition.id)" viewBox="0 0 24 24" width="24" height="24" class="cursor-pointer ml-auto">
+                                        <path class="heroicon-ui" d="M8 6V4c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2h5a1 1 0 0 1 0 2h-1v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8H3a1 1 0 1 1 0-2h5zM6 8v12h12V8H6zm8-2V4h-4v2h4zm-4 4a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1zm4 0a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1z"/>
+                                    </svg>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -47,6 +53,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { REMOVE_COMPETITION } from '@/action-types'
 import Leaderboard from '../components/Leaderboard'
 
 export default {
@@ -65,6 +72,16 @@ export default {
 
         competitions () {
             return this.seasonCompetitions(this.season.id)
+        }
+    },
+
+    methods: {
+        hasNoResults (id) {
+            return this.competitionResultCount(id) === 0
+        },
+
+        removeCompetition (id) {
+            this.$store.dispatch(REMOVE_COMPETITION, id)
         }
     }
 }

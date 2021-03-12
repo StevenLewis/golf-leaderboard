@@ -1,5 +1,3 @@
-import Vue from 'vue'
-
 export default {
     SET_LOGGED_IN (state, value) {
         state.user.loggedIn = value
@@ -20,13 +18,16 @@ export default {
         state.results.find(result.id).update(result)
     },
     'REMOVE_RESULT' (state, id) {
-        Vue.delete(state.results, id)
+        state.results.remove(id)
     },
     'ADD_COMPETITION' (state, competition) {
         state.competitions.add(competition)
     },
     'UPDATE_COMPETITION' (state, competition) {
         state.competitions.find(competition.id).update(competition)
+    },
+    'REMOVE_COMPETITION' (state, id) {
+        state.competitions.remove(id)
     },
     'ADD_SEASON' (state, season) {
         state.seasons.add(season)

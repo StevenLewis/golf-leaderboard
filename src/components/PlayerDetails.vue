@@ -47,12 +47,7 @@
                         Scores To Beat
                     </dt>
                     <dd class="mt-1 text-sm leading-5 text-gray-900">
-                        <template v-if="stats.scoresToBeat.length > 2">
-                            {{ stats.scoresToBeat[0] }}, {{ stats.scoresToBeat[1] }}, {{ stats.scoresToBeat[2] }}
-                        </template>
-                        <template v-else>
-                            You need at least 10 Qualifying Scores
-                        </template>
+                        {{ stats.scoresToBeat[0] }}, {{ stats.scoresToBeat[1] }}, {{ stats.scoresToBeat[2] }}
                     </dd>
                 </div>
                 <div class="sm:col-span-1">

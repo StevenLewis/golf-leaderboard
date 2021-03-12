@@ -34,7 +34,13 @@ class PlayerStats {
     }
 
     get scoresToBeat () {
-        return this.qualifyingScores.slice(-10, -7)
+        const scores = [...this.qualifyingScores.slice(-10, -7)]
+
+        while (scores.length < 3) {
+            scores.unshift(0)
+        }
+
+        return scores
     }
 
     get bestScore () {

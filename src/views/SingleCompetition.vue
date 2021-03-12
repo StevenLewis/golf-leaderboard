@@ -18,7 +18,7 @@
             </aside>
             <template v-else>
                 <AddPlayer :competition="competition" :results="results" />
-                <button @click.prevent="recordScores" type="button" class="flex-none flex items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+                <button @click.prevent="recordScores" :disabled="isProcessing" type="button" class="flex-none flex items-center px-3 py-2 ml-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
                     Record Scores
                 </button>
             </template>
@@ -27,7 +27,7 @@
         <ResultsTable v-if="competition.isRecorded" :results="sortedResults" />
 
         <template v-else>
-            <div v-if="errors.has('scores')" class="rounded-md bg-red-50 p-4 mb-4">
+            <div v-if="validator.hasError('scores')" class="rounded-md bg-red-50 p-4 mb-4">
                 <div class="flex">
                     <div class="flex-shrink-0">
                         <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -41,7 +41,7 @@
                         <div class="mt-2 text-sm text-red-700">
                             <ul class="list-disc pl-5 space-y-1">
                                 <li>
-                                    {{  errors.first('scores') }}
+                                    {{ validator.getError('scores') }}
                                 </li>
                             </ul>
                         </div>
@@ -65,7 +65,7 @@ import { PAY_WINNINGS, RECORD_COMPETITION, ENTER_SCORE } from '@/action-types'
 import { mapState, mapGetters } from 'vuex'
 import { prizeMoney } from '@/config/money'
 import { byScore } from '@/getter-helpers'
-import Errors from '@/classes/Errors'
+import ScoresValidator from '@/classes/ScoresValidator'
 import ResultsTable from '../components/ResultsTable'
 import CompetitionData from '../components/CompetitionData'
 import AddPlayer from '../components/AddPlayer'
@@ -86,7 +86,8 @@ export default {
             qualifying: true,
             scores: [],
             countbacks: [],
-            errors: new Errors()
+            validator: new ScoresValidator(),
+            isProcessing: false
         }
     },
 
@@ -106,61 +107,52 @@ export default {
             return [...this.results].sort(byScore)
         },
 
-        // TODO: Extract to Competiton Model
         prizes () {
             return prizeMoney[this.results.length] || [0, 0, 0]
         }
     },
 
     methods: {
-        // TODO: Extract to Competiton Model
         recordScores () {
-            this.validate()
-                .then(async () => {
-                    await Promise.all(this.results.map((result, index) => {
-                        return this.$store.dispatch(ENTER_SCORE, {
-                            resultId: result.id,
-                            score: this.scores[index],
-                            countback: this.countbacks[index]
-                        })
-                    }))
+            if (this.isProcessing) return
+            this.isProcessing = true
 
-                    this.recordCompetition()
+            const data = { scores: this.scores, results: this.results }
+
+            this.validator.validate(data)
+                .then(async () => {
+                    await this.enterScores()
+                    await this.recordCompetition()
                 })
+                .catch(() => { /* Fail silently */ })
         },
 
-        // TODO: Extract to Competiton Model
-        recordCompetition () {
-            Promise.all(this.sortedResults.map((result, index) => {
+        async recordCompetition () {
+            await this.payWinnings()
+
+            await this.$store.dispatch(RECORD_COMPETITION, this.competition.id)
+
+            this.isProcessing = false
+        },
+
+        enterScores () {
+            return Promise.all(this.results.map((result, index) => {
+                return this.$store.dispatch(ENTER_SCORE, {
+                    resultId: result.id,
+                    score: this.scores[index],
+                    countback: this.countbacks[index]
+                })
+            }))
+        },
+
+        payWinnings () {
+            return Promise.all(this.sortedResults.map((result, index) => {
                 return this.$store.dispatch(PAY_WINNINGS, {
                     playerId: result.playerId,
                     resultId: result.id,
                     winnings: this.prizes[index] || 0
                 })
             }))
-                .then(() => this.$store.dispatch(RECORD_COMPETITION, this.competition.id))
-        },
-
-        // TODO: Extract to validator class?
-        validate () {
-            return new Promise((resolve, reject) => {
-                let errors = []
-
-                if (this.scores.length < this.results.length) {
-                    errors.push('We need all the scores')
-                }
-
-                if (this.scores.some(score => typeof score !== 'number')) {
-                    errors.push('The scores must be a number')
-                }
-
-                if (errors.length > 0) {
-                    this.errors.record({ scores: errors })
-                    reject(this.errors)
-                }
-
-                resolve('Valid!')
-            })
         }
     }
 }

@@ -97,6 +97,23 @@ describe('PlayerStats', () => {
         expect(actual.scoresToBeat).toEqual([29, 30, 31])
     })
 
+    test('It returns the correct scores to beat if a player hasnt player 10 games', () => {
+        let results = new ResultCollection([
+            { id: '1', playerId: '1', qualifying: true, score: 36 },
+            { id: '1', playerId: '1', qualifying: true, score: 35 },
+            { id: '1', playerId: '1', qualifying: true, score: 29 },
+            { id: '1', playerId: '1', qualifying: true, score: 31 },
+            { id: '1', playerId: '1', qualifying: true, score: 34 },
+            { id: '1', playerId: '1', qualifying: true, score: 31 },
+            { id: '1', playerId: '1', qualifying: true, score: 43 },
+            { id: '1', playerId: '1', qualifying: true, score: 40 }
+        ]).all()
+
+        const actual = new PlayerStats(results)
+
+        expect(actual.scoresToBeat).toEqual([0, 0, 29])
+    })
+
     test('It return the players best score', () => {
         let results = new ResultCollection([
             { id: '1', playerId: '1', qualifying: true, score: 40 },

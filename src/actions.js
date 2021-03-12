@@ -19,7 +19,9 @@ export default {
 
         api.competitions.onSnapshot((snapshot) => {
             snapshot.docChanges().forEach(({ type, doc }) => {
-                if (type === 'added') {
+                if (type === 'removed') {
+                    commit('REMOVE_COMPETITION', doc.id)
+                } else if (type === 'added') {
                     commit('ADD_COMPETITION', { ...doc.data(), id: doc.id })
                 } else {
                     commit('UPDATE_COMPETITION', { ...doc.data(), id: doc.id })
@@ -150,7 +152,11 @@ export default {
     },
 
     [actions.REMOVE_RESULT] ({ getters }, id) {
-        api.results.doc(id).delete()
+        return api.results.doc(id).delete()
+    },
+
+    [actions.REMOVE_COMPETITION] ({ getters }, id) {
+        return api.competitions.doc(id).delete()
     },
 
     [actions.ADD_COUNTBACK] ({ getters }, { resultId, countback }) {

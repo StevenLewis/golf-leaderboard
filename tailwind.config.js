@@ -10,7 +10,7 @@ module.exports = {
     },
     variants: {
         extend: {
-            opacity: ['group-hover']
+            opacity: ['disabled']
         }
     },
     plugins: [

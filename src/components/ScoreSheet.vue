@@ -23,7 +23,7 @@
                                 <input @input="$emit('scores', scores)" v-model.number="scores[index]" type="text" name="score" :id="`score-${index}`" class="block p-2 w-20 border border-gray-300 rounded-md focus:ring-indigo-400 focus:border-indigo-400 sm:max-w-xs sm:text-sm" autocomplete="off">
                             </td>
                             <td class="hidden md:table-cell px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.cuts }}</td>
-                            <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ nett(result, index) }}</td>
+                            <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium" :class="isTopFour(index) ? 'text-indigo-500' : 'text-gray-500'">{{ nett(index) }}</td>
                             <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
                                 <input @input="$emit('countbacks', countbacks)" v-model.number="countbacks[index]" type="text" name="score" :id="`countback-${index}`" class="block p-2 w-20 border border-gray-300 rounded-md focus:ring-indigo-400 focus:border-indigo-400 sm:max-w-xs sm:text-sm" autocomplete="off">
                             </td>
@@ -66,7 +66,11 @@ export default {
 
     computed: {
         ...mapState(['players']),
-        ...mapGetters(['user'])
+        ...mapGetters(['user']),
+
+        nettScores () {
+            return [...this.scores].map((score, index) => score - this.results[index].cuts).sort((a, b) => b - a)
+        }
     },
 
     methods: {
@@ -74,14 +78,18 @@ export default {
             this.$store.dispatch(REMOVE_RESULT, id)
         },
 
-        nett (result, index) {
+        nett (index) {
             if (this.scores[index] === undefined) return 0
 
-            return this.scores[index] - result.cuts
+            return this.scores[index] - this.results[index].cuts
         },
 
         player (id) {
             return this.players.find(id)
+        },
+
+        isTopFour (index) {
+            return this.nett(index) >= this.nettScores[3]
         }
     }
 }
