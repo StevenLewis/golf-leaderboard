@@ -151,6 +151,12 @@ export default {
         })
     },
 
+    [actions.TOGGLE_ENTRY] ({ getters }, { resultId, entryFee }) {
+        return api.results.doc(resultId).update({
+            entryFee
+        })
+    },
+
     [actions.REMOVE_RESULT] ({ getters }, id) {
         return api.results.doc(id).delete()
     },

@@ -24,6 +24,10 @@ class Result extends Model {
     get nett () {
         return this.score - this.cuts
     }
+
+    get entered () {
+        return this.entryFee > 0
+    }
 }
 
 export default Result

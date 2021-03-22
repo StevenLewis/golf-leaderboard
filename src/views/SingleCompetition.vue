@@ -9,7 +9,7 @@
 
         <header>
             <h1 class="mb-5 text-3xl font-bold leading-tight text-gray-900">{{ competition.date | formatDate }}</h1>
-            <CompetitionData :results="results" />
+            <CompetitionData :results="enteredResults" />
         </header>
 
         <div v-if="user.loggedIn" class="mb-10 flex justify-between items-end">
@@ -103,12 +103,16 @@ export default {
             return this.competitionResults(this.competition.id)
         },
 
+        enteredResults () {
+            return [...this.results].filter(result => result.entered)
+        },
+
         sortedResults () {
-            return [...this.results].sort(byScore)
+            return [...this.enteredResults].sort(byScore)
         },
 
         prizes () {
-            return prizeMoney[this.results.length] || [0, 0, 0]
+            return prizeMoney[this.enteredResults.length] || [0, 0, 0]
         }
     },
 
