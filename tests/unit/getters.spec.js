@@ -132,4 +132,34 @@ describe('Competitions', () => {
 
         expect(actual).toEqual(2)
     })
+
+    test('It returns all the results for a given season', () => {
+        const state = {
+            results: new ResultCollection(),
+            seasons: new SeasonCollection(),
+            competitions: new CompetitionCollection()
+        }
+
+        state.results.add({ id: '1', competitionId: '1' })
+        state.results.add({ id: '2', competitionId: '1' })
+        state.results.add({ id: '3', competitionId: '2' })
+        state.results.add({ id: '4', competitionId: '2' })
+        state.results.add({ id: '5', competitionId: '2' })
+
+        state.competitions.add({ id: '1', seasonId: '1' })
+        state.competitions.add({ id: '2', seasonId: '2' })
+        state.competitions.add({ id: '3', seasonId: '3' })
+
+        state.seasons.add({ id: '1' })
+        state.seasons.add({ id: '2' })
+        state.seasons.add({ id: '3' })
+
+        const resultsA = getters.seasonResults(state)('1')
+        const resultsB = getters.seasonResults(state)('2')
+        const resultsC = getters.seasonResults(state)('3')
+
+        expect(resultsA).toHaveLength(2)
+        expect(resultsB).toHaveLength(3)
+        expect(resultsC).toHaveLength(0)
+    })
 })

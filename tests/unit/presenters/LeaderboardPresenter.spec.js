@@ -2,14 +2,11 @@ import { players, results } from '../../mocks/leaderboard'
 import LeaderboardPresenter from '../../../src/presenters/LeaderboardPresenter'
 
 describe('LeaderboardPresenter', () => {
-    test('It generates a leaderboard', () => {
-        const leaderboard = LeaderboardPresenter.present(players.withResults(results).all())
-
-        expect(leaderboard).toHaveLength(4)
-    })
-
-    test('The presents the correct leaderboard', () => {
-        const leaderboard = LeaderboardPresenter.present(players.withResults(results).all())
+    test('The presents the leaderboard', () => {
+        const leaderboard = LeaderboardPresenter.present({
+            players: players.all(),
+            results: results.all()
+        })
 
         let expected = [
             {
@@ -43,7 +40,7 @@ describe('LeaderboardPresenter', () => {
                 totalQualifyingScore: 0,
                 qualifyingAverage: 0,
                 topTenTotal: 0,
-                scoresToBeat: []
+                scoresToBeat: [0, 0, 0]
             },
             {
                 id: '#3',
@@ -54,7 +51,7 @@ describe('LeaderboardPresenter', () => {
                 totalQualifyingScore: 0,
                 qualifyingAverage: 0,
                 topTenTotal: 0,
-                scoresToBeat: []
+                scoresToBeat: [0, 0, 0]
             }
         ]
 

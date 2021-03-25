@@ -42,10 +42,10 @@
                             <tr v-for="(result, index) in filteredResults" :key="result.id" :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
                                     <router-link :to="{ name: 'competitions.show', params: { id: result.competitionId } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">
-                                        {{ result.competition.date | formatDate }}
+                                        {{ competition(result.competitionId).date | formatDate }}
                                     </router-link>
                                 </td>
-                                <td class="px-6 py-4  whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.score }}</td>
+                                <td class="px-6 py-4  whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ result.total }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -77,7 +77,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['findPlayer', 'playerResults', 'seasons']),
+        ...mapGetters(['findPlayer', 'findCompetition', 'playerResults', 'seasons']),
 
         player () {
             return this.findPlayer(this.$route.params.id)
@@ -89,6 +89,12 @@ export default {
 
         filteredResults () {
             return this.season ? [...this.results].filter(result => result.competition.seasonId === this.season) : this.results
+        }
+    },
+
+    methods: {
+        competition (id) {
+            return this.findCompetition(id)
         }
     }
 }

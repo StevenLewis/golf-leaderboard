@@ -43,9 +43,8 @@ export default {
     },
 
     // Results
-    playerResults: ({ results, competitions }) => (playerId) => {
+    playerResults: ({ results }) => (playerId) => {
         return results
-            .withCompetitions(competitions)
             .where('playerId', '===', playerId)
             .all()
     },
@@ -56,6 +55,12 @@ export default {
             .count()
     },
 
+    seasonResults: ({ results, competitions }) => (seasonId) => {
+        const seasonCompetitionIds = competitions.where('seasonId', '===', seasonId).all().map(competition => competition.id)
+
+        return [...results.items].filter(item => seasonCompetitionIds.includes(item.competitionId))
+    },
+
     // Competitions
     findCompetition: ({ competitions }) => (competitionId) => {
         return competitions.find(competitionId)
@@ -63,7 +68,6 @@ export default {
 
     competitionResults: ({ results, players }) => (competitionId) => {
         return results
-            .withPlayers(players)
             .where('competitionId', '===', competitionId)
             .all()
     },
@@ -75,10 +79,10 @@ export default {
     },
 
     // Leaderboard
-    presentLeaderboard: (state) => (seasonId = null) => {
-        const results = state.results.withCompetitions(state.competitions)
-        const players = state.players.withResults(results).filterBySeason(seasonId).members().all()
+    presentLeaderboard: (state, getters) => (seasonId = null) => {
+        const players = state.players.all()
+        const results = getters.seasonResults(seasonId)
 
-        return LeaderboardPresenter.present(players)
+        return LeaderboardPresenter.present({ players, results }, seasonId)
     }
 }

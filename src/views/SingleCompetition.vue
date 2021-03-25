@@ -140,6 +140,7 @@ export default {
         },
 
         enterScores () {
+            // TODO: Add bonus
             return Promise.all(this.results.map((result, index) => {
                 return this.$store.dispatch(ENTER_SCORE, {
                     resultId: result.id,

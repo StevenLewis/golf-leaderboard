@@ -14,7 +14,7 @@ class PlayerStats {
     }
 
     get qualifyingScores () {
-        return this.qualifyingResults.sort((a, b) => a.score - b.score).map(result => result.score)
+        return this.qualifyingResults.sort((a, b) => a.total - b.total).map(result => result.total)
     }
 
     get totalQualifyingScore () {
@@ -44,7 +44,7 @@ class PlayerStats {
     }
 
     get bestScore () {
-        return Math.max(...this.results.map(result => result.score))
+        return Math.max(...this.results.map(result => result.total))
     }
 
     get totalFees () {

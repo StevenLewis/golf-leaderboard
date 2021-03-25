@@ -9,7 +9,7 @@
                             <th class="px-4 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Player</th>
                             <th class="px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-center md:text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"><strong>Top 10 Total</strong></th>
                             <th class="px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-center md:text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Total Games</th>
-                            <th class="hidden md:table-cell px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Total Qualifying Games</th>
+                            <th class="hidden md:table-cell px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Qualifying Games</th>
                             <th class="hidden md:table-cell px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Total Score</th>
                             <th class="hidden md:table-cell px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Average</th>
                             <th class="px-2 py-2 md:px-6 md:py-3 border-b border-gray-200 bg-gray-50 text-center md:text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">10th Best</th>

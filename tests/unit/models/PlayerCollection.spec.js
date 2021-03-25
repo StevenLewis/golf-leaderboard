@@ -1,5 +1,4 @@
 import PlayerCollection from '../../../src/models/PlayerCollection'
-import ResultCollection from '../../../src/models/ResultCollection'
 
 describe('PlayerCollection', () => {
     test('It can sort the players by name', () => {
@@ -29,26 +28,5 @@ describe('PlayerCollection', () => {
         expect(actual).toHaveLength(2)
         expect(actual[0].id).toBe('2')
         expect(actual[1].id).toBe('1')
-    })
-
-    test('It returns the seasons with their competitions', () => {
-        let results = new ResultCollection()
-        let players = new PlayerCollection()
-
-        results.add({ id: '1', playerId: '1' })
-        results.add({ id: '2', playerId: '1' })
-        results.add({ id: '3', playerId: '1' })
-        results.add({ id: '4', playerId: '2' })
-        results.add({ id: '5', playerId: '2' })
-
-        players.add({ id: '1', name: 'Tiger' })
-        players.add({ id: '2', name: 'Rory' })
-        players.add({ id: '3', name: 'Steve' })
-
-        players.withResults(results)
-
-        expect(players.find('1').results).toHaveLength(3)
-        expect(players.find('2').results).toHaveLength(2)
-        expect(players.find('3').results).toHaveLength(0)
     })
 })

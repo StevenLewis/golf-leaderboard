@@ -9,20 +9,12 @@ class Result extends Model {
         }
     }
 
-    withCompetition (/* CompetitionCollection */ competitions) {
-        this.competition = competitions.find(this.competitionId)
-
-        return new this.constructor(this)
-    }
-
-    withPlayer (/* PlayerCollection */ players) {
-        this.player = players.find(this.playerId)
-
-        return new this.constructor(this)
-    }
-
     get nett () {
         return this.score - this.cuts
+    }
+
+    get total () {
+        return this.score + (this.bonus || 0)
     }
 
     get entered () {

@@ -14,15 +14,24 @@
             </router-link>
         </header>
 
-        <Leaderboard :season-id="season.id" />
-
         <footer v-if="user.loggedIn" class="md:hidden mb-10">
             <router-link :to="{ name: 'competitions.create', params: { id: season.id } }" class="flex-none flex items-center justify-center px-3 py-4 ml-2 border border-transparent text-sm text-center leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
                 New Competition
             </router-link>
         </footer>
 
-        <div class="mb-10 flex flex-col">
+        <nav class="flex space-x-4 mb-4" aria-label="Tabs">
+            <a @click.prevent="changeView" href="#" class="px-3 py-2 font-medium text-sm rounded-md" :class="viewLeadboard ? 'bg-gray-100 text-gray-700' : 'text-gray-500 hover:text-gray-700'">
+                Leaderboard
+            </a>
+            <a @click.prevent="changeView" href="#" class="px-3 py-2 font-medium text-sm rounded-md" :class="viewLeadboard ? 'text-gray-500 hover:text-gray-700' : 'bg-gray-100 text-gray-700'">
+                Competitions ({{ competitions.length }})
+            </a>
+        </nav>
+
+        <Leaderboard v-if="viewLeadboard" :season-id="season.id" />
+
+        <div v-else class="mb-10 flex flex-col">
             <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                 <div class="align-middle inline-block min-w-full shadow overflow-hidden rounded-lg border-b border-gray-200">
                     <table class="min-w-full">
@@ -63,6 +72,12 @@ export default {
         Leaderboard
     },
 
+    data () {
+        return {
+            viewLeadboard: true
+        }
+    },
+
     computed: {
         ...mapGetters(['user', 'findSeason', 'seasonCompetitions', 'competitionResultCount']),
 
@@ -76,6 +91,10 @@ export default {
     },
 
     methods: {
+        changeView () {
+            this.viewLeadboard = !this.viewLeadboard
+        },
+
         hasNoResults (id) {
             return this.competitionResultCount(id) === 0
         },

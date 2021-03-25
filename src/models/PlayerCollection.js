@@ -8,6 +8,7 @@ class PlayerCollection extends ModelCollection {
 
         return players
     }
+
     filterBySeason (seasonId = null) {
         let items = seasonId ? [...this.items].map(item => item.filterBySeason(seasonId)) : this.items
 
@@ -16,14 +17,6 @@ class PlayerCollection extends ModelCollection {
 
     sortByName () {
         let items = this.items.sort(byName)
-
-        return new this.constructor(items)
-    }
-
-    withResults (results) {
-        let items = this.items
-
-        items.map(item => item.withResults(results))
 
         return new this.constructor(items)
     }

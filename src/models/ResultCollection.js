@@ -7,18 +7,6 @@ class ResultCollection extends ModelCollection {
 
         return new this.constructor(items)
     }
-
-    withCompetitions (competitions) {
-        let items = this.items.map(result => result.withCompetition(competitions))
-
-        return new this.constructor(items)
-    }
-
-    withPlayers (players) {
-        let items = this.items.map(result => result.withPlayer(players))
-
-        return new this.constructor(items)
-    }
 }
 
 ResultCollection.prototype.model = Result

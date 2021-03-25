@@ -49,7 +49,7 @@
 
 <script>
 import { REMOVE_RESULT, TOGGLE_ENTRY } from '@/action-types'
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import { entryFee } from '@/config/money'
 
 export default {
@@ -73,8 +73,7 @@ export default {
     },
 
     computed: {
-        ...mapState(['players']),
-        ...mapGetters(['user']),
+        ...mapGetters(['user', 'findPlayer']),
 
         nettScores () {
             return [...this.scores].map((score, index) => score - this.results[index].cuts).sort((a, b) => b - a)
@@ -100,7 +99,7 @@ export default {
         },
 
         player (id) {
-            return this.players.find(id)
+            return this.findPlayer(id)
         },
 
         isTopFour (index) {
