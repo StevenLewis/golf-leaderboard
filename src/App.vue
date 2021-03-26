@@ -5,8 +5,8 @@
         </template>
         <template v-else>
             <div class="background min-h-screen bg-white">
-                <nav class="bg-white border-b border-gray-200">
-                    <div class="max-w-7xl mx-auto px-2 md:px-6 lg:px-8">
+                <nav class="md:bg-white md:border-b md:border-gray-200">
+                    <div class="max-w-7xl mx-auto pt-2 px-2 md:px-6 lg:px-8">
                         <navigation />
                     </div>
                 </nav>
