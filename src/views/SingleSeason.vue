@@ -20,7 +20,7 @@
             </router-link>
         </footer>
 
-        <header class="flex items-center justify-between">
+        <header class="md:flex items-center justify-between mb-4 md:mb-0">
             <nav class="flex space-x-4 mb-4" aria-label="Tabs">
                 <a @click.prevent="changeView" href="#" class="px-3 py-2 font-medium text-sm rounded-md" :class="viewLeadboard ? 'bg-gray-100 text-gray-700' : 'text-gray-500 hover:text-gray-700'">
                     Leaderboard
@@ -30,7 +30,7 @@
                 </a>
             </nav>
 
-            <aside v-if="!viewLeadboard" class="flex items-center text-sm ml-3">
+            <aside v-if="!viewLeadboard" class="hidden md:flex items-center text-sm md:ml-3">
                 <p class="flex items-center ml-4"><span class="w-4 h-4 mr-2 bg-blue-300 rounded"></span> +2 Points</p>
                 <p class="flex items-center ml-4"><span class="w-4 h-4 mr-2 bg-green-300 rounded"></span> +4 Points</p>
                 <p class="flex items-center ml-4"><span class="w-4 h-4 mr-2 bg-orange-300 rounded"></span> Table Championship</p>
@@ -39,14 +39,14 @@
 
         <Leaderboard v-if="viewLeadboard" :season-id="season.id" />
 
-        <div v-else class="mb-10 flex flex-col">
+        <div v-else class="mb-10 flex flex-col -mx-2 md:mx-0">
             <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                 <div class="align-middle inline-block min-w-full shadow overflow-hidden rounded-lg border-b border-gray-200">
                     <table class="min-w-full">
                         <thead>
-                            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Competition Date</th>
-                            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Players</th>
-                            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
+                            <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Competition Date</th>
+                            <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Players</th>
+                            <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
                         </thead>
                         <tbody>
                             <tr v-for="(competition, index) in competitions" :key="competition.id" :class="backgroundColor(competition, index)">
