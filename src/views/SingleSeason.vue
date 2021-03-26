@@ -41,7 +41,7 @@
 
         <div v-else class="mb-10 flex flex-col -mx-2 md:mx-0">
             <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-                <div class="align-middle inline-block min-w-full shadow overflow-hidden rounded-lg border-b border-gray-200">
+                <div v-if="competitions.length > 0" class="align-middle inline-block min-w-full shadow overflow-hidden rounded-lg border-b border-gray-200">
                     <table class="min-w-full">
                         <thead>
                             <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Competition Date</th>
@@ -64,6 +64,9 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div v-else class="my-10 text-center">
+                    <h4 class="text-xl font-semibold">No Competitions yet!</h4>
                 </div>
             </div>
         </div>

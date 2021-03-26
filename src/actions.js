@@ -81,12 +81,13 @@ export default {
         })
     },
 
-    [actions.CREATE_COMPETITION] ({ dispatch }, { date, seasonId, players = [] }) {
+    [actions.CREATE_COMPETITION] ({ dispatch }, { date, seasonId, players, isChampionshipDay }) {
         return new Promise(resolve => {
             api.competitions.add({
                 date,
                 seasonId,
-                recordedAt: null
+                recordedAt: null,
+                isChampionshipDay
             }).then(response => {
                 dispatch(ENTER_PLAYERS, {
                     players,

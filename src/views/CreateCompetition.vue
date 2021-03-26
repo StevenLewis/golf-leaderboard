@@ -26,6 +26,12 @@
                     <p v-if="errors.has('date')" class="my-2 text-sm text-red-600">{{ errors.first('date') }}</p>
                 </div>
                 <div class="relative mb-10">
+                    <p class="text-sm font-medium mb-2">Championship Day</p>
+                    <button @click="isChampionshipDay = !isChampionshipDay" type="button" aria-pressed="false" aria-labelledby="toggleLabel" :class="isChampionshipDay ? 'bg-orange-500' : 'bg-gray-200'" class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <span aria-hidden="true" :class="isChampionshipDay ? 'translate-x-5' : 'translate-x-0'" class="inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
+                    </button>
+                </div>
+                <div class="relative mb-10">
                     <label for="name" class="text-sm font-medium">Add Player</label>
                     <div class="mt-1 mb-2">
                         <div class="w-full relative rounded-md shadow-sm mb-2">
@@ -102,6 +108,7 @@ export default {
     data () {
         return {
             date: new Date(),
+            isChampionshipDay: false,
             entered: [],
             query: '',
             errors: new Errors(),
@@ -207,7 +214,8 @@ export default {
             const response = await this.$store.dispatch(CREATE_COMPETITION, {
                 date: this.date,
                 seasonId: this.$route.params.id,
-                players: this.entered
+                players: this.entered,
+                isChampionshipDay: this.isChampionshipDay
             })
 
             await this.$router.push({ name: 'competitions.show', params: { id: response.id } })

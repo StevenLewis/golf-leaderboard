@@ -112,7 +112,7 @@ export default {
 
     // Leaderboard
     presentLeaderboard: (state, getters) => (seasonId = null) => {
-        const players = state.players.all()
+        const players = state.players.members().all()
         const results = getters.seasonResults(seasonId)
 
         return LeaderboardPresenter.present({ players, results }, seasonId)
