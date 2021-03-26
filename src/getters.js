@@ -42,6 +42,34 @@ export default {
         return players.find(playerId)
     },
 
+    hasUsedOctoberBonus: (state, getters) => (playerId, seasonId) => {
+        const results = getters.seasonResults(seasonId).filter(result => result.playerId === playerId)
+
+        return results.some(result => result.bonus === 2)
+    },
+
+    hasUsedNovemberBonus: (state, getters) => (playerId, seasonId) => {
+        const results = getters.seasonResults(seasonId).filter(result => result.playerId === playerId)
+
+        return results.some(result => result.bonus === 4)
+    },
+
+    playerBonus: (state, getters) => (playerId, competition) => {
+        if (competition.isChampionshipDay) {
+            return 6
+        }
+
+        if (competition.isOctober) {
+            return getters.hasUsedOctoberBonus(playerId, competition.seasonId) ? 0 : 2
+        }
+
+        if (competition.isNovember) {
+            return getters.hasUsedNovemberBonus(playerId, competition.seasonId) ? 0 : 4
+        }
+
+        return 0
+    },
+
     // Results
     playerResults: ({ results }) => (playerId) => {
         return results
@@ -62,6 +90,10 @@ export default {
     },
 
     // Competitions
+    competitions ({ competitions }) {
+        return competitions.all()
+    },
+
     findCompetition: ({ competitions }) => (competitionId) => {
         return competitions.find(competitionId)
     },

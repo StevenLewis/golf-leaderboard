@@ -26,6 +26,17 @@
                         </div>
                     </dd>
                 </div>
+                <div v-if="competition.bonusesAvailable" class="sm:col-span-1">
+                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                        Bonuses
+                    </dt>
+                    <dd class="mt-1 text-sm leading-5 text-gray-900">
+                        <p v-if="competition.isChampionshipDay" class="text-orange-500">6 Bonus Points Available</p>
+                        <p v-else-if="competition.isNovember" class="text-green-500">4 Bonus Points Available</p>
+                        <p v-else-if="competition.isOctober" class="text-blue-500">2 Bonus Points Available</p>
+                        <p v-else>None</p>
+                    </dd>
+                </div>
             </dl>
         </div>
     </div>
@@ -38,6 +49,11 @@ export default {
     name: 'CompetitionData',
 
     props: {
+        competition: {
+            type: Object,
+            required: true
+        },
+
         results: {
             type: Array,
             required: true

@@ -2,19 +2,22 @@
     <div v-if="competition" id="competition">
         <header>
             <div class="mb-10 text-xs text-gray-500">
-                <router-link :to="{ name: 'seasons.show', params: { id: competition.seasonId } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none underline">Back to season</router-link>
+                <router-link :to="{ name: 'seasons.show', params: { id: competition.seasonId } }" class="focus:outline-none underline" :class="competition.isChampionshipDay ? 'text-orange-500 hover:text-orange-900' : 'text-indigo-600 hover:text-indigo-900'">Back to season</router-link>
                 / <span>{{ competition.date | formatDate }}</span>
             </div>
         </header>
 
         <header>
-            <h1 class="mb-5 text-3xl font-bold leading-tight text-gray-900">{{ competition.date | formatDate }}</h1>
-            <CompetitionData :results="enteredResults" />
+            <h1 class="mb-5 text-3xl font-bold leading-tight text-gray-900">
+                {{ competition.date | formatDate }}
+                <span v-if="competition.isChampionshipDay" class="text-orange-500">Table Championship</span>
+            </h1>
+            <CompetitionData :competition="competition" :results="enteredResults" />
         </header>
 
         <div v-if="user.loggedIn" class="mb-10 flex justify-between items-end">
-            <aside v-if="competition.recorded_at" class="flex-none">
-                <p>Recorded At: <span class="text-purple-700">{{ competition.recorded_at | formatDate }}</span></p>
+            <aside v-if="competition.isRecorded" class="flex-none">
+                <p>Recorded At: <span class="text-purple-700">{{ competition.recordedAt | formatDate }}</span></p>
             </aside>
             <template v-else>
                 <AddPlayer :competition="competition" :results="results" />
@@ -24,7 +27,7 @@
             </template>
         </div>
 
-        <ResultsTable v-if="competition.isRecorded" :results="sortedResults" />
+        <ResultsTable v-if="competition.isRecorded" :results="sortedResults" :bonus="competition.bonusesAvailable" />
 
         <template v-else>
             <div v-if="validator.hasError('scores')" class="rounded-md bg-red-50 p-4 mb-4">
@@ -93,7 +96,7 @@ export default {
 
     computed: {
         ...mapState(['user']),
-        ...mapGetters(['findCompetition', 'competitionResults']),
+        ...mapGetters(['findCompetition', 'competitionResults', 'playerBonus']),
 
         competition () {
             return this.findCompetition(this.$route.params.id)
@@ -128,7 +131,7 @@ export default {
                     await this.enterScores()
                     await this.recordCompetition()
                 })
-                .catch(() => { /* Fail silently */ })
+                .catch(() => { this.isProcessing = false })
         },
 
         async recordCompetition () {
@@ -140,12 +143,12 @@ export default {
         },
 
         enterScores () {
-            // TODO: Add bonus
             return Promise.all(this.results.map((result, index) => {
                 return this.$store.dispatch(ENTER_SCORE, {
                     resultId: result.id,
                     score: this.scores[index],
-                    countback: this.countbacks[index]
+                    countback: this.countbacks[index],
+                    bonus: this.playerBonus(result.playerId, this.competition)
                 })
             }))
         },

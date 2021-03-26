@@ -86,7 +86,7 @@ export default {
             api.competitions.add({
                 date,
                 seasonId,
-                recorded_at: null
+                recordedAt: null
             }).then(response => {
                 dispatch(ENTER_PLAYERS, {
                     players,
@@ -103,7 +103,7 @@ export default {
         date.setHours(0, 0, 0, 0)
 
         api.competitions.doc(id).update({
-            recorded_at: date
+            recordedAt: date
         })
     },
 
@@ -132,10 +132,11 @@ export default {
         })
     },
 
-    [actions.ENTER_SCORE] ({ getters }, { resultId, score, countback = 0 }) {
+    [actions.ENTER_SCORE] ({ getters }, { resultId, score, countback = 0, bonus = 0 }) {
         return api.results.doc(resultId).update({
             score,
-            countback
+            countback,
+            bonus
         })
     },
 

@@ -20,14 +20,22 @@
             </router-link>
         </footer>
 
-        <nav class="flex space-x-4 mb-4" aria-label="Tabs">
-            <a @click.prevent="changeView" href="#" class="px-3 py-2 font-medium text-sm rounded-md" :class="viewLeadboard ? 'bg-gray-100 text-gray-700' : 'text-gray-500 hover:text-gray-700'">
-                Leaderboard
-            </a>
-            <a @click.prevent="changeView" href="#" class="px-3 py-2 font-medium text-sm rounded-md" :class="viewLeadboard ? 'text-gray-500 hover:text-gray-700' : 'bg-gray-100 text-gray-700'">
-                Competitions ({{ competitions.length }})
-            </a>
-        </nav>
+        <header class="flex items-center justify-between">
+            <nav class="flex space-x-4 mb-4" aria-label="Tabs">
+                <a @click.prevent="changeView" href="#" class="px-3 py-2 font-medium text-sm rounded-md" :class="viewLeadboard ? 'bg-gray-100 text-gray-700' : 'text-gray-500 hover:text-gray-700'">
+                    Leaderboard
+                </a>
+                <a @click.prevent="changeView" href="#" class="px-3 py-2 font-medium text-sm rounded-md" :class="viewLeadboard ? 'text-gray-500 hover:text-gray-700' : 'bg-gray-100 text-gray-700'">
+                    Competitions ({{ competitions.length }})
+                </a>
+            </nav>
+
+            <aside v-if="!viewLeadboard" class="flex items-center text-sm ml-3">
+                <p class="flex items-center ml-4"><span class="w-4 h-4 mr-2 bg-blue-300 rounded"></span> +2 Points</p>
+                <p class="flex items-center ml-4"><span class="w-4 h-4 mr-2 bg-green-300 rounded"></span> +4 Points</p>
+                <p class="flex items-center ml-4"><span class="w-4 h-4 mr-2 bg-orange-300 rounded"></span> Table Championship</p>
+            </aside>
+        </header>
 
         <Leaderboard v-if="viewLeadboard" :season-id="season.id" />
 
@@ -41,9 +49,11 @@
                             <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
                         </thead>
                         <tbody>
-                            <tr v-for="(competition, index) in competitions" :key="competition.id" :class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'">
+                            <tr v-for="(competition, index) in competitions" :key="competition.id" :class="backgroundColor(competition, index)">
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
-                                    <router-link :to="{ name: 'competitions.show', params: { id: competition.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ competition.date | formatDate }}</router-link>
+                                    <router-link :to="{ name: 'competitions.show', params: { id: competition.id } }" class="focus:outline-none focus:underline" :class="competitionColors(competition)">
+                                        {{ competition.date | formatDate }}
+                                    </router-link>
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ competitionResultCount(competition.id) }}</td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
@@ -101,6 +111,18 @@ export default {
 
         removeCompetition (id) {
             this.$store.dispatch(REMOVE_COMPETITION, id)
+        },
+
+        backgroundColor (competition, index) {
+            return competition.isChampionshipDay ? 'bg-orange-50' : index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+        },
+
+        competitionColors (competition) {
+            if (competition.isChampionshipDay) return 'text-orange-500 hover:text-orange-700'
+            if (competition.isNovember) return 'text-green-400 hover:text-green-600'
+            if (competition.isOctober) return 'text-blue-400 hover:text-blue-500'
+
+            return 'text-indigo-600 hover:text-indigo-900'
         }
     }
 }

@@ -57,7 +57,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { byDate } from '@/getter-helpers'
 import PlayerForm from '@/components/PlayerForm'
 import PlayerDetails from '@/components/PlayerDetails'
 
@@ -84,7 +83,12 @@ export default {
         },
 
         results () {
-            return this.playerResults(this.player.id).sort(byDate)
+            return this.playerResults(this.player.id).sort((a, b) => {
+                const aDate = this.competition(a.competitionId).date
+                const bDate = this.competition(b.competitionId).date
+
+                return aDate === bDate ? 0 : (aDate < bDate) ? 1 : -1
+            })
         },
 
         filteredResults () {

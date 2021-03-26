@@ -21,6 +21,8 @@
                                 <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">{{ index + 1 }}</td>
                                 <td class="px-4 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-500">
                                     <router-link :to="{ name: 'players.show', params: { id: player.id } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline">{{ player.name }}</router-link>
+                                    <span v-if="isFirst(index)" class="ml-1">🏆</span>
+                                    <span v-if="isSweaty(index)" class="ml-1">😰</span>
                                 </td>
                                 <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm text-center md:text-left leading-5 font-medium text-gray-500"><strong>{{ player.topTenTotal }}</strong></td>
                                 <td class="px-2 py-2 md:px-6 md:py-4 whitespace-no-wrap text-sm text-center md:text-left leading-5 font-medium text-gray-500">{{ player.totalGames }}</td>
@@ -69,6 +71,14 @@ export default {
             }
 
             return index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+        },
+
+        isFirst (index) {
+            return index === 0
+        },
+
+        isSweaty (index) {
+            return index === 15
         }
     }
 }
