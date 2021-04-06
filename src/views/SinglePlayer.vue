@@ -100,7 +100,7 @@ export default {
         },
 
         filteredResults () {
-            return this.season ? [...this.results].filter(result => result.competition.seasonId === this.season) : this.results
+            return this.season ? [...this.results].filter(result => this.competition(result.competitionId).seasonId === this.season) : this.results
         }
     },
 
