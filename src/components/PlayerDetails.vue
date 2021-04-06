@@ -28,7 +28,7 @@
                 <p class="text-sm font-medium">Winnings</p>
                 <p class="text-sm font-medium text-gray-500 mb-2">{{ stats.totalWinnings | sterling }}</p>
                 <p class="text-sm font-medium">Net Profit</p>
-                <p class="text-sm font-medium text-green-400">{{ stats.totalProfit | sterling }}</p>
+                <p class="text-sm font-medium" :class="isNegative ? 'text-red-400' : 'text-green-400'">{{ stats.totalProfit | sterling }}</p>
             </div>
             <div class="flex-1 ml-2 py-4 px-5 bg-indigo-600 shadow overflow-hidden rounded-lg">
                 <p class="text-sm font-medium text-white">Qual. Games</p>
@@ -60,6 +60,10 @@ export default {
     computed: {
         stats () {
             return new Stats(this.results)
+        },
+
+        isNegative () {
+            return Math.sign(this.stats.totalProfit) === -1
         }
     }
 }

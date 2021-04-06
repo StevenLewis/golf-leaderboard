@@ -1,16 +1,19 @@
 <template>
     <div v-if="competition" id="competition">
         <header>
-            <div class="mb-10 text-xs text-gray-500">
-                <router-link :to="{ name: 'seasons.show', params: { id: competition.seasonId } }" class="focus:outline-none underline" :class="competition.isChampionshipDay ? 'text-orange-500 hover:text-orange-900' : 'text-indigo-600 hover:text-indigo-900'">Back to season</router-link>
-                / <span>{{ competition.date | formatDate }}</span>
+            <div class="mb-4 -mt-4 text-xs text-gray-500">
+                <router-link :to="{ name: 'seasons.show', params: { id: competition.seasonId } }" class="text-indigo-600 hover:text-indigo-900 focus:outline-none underline">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                </router-link>
             </div>
         </header>
 
         <header>
             <h1 class="mb-5 text-3xl font-bold leading-tight text-gray-900">
                 {{ competition.date | formatDate }}
-                <span v-if="competition.isChampionshipDay" class="text-orange-500">Table Championship</span>
+                <p v-if="competition.isChampionshipDay" class="text-orange-500">Table Championship</p>
             </h1>
             <CompetitionData :competition="competition" :results="enteredResults" />
         </header>
