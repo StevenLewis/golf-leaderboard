@@ -16,6 +16,9 @@
                 <div class="flex text-sm">
                     <span class="w-10">3rd</span>{{ prizes[2] | sterling }} <br>
                 </div>
+                <div class="flex text-sm">
+                    <span class="w-10">4th</span>{{ prizes[3] | sterling }} <br>
+                </div>
             </div>
         </div>
 
@@ -50,7 +53,7 @@ export default {
 
     computed: {
         prizes () {
-            return prizeMoney[this.results.length] || [0, 0, 0]
+            return prizeMoney[this.results.length] || [0, 0, 0, 0]
         }
     }
 }

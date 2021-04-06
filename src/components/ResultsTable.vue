@@ -74,6 +74,8 @@ export default {
                 return 'bg-blue-100 bg-opacity-50'
             case 2:
                 return 'bg-orange-100 bg-opacity-50'
+            case 3:
+                return 'bg-green-100 bg-opacity-50'
             default:
                 return index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
             }
