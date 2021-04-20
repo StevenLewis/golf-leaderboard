@@ -66,11 +66,15 @@ export default {
 
     methods: {
         backgroundColor (index) {
-            if (index <= 15) {
+            if (index <= 11) {
                 return leaderboardColors[index]
             }
 
-            return index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+            if (index <= 35) {
+                return index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+            }
+
+            return index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'
         },
 
         isFirst (index) {

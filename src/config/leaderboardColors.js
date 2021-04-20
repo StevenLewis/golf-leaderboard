@@ -10,10 +10,5 @@ export default [
     'bg-green-50',
     'bg-green-100',
     'bg-green-50',
-    'bg-green-100',
-    'bg-green-50',
-    'bg-green-100',
-    'bg-green-50',
-    'bg-green-100',
-    'bg-green-50'
+    'bg-green-100'
 ]
