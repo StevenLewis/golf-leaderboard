@@ -104,6 +104,12 @@ export default {
         }
     },
 
+    watch: {
+        seasons: function (seasons) {
+            this.season = seasons[0].id
+        }
+    },
+
     methods: {
         competition (id) {
             return this.findCompetition(id)
