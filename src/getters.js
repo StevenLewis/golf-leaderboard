@@ -1,4 +1,5 @@
 import LeaderboardPresenter from './presenters/LeaderboardPresenter'
+import { bonuses } from './config/bonuses'
 
 export default {
     user (state) {
@@ -42,13 +43,13 @@ export default {
         return players.find(playerId)
     },
 
-    hasUsedOctoberBonus: (state, getters) => (playerId, seasonId) => {
+    hasUsedFirstBonus: (state, getters) => (playerId, seasonId) => {
         const results = getters.seasonResults(seasonId).filter(result => result.playerId === playerId)
 
         return results.some(result => result.bonus === 2)
     },
 
-    hasUsedNovemberBonus: (state, getters) => (playerId, seasonId) => {
+    hasUsedSecondBonus: (state, getters) => (playerId, seasonId) => {
         const results = getters.seasonResults(seasonId).filter(result => result.playerId === playerId)
 
         return results.some(result => result.bonus === 4)
@@ -56,15 +57,15 @@ export default {
 
     playerBonus: (state, getters) => (playerId, competition) => {
         if (competition.isChampionshipDay) {
-            return 6
+            return bonuses[2]
         }
 
-        if (competition.isOctober) {
-            return getters.hasUsedOctoberBonus(playerId, competition.seasonId) ? 0 : 2
+        if (competition.isFirstBonusMonth) {
+            return getters.hasUsedFirstBonus(playerId, competition.seasonId) ? 0 : bonuses[0]
         }
 
-        if (competition.isNovember) {
-            return getters.hasUsedNovemberBonus(playerId, competition.seasonId) ? 0 : 4
+        if (competition.isSecondBonusMonth) {
+            return getters.hasUsedSecondBonus(playerId, competition.seasonId) ? 0 : bonuses[1]
         }
 
         return 0

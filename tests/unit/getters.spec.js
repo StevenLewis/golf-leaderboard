@@ -5,6 +5,7 @@ import PlayerCollection from '@/models/PlayerCollection'
 import ResultCollection from '@/models/ResultCollection'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import { bonuses } from '@/config/bonuses'
 
 const timestamp = firebase.firestore.Timestamp
 
@@ -169,7 +170,7 @@ describe('Competitions', () => {
 })
 
 describe('Bonuses', () => {
-    test('Has player used October bonus for a given season', () => {
+    test('Has player used first bonus for a given season', () => {
         const state = {
             results: new ResultCollection(),
             competitions: new CompetitionCollection(),
@@ -180,23 +181,23 @@ describe('Bonuses', () => {
         state.competitions.add({ id: '2', seasonId: '2' })
 
         state.results.add({ id: '1', playerId: '1', competitionId: '1', bonus: 0 })
-        state.results.add({ id: '2', playerId: '1', competitionId: '1', bonus: 2 })
+        state.results.add({ id: '2', playerId: '1', competitionId: '1', bonus: bonuses[0] })
         state.results.add({ id: '3', playerId: '2', competitionId: '1', bonus: 0 })
         state.results.add({ id: '4', playerId: '2', competitionId: '1', bonus: 0 })
-        state.results.add({ id: '5', playerId: '3', competitionId: '1', bonus: 2 })
-        state.results.add({ id: '6', playerId: '3', competitionId: '2', bonus: 2 })
+        state.results.add({ id: '5', playerId: '3', competitionId: '1', bonus: bonuses[0] })
+        state.results.add({ id: '6', playerId: '3', competitionId: '2', bonus: bonuses[0] })
 
         const seasonResults = getters.seasonResults(state)
 
-        expect(getters.hasUsedOctoberBonus({}, { seasonResults })('1', '1')).toBe(true)
-        expect(getters.hasUsedOctoberBonus({}, { seasonResults })('1', '2')).toBe(false)
-        expect(getters.hasUsedOctoberBonus({}, { seasonResults })('2', '1')).toBe(false)
-        expect(getters.hasUsedOctoberBonus({}, { seasonResults })('2', '2')).toBe(false)
-        expect(getters.hasUsedOctoberBonus({}, { seasonResults })('3', '1')).toBe(true)
-        expect(getters.hasUsedOctoberBonus({}, { seasonResults })('3', '2')).toBe(true)
+        expect(getters.hasUsedFirstBonus({}, { seasonResults })('1', '1')).toBe(true)
+        expect(getters.hasUsedFirstBonus({}, { seasonResults })('1', '2')).toBe(false)
+        expect(getters.hasUsedFirstBonus({}, { seasonResults })('2', '1')).toBe(false)
+        expect(getters.hasUsedFirstBonus({}, { seasonResults })('2', '2')).toBe(false)
+        expect(getters.hasUsedFirstBonus({}, { seasonResults })('3', '1')).toBe(true)
+        expect(getters.hasUsedFirstBonus({}, { seasonResults })('3', '2')).toBe(true)
     })
 
-    test('Has player used November bonus for a given season', () => {
+    test('Has player used second bonus for a given season', () => {
         const state = {
             results: new ResultCollection(),
             competitions: new CompetitionCollection(),
@@ -207,54 +208,54 @@ describe('Bonuses', () => {
         state.competitions.add({ id: '2', seasonId: '2' })
 
         state.results.add({ id: '1', playerId: '1', competitionId: '1', bonus: 0 })
-        state.results.add({ id: '2', playerId: '1', competitionId: '1', bonus: 4 })
-        state.results.add({ id: '3', playerId: '2', competitionId: '1', bonus: 2 })
+        state.results.add({ id: '2', playerId: '1', competitionId: '1', bonus: bonuses[1] })
+        state.results.add({ id: '3', playerId: '2', competitionId: '1', bonus: bonuses[0] })
         state.results.add({ id: '4', playerId: '2', competitionId: '1', bonus: 0 })
-        state.results.add({ id: '5', playerId: '3', competitionId: '1', bonus: 4 })
-        state.results.add({ id: '6', playerId: '3', competitionId: '2', bonus: 4 })
+        state.results.add({ id: '5', playerId: '3', competitionId: '1', bonus: bonuses[1] })
+        state.results.add({ id: '6', playerId: '3', competitionId: '2', bonus: bonuses[1] })
 
         const seasonResults = getters.seasonResults(state)
 
-        expect(getters.hasUsedNovemberBonus({}, { seasonResults })('1', '1')).toBe(true)
-        expect(getters.hasUsedNovemberBonus({}, { seasonResults })('1', '2')).toBe(false)
-        expect(getters.hasUsedNovemberBonus({}, { seasonResults })('2', '1')).toBe(false)
-        expect(getters.hasUsedNovemberBonus({}, { seasonResults })('2', '2')).toBe(false)
-        expect(getters.hasUsedNovemberBonus({}, { seasonResults })('3', '1')).toBe(true)
-        expect(getters.hasUsedNovemberBonus({}, { seasonResults })('3', '2')).toBe(true)
+        expect(getters.hasUsedSecondBonus({}, { seasonResults })('1', '1')).toBe(true)
+        expect(getters.hasUsedSecondBonus({}, { seasonResults })('1', '2')).toBe(false)
+        expect(getters.hasUsedSecondBonus({}, { seasonResults })('2', '1')).toBe(false)
+        expect(getters.hasUsedSecondBonus({}, { seasonResults })('2', '2')).toBe(false)
+        expect(getters.hasUsedSecondBonus({}, { seasonResults })('3', '1')).toBe(true)
+        expect(getters.hasUsedSecondBonus({}, { seasonResults })('3', '2')).toBe(true)
     })
 
     test('It returns the correct bonus on championship day', () => {
         const competition = { id: '1', isChampionshipDay: true, seasonId: '1' }
         const actual = getters.playerBonus()('1', competition)
 
-        expect(actual).toEqual(6)
+        expect(actual).toEqual(bonuses[2])
     })
 
-    test('It returns the correct bonus for a player in October', () => {
+    test('It returns the correct bonus for a player in the first bonus month', () => {
+        const competitions = new CompetitionCollection([
+            { id: '1', date: timestamp.fromDate(new Date('2000-09-01')), isChampionshipDay: false, seasonId: '1' }
+        ])
+
+        const competition = competitions.find('1')
+
+        const bonus1 = getters.playerBonus({}, { hasUsedFirstBonus: () => true })('1', competition)
+        const bonus2 = getters.playerBonus({}, { hasUsedFirstBonus: () => false })('2', competition)
+
+        expect(bonus1).toEqual(0)
+        expect(bonus2).toEqual(bonuses[0])
+    })
+
+    test('It returns the correct bonus for a player in second bonus month', () => {
         const competitions = new CompetitionCollection([
             { id: '1', date: timestamp.fromDate(new Date('2000-10-01')), isChampionshipDay: false, seasonId: '1' }
         ])
 
         const competition = competitions.find('1')
 
-        const bonus1 = getters.playerBonus({}, { hasUsedOctoberBonus: () => true })('1', competition)
-        const bonus2 = getters.playerBonus({}, { hasUsedOctoberBonus: () => false })('2', competition)
+        const bonus1 = getters.playerBonus({}, { hasUsedSecondBonus: () => true })('1', competition)
+        const bonus2 = getters.playerBonus({}, { hasUsedSecondBonus: () => false })('2', competition)
 
         expect(bonus1).toEqual(0)
-        expect(bonus2).toEqual(2)
-    })
-
-    test('It returns the correct bonus for a player in November', () => {
-        const competitions = new CompetitionCollection([
-            { id: '1', date: timestamp.fromDate(new Date('2000-11-01')), isChampionshipDay: false, seasonId: '1' }
-        ])
-
-        const competition = competitions.find('1')
-
-        const bonus1 = getters.playerBonus({}, { hasUsedNovemberBonus: () => true })('1', competition)
-        const bonus2 = getters.playerBonus({}, { hasUsedNovemberBonus: () => false })('2', competition)
-
-        expect(bonus1).toEqual(0)
-        expect(bonus2).toEqual(4)
+        expect(bonus2).toEqual(bonuses[1])
     })
 })
