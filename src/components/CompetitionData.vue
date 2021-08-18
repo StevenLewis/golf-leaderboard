@@ -24,17 +24,18 @@
 
         <div v-if="competition.bonusesAvailable" class="mt-3 mr-1 text-right">
             <div class="mt-1 text-sm leading-5 text-gray-900">
-                <p v-if="competition.isChampionshipDay" class="text-orange-500">6 Bonus Points Available</p>
-                <p v-else-if="competition.isNovember" class="text-green-500">4 Bonus Points Available</p>
-                <p v-else-if="competition.isOctober" class="text-blue-500">2 Bonus Points Available</p>
-                <p v-else>None</p>
+                <p v-if="competition.isChampionshipDay" class="text-orange-500">{{ bonusPoints[2] }} Bonus Points Available</p>
+                <p v-else-if="competition.isSecondBonusMonth" class="text-green-500">{{ bonusPoints[1] }} Bonus Points Available</p>
+                <p v-else-if="competition.isFirstBonusMonth" class="text-blue-500">{{ bonusPoints[0] }} Bonus Points Available</p>
+                <p v-else>No bonuses available</p>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { prizeMoney } from '@/config/money'
+import { prizeMoney } from '../config/money'
+import { bonuses } from '../config/bonuses'
 
 export default {
     name: 'CompetitionData',
@@ -54,6 +55,10 @@ export default {
     computed: {
         prizes () {
             return prizeMoney[this.results.length] || [0, 0, 0, 0]
+        },
+
+        bonusPoints () {
+            return bonuses
         }
     }
 }

@@ -123,8 +123,8 @@ export default {
 
         competitionColors (competition) {
             if (competition.isChampionshipDay) return 'text-orange-500 hover:text-orange-700'
-            if (competition.isNovember) return 'text-green-400 hover:text-green-600'
-            if (competition.isOctober) return 'text-blue-400 hover:text-blue-500'
+            if (competition.isSecondBonusMonth) return 'text-green-400 hover:text-green-600'
+            if (competition.isFirstBonusMonth) return 'text-blue-400 hover:text-blue-500'
 
             return 'text-indigo-600 hover:text-indigo-900'
         }
